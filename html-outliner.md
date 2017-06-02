@@ -16,3 +16,9 @@ outliner-steps > pseudocode > implementation
 * A Javascript implementation of the HTML outline algorithm.
 * [bookmarklet.js](https://github.com/hoyois/html5outliner/blob/master/bookmarklet.js#L270)
   is the main file that implements the algorithm.
+
+## [rehierl / html-outliner](https://github.com/rehierl/html-outliner)
+
+* A JavaScript implementation of HTML5's outline algorithm.
+* [Algorithm.js](https://github.com/rehierl/html-outliner/blob/master/src/Algorithm.js)
+  is the main file that implements the algorithm.
