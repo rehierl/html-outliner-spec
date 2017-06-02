@@ -10,7 +10,7 @@ see also: [HTML Working Draft, 2008-01-22](https://www.w3.org/TR/2008/WD-html5-2
 ## Overview
 
 ```
-outliner-steps -> pseudocode -> implementation -> pseudocode-mod -> outliner-steps-mod
+outliner-steps > pseudocode > implementation > pseudocode-mod > outliner-steps-mod
 ```
 
 1. [html-notes](./html-notes.md) -
@@ -29,10 +29,25 @@ outliner-steps -> pseudocode -> implementation -> pseudocode-mod -> outliner-ste
    contains a short list of available open source implementations.
 1. [pseudocode-mod](./pseudocode-mod.md) (TODO) -
    is the result of writing down an implementation using pseudocode.
-1. [outliner-steps-mod](./outliner-steps-mod) (TODO) -
+1. [outliner-steps-mod](./outliner-steps-mod.md) (TODO) -
    is the result of transforming the new pseudocode into English language.
 
 ## Related Links
+
+[W3C, HTML5.2, Editor's Draft, 2017-05-03](https://w3c.github.io/html/)
+
+* [4.3.9 Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
+* [4.3.9.1. Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline)
+
+[W3C, HTML5, Recommendation, 2014-10-28](https://www.w3.org/TR/html5/sections.html)
+
+* [4.3.10 Headings and sections](https://www.w3.org/TR/html5/sections.html/#headings-and-sections)
+* [4.3.10.1 Creating an outline](https://www.w3.org/TR/html5/sections.html/#outlines)
+
+[W3C, HTML5, Working Draft, 2008-01-22](https://www.w3.org/TR/2008/WD-html5-20080122)
+
+* [3.8.11 Headings and sections](https://www.w3.org/TR/2008/WD-html5-20080122/#headings)
+* [3.8.11.1 Creating an outline](https://www.w3.org/TR/2008/WD-html5-20080122/#outlines)
 
 W3C, World Wide Web Consortium
 

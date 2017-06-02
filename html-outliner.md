@@ -1,8 +1,11 @@
 
-* List some of the available (open source) implementations.
-  (pseudocode -> implementation)
+List of some of the available open source implementations:
 
-## [h5o/h5o-js](https://github.com/h5o/h5o-js)
+```
+outliner-steps > pseudocode > implementation
+```
+
+## [h5o / h5o-js](https://github.com/h5o/h5o-js)
 
 * h5o is an implementation of the HTML5 outline algorithm in JavaScript.
 * [createOutline.js](https://github.com/h5o/h5o-js/blob/master/src/createOutline.js#L25)

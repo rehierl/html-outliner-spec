@@ -1,3 +1,6 @@
 
-* Pseudocode derived from an implementation.
-  (implementation -> pseudocode)
+Pseudocode derived from an implementation:
+
+```
+implementation -> pseudocode
+```

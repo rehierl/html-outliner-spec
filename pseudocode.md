@@ -1,6 +1,10 @@
 
-These are the results when trying to write down the [outliner-steps](./outliner-steps) using pseudocode as accurately as possible (i.e. almost word-by-word).
-(outliner-steps -> pseudocode)
+These are the results when trying to write down the [outliner-steps](./outliner-steps)
+using pseudocode as accurately as possible (i.e. almost word-by-word).
+
+```
+outliner-steps > pseudocode
+```
 
 The algorithm's main entry point is reflected by the pseudocode's
 **createOutline()** function.
