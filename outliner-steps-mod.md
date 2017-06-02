@@ -1,4 +1,3 @@
 
-The outline algorithm's steps specified in:
-
-* asdf
+* The algorithm's steps derived from the new pseudocode description.
+  (html-outliner -> pseudocode -> outliner-steps)

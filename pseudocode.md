@@ -1,24 +1,24 @@
 
-These are the results when transforming the outline algorithm into pseudocode.
-
-* That is as accurately as possible (i.e. almost word-by-word) from:
-* [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html/sections.html#creating-an-outline)
+These are the results when trying to write down the [outliner-steps](./outliner-steps) using pseudocode as accurately as possible (i.e. almost word-by-word).
+(outliner-steps -> pseudocode)
 
 The algorithm's main entry point is reflected by the pseudocode's
 **createOutline()** function.
 
-## Todo
+The most important part of this document is the **visit()** function's pseudocode
+and the **issues** listing beneath it.
 
-* outliner steps -> pseudocode
-* unfortunately, this transformation does not produce an easy-to-understand pseudocode.
-* **see the [issues](#issues-1) listing below the *visit()* function**
+## cancelled
+
+* unfortunately, this transformation does not produce an easy-to-follow pseudocode.
+* **see the [issues](#issues) listing below the *visit()* function**
 * the only way to clear things up is to try a hands-on approach ...
 
 ### skipped
 
-* (4, last statement) In addition, whenever the walk exits a node, after doing
-  the steps above, if the node is not associated with a section yet, associate
-  the node with current section.
+* (4.11) In addition, whenever the walk exits a node, after doing the steps above,
+  if the node is not associated with a section yet, associate the node with current
+  section.
 * (5) Associate all non-element nodes (REM e.g. text nodes?) that are in the
   subtree for which an outline is being created, with the section with which
   their parent element is associated.
@@ -85,7 +85,8 @@ The algorithm's overall steps can be looked at as being executed by a global
 
 * *Outline createOutline(Node node)*
 * *node parameter* : the node for which to create the outline. 'node' must refer
-  to a sectioning content or a sectioning root element. **?hidden?**
+  to a sectioning content or a sectioning root element. *node* must also not
+  represent a hidden element.
 * *returns* : the outline created for the input node object.
 
 ### pseudocode
@@ -178,8 +179,9 @@ void visit(Globals vars, Node node, bool entering, bool exiting) begin
 16:     vars.stack.push(vars.currentOutlineTarget)
 17:   end if
 18:   vars.currentOutlineTarget = node
+xx:   //- currentSection, then currentOutlineTarget.section; see line 36
 19:   vars.currentSection = new Section(vars.currentOutlineTarget)
-xx:   //- .parentSection instead of .section? see line 36
+xx:   //- 'section' same meaning as 'parentSection'? see line 36
 20:   vars.currentOutlineTarget.section = vars.currentSection
 21:   vars.currentOutlineTarget.outline = new Outline(vars.currentSection)
 22: end if
@@ -199,7 +201,8 @@ xx:     //- no set-implied-heading here; see line 13
 33:     vars.stack.push(vars.currentOutlineTarget)
 34:   end if
 35:   vars.currentOutlineTarget = node
-xx:   //- save and restore the current section; see line 44
+xx:   //- currentOutlineTarget.parentSection, then currentSection; see line 19
+xx:   //- save the current section; see line 44
 36:   vars.currentOutlineTarget.parentSection = vars.currentSection
 37:   vars.currentSection = new Section(vars.currentOutlineTarget)
 38:   vars.currentOutlineTarget.outline = new Outline(vars.currentSection)
@@ -209,6 +212,7 @@ xx:   //- save and restore the current section; see line 44
 41:   if(!vars.currentSection.hasHeading) then
 42:     vars.currentSection.setImpliedHeading
 43:   end if
+xx:   //- restore the current section; see line 36
 44:   vars.currentSection = vars.currentOutlineTarget.parentSection
 45:   vars.currentOutlineTarget = vars.stack.pop()
 46: end if
@@ -270,7 +274,7 @@ not translate into code.
 * line 74: This causes the algorithm to skip any descendants of the element.
 * line 77: Otherwise, Do nothing.
 
-### issues-1
+### issues
 
 1. Introduction to (4) : does not state what to do if succeeding steps would
    also be applicable. it merely states "trigger the first relevant step".
@@ -302,17 +306,13 @@ not translate into code.
 1. line 66: same as 59
 1. line 71: 'Let candidateSection be the section that contains candidateSection
    in the outline of currentOutlineTarget' is quite unclear. should state the
-   parent-child relationship between sections established when ..............
+   parent-child relationship between sections established when appending a
+   section to another one (line 66).
 1. line 65 after 71: implies that a section always has a parent section, which
    is not the case once you reach a SR or SC.
-
-### issues-2
-
-1. lines 02, 27, 45:
-   push/pop stack operations are rather decoupled from each other.
-1. lines 36, 44:
-   the *Node.parentSection* property is only used to *remember* the section that
-   was left when a SR was entered. is there no better method? outline hierarchy?
+1. lines 02, 27, 45: push/pop stack operations are rather decoupled from each other.
+1. lines 36, 44: the *Node.parentSection* property is only used to *save and
+   restore* the current section.
 
 ### faq-like notes
 

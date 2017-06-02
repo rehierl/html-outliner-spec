@@ -23,14 +23,14 @@ outliner-steps -> pseudocode -> html-outliner -> pseudocode-mod -> outliner-step
    contains the outline algorithm's steps as defined in [4.3.9.1. Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline)
    (Editor's Draft, 2017-05-03).
 1. [pseudocode](./pseudocode.md) -
-   contains the result of trying to write down the outline algorithm's steps as
+   contains the result of trying to write down the outline algorithm's steps using
    pseudocode.
 1. [html-outliner](./html-outliner.md) (TODO) -
-   is a working JavaScript implementation of the outline algorithm.
+   is a JavaScript implementation of the outline algorithm.
 1. [pseudocode-mod](./pseudocode-mod.md) (TODO) -
-   is the result of writing down the implementation as modified pseudocode.
+   is the result of writing down the above implementation using pseudocode.
 1. [outliner-steps-mod](./outliner-steps-mod) (TODO) -
-   is the result of transforming the modified pseudocode into English language.
+   is the result of transforming the new pseudocode into English language.
 
 ## Related Links
 
