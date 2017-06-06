@@ -18,7 +18,7 @@ and the **issues** listing beneath it.
 * **see the [issues](#issues) listing below the *visit()* function**
 * the only way to clear things up is to try a hands-on approach ...
 
-### skipped
+## skipped
 
 * (4.11) In addition, whenever the walk exits a node, after doing the steps above,
   if the node is not associated with a section yet, associate the node with current
