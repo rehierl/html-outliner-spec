@@ -8,7 +8,8 @@ HTML's outline algorithm.
 ## Overview
 
 ```
-outliner-steps > pseudocode > implementation > pseudocode-mod > outliner-steps-mod
+html-specification > outliner-steps > pseudocode > implementation
+implementation > pseudocode-mod > outliner-steps-mod
 ```
 
 1. [html-notes](./html-notes.md) -

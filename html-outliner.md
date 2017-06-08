@@ -1,9 +1,7 @@
 
 List of some of the available open source implementations:
 
-```
-outliner-steps > pseudocode > implementation
-```
+* `outliner-steps > pseudocode > implementation`
 
 ## [h5o / h5o-js](https://github.com/h5o/h5o-js)
 

@@ -2,19 +2,15 @@
 These are the results when trying to write down the [outliner-steps](./outliner-steps)
 using pseudocode as accurately as possible (i.e. almost word-by-word).
 
-```
-outliner-steps > pseudocode
-```
-
-The algorithm's main entry point is reflected by the pseudocode's
-**createOutline()** function.
-
-The most important part of this document is the **visit()** function's pseudocode
-and the **issues** listing beneath it.
+* `outliner-steps > pseudocode`
+* The algorithm's main entry point is reflected by the pseudocode's
+  **createOutline()** function.
+* The most important part of this document is the **visit()** function's
+  pseudocode and the **issues** listing beneath it.
 
 ## cancelled
 
-* unfortunately, this transformation does not produce an easy-to-follow pseudocode.
+* unfortunately, this transformation does not result in an easy-to-follow pseudocode.
 * **see the [issues](#issues) listing below the *visit()* function**
 * the only way to clear things up is to try a hands-on approach ...
 
@@ -297,7 +293,7 @@ not translate into code.
 1. line 29: *Section.appendOutline()*: unclear how to execute this operation;
    should say "append all sections of the outline"; and then, what does "append"
    exactly mean? add as subsections, or append as sections that have the same
-   "level" as currentSection?
+   "level" as currentSection? - see [inner sce](./issue-inner-sce.md)
 1. line 38: note that it does not state to associate currentOutlineTarget with
    the newly created section; compare with line 20.
 1. line 57: <strike>rank is undefined for implied/missing headings;

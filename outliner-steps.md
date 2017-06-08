@@ -1,12 +1,13 @@
 
 The outline algorithm's steps as defined by:
 
+* `html-specification > outliner-steps`
 * [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html)
 * [4.3.9.1 Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline)
 
 The algorithm that must be followed during a walk of a DOM subtree rooted at a
-sectioning content (SC) element or a sectioning root (SR) element to determine
-that element's outline is as follows:
+sectioning content element or a sectioning root element to determine that
+element's outline is as follows:
 
 <table>
   <tr><td>1.</td><td>Le the <i>current outline target</i> be null. (It holds the element whose outline is being created.)</td></tr>

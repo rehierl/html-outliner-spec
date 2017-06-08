@@ -1,6 +1,4 @@
 
 Pseudocode derived from an implementation:
 
-```
-implementation -> pseudocode
-```
+* `implementation -> pseudocode`

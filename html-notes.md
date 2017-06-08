@@ -1,8 +1,9 @@
 
 These are notes on different aspects of HTML that are related to the outline algorithm.
 
+* `html-specification`
 * [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html)
-* [The Elements of HTML, a tabular overview](https://w3c.github.io/elements-of-html/)
+* [HTML's Elements, a tabular overview](https://w3c.github.io/elements-of-html/)
 
 <hr/>
 
@@ -21,11 +22,13 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [**Categories**](https://w3c.github.io/html/dom.html#categories)
 
+* i.e. the 'categories' property of an element's definition
 * a list of categories to which an element belongs
 * used when defining the content models of each element
 
 [**Content model**](https://w3c.github.io/html/dom.html#content-model)
 
+* i.e. the 'content model' property of an element's definition
 * a normative description of what content must be included as children and
   descendants of an element.
 
@@ -50,7 +53,11 @@ These are notes on different aspects of HTML that are related to the outline alg
 [3.2.4.2.2. **Flow content** (FC)](https://w3c.github.io/html/dom.html#flow-content)
 
 * elements - **a, abbr, address, area, article, aside, audio, ...**
-* **REM - a mere listing of elements; won't say what the category's meaning is**
+
+*notes*
+
+* a mere listing of elements to classify them as 'flow content'
+* won't say what the actual meaning of flow content is
 
 [3.2.4.2.3. **Sectioning content** (SC)](https://w3c.github.io/html/dom.html#sectioning-content)
 
@@ -89,7 +96,10 @@ These are notes on different aspects of HTML that are related to the outline alg
 * elements **blockquote, body, details, dialog, fieldset, figure, td**
 * inner sections and headings do not contribute to the outlines of their ancestors
 * can have their own outlines
-* **REM - should say can have a heading and an outline**
+
+*notes*
+
+* does not say, like for SCEs that they also can have a heading
 
 <hr/>
 ### [4.3. Sections](https://w3c.github.io/html/sections.html#sections)
@@ -130,8 +140,11 @@ These are notes on different aspects of HTML that are related to the outline alg
 * have a **rank** - given by the number of their name.
   h1 has highest rank, h6 has lowest rank and
   two elements with the same name have equal rank.
-* **REM - does not say 'rank(h1)==1', just 'rank(h1)==MAX_RANK'**
 * use the rank of HEs to create the document outline
+
+*notes*
+
+* does not say 'rank(h1)==1', just 'rank(h1)==MAX_RANK'
 
 [4.3.7. The **header** element](https://w3c.github.io/html/sections.html#the-header-element)
 
@@ -222,4 +235,3 @@ These are notes on different aspects of HTML that are related to the outline alg
 * if something is marked hidden, it is hidden from all presentations
   including, for instance, screen readers
 * non-hidden elements must not link to hidden ones
-

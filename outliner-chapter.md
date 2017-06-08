@@ -1,164 +1,291 @@
 
-A restructured overview of:
+A restructured summary of Chapter 4.3.9
 
 * [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html)
 
+*acronyms*
+
+* sectioning element (SE) - can be an SRE or an SCE
+* sectioning content (SC) - SC element (SCE)
+* sectioning root (SR) - SR element (SRE)
+* heading content (HC) - HC element (HCE)
+
+*associate a node with a section*
+
+* (step 4.11) on exit with the current section - issue is 'on exit'
+
 ## [4.3.9 Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
 
-**definition of 'section'**
+*this section should only contain definitions*
 
-* a section is a container that corresponds to some nodes in the dom tree
-* can have a heading associated with it
-* can contain any number of further nested subsections
-* **REM - implies a section hierarchy; i.e. parent-child relationship between sections**
-* these are conceptual sections and don't necessarily correspond with section elements
+### 'first inner/outer X' element
 
-**definition of 'outline'**
+*notes*
 
-* an outline consists of one or more sections; i.e. a sequence thereof
-* the element for which an outline is created is said to be the **outline's owner**
-* the outline for the body element of a document is the outline of the entire document
-* **REM - as a consequence, the body element is the owner of the entire document's outline**
+1. the first inner X element of Y - refers to the first child of node Y found
+   that matches X when searching Y's sub-tree in a pre-order tree-order traversal.
+1. the first outer X element of Y - refers to the first ancestor node of Y found
+   that matches X when going up from one parent/ancestor node to the next parent
+   node - i.e. start with checking Y's parent node, then, if that doesn't match,
+   continue with the parent node of that node, etc.
 
-**recap on sectioning content (SC)**
+### sections
 
-* elements included - **article, aside, nav, section**
-* each SC represents an explicit section
-* each SC can have a heading and an outline
+1. a section is a container that corresponds to some nodes in the dom tree
+1. each section can have a heading associated with it
+1. each section can contain any number of further nested (sub)sections
+1. these sections aren't section elements, although some may correspond to
+   such elements - they are merely conceptual sections
 
-**recap on heading elements (HE)**
+*notes*
 
-* the **h1, h2, h3, h4, h5, h6** elements are headings that have a rank
-* each heading element has a rank value associated with it
-* **REM - is there a clear distinction between the terms 'heading element' and
-  'heading content' (HC)?**
+1. does allow for sections to be empty - may contain no nodes/headings at all
+1. the first inner HCE of a section, that is not part of an inner SE, represents
+   the heading for that section
+1. implies a hierarchy (parent-child relationship) of sections
 
-**relationship between HC and SC**
+### outline
 
-* the first element of HC in a SC represents the heading for that section
-* user agents should provide default headings for sections that do not have
-  explicit section headings
-* **REM - the algorithm seems to refer to these 'default headings' as 'implied headings';
-  the term 'implied heading' should be mentioned/explained here**
-* e.g. "Untitled document" for body, "Navigation" for nav, "Sidebar" for aside
+1. the outline of an SCE consists of one or more potentially nested sections
+1. the element for which an outline is created is said to be the **outline's owner**
+1. the outline created for the body element of a document is the outline of the
+   entire document - the body element is the owner of the document's outline
 
-**section hierarchy**
+*notes*
 
-* **REM - in general, each subsequent heading starts a new implied section**
-* subsequent headings of equal or higher rank start new implied sections
-* **REM - "previous section's parent section" is most probably not general
-  enough, because you will probably have to go higher up into the hierarchy.**
-* subsequent headings of lower rank start implied subsections that are
-  part of the previous one.
-* see also: example 27
+1. does not allow outlines to be empty - must have at least one section
+1. an outline is merely a sequence of one or more sections
 
-**sectioning root (SR)**
+### sectioning element (SE)
 
-* elements included - **blockquote, body, details, dialog, fieldset, figure, td**
-* each SR can have its own outline
-* sections and headings inside SRs do not contribute to the outlines of their
-  ancestor SCs and SRs
-* **REM - implies some cut/break of the parent-child relationship between sections**
-* **REM - also implies an outline hierarchy**
+*notes*
 
-**definition of 'outline depth'**
+1. define the term "sectioning element" as a general reference for a SCE or SRE
+1. each SE has an outline - combines sections into a sequence of sections
+1. the term **sections of an SE** refers to all sections in its outline,
+   excluding any subsections they might have.
 
-* the **outline depth** of a HC element, associated with a 'section' is the number
-* of sections that are ancestors of 'section' in the outermost outline that 'section'
-* **REM - what is the 'outermost outline'? the topmost/root outline?**
-* **REM - the actual meaning of a 'depth' value should be similar to that of a node's
-  level value, which reflects how deep into a tree of nodes a node is located.**
-* **REM - case 1: take all sections and outlines into account (i.e. an absolute depth value)**
-* **REM - case 2: only reflect the depth of a heading relative to the outline it is
-  associated with (i.e. a relative depth value)**
-* finds itself in when the outlines of its document element's are created, plus 1.
-* **REM - plus 1: the deeper into the hierarchy a HC is located, the larger its depth value becomes**
-* the outline depth of a HC element not associated with a section is 1
-* **REM - this only includes HCs which are not part of the outline that is generated;
-  e.g. h1 heading of body, if the outline of a dialog is requested. this is merely
-  satisfying a theoretical issue (assign each and every heading a depth value). but then,
-  why the same value as a top-level heading? use 0 and you could tell from its depth value
-  that it is not part of the actual outline.**
+### sectioning content (SC, SCE)
 
-## [4.3.9.1 Clarifications]()
+1. elements - **article, aside, nav, section**
+1. sectioning content is content that defines the scope of headings and footers
+1. each SCE potentially has a heading and an outline
+1. SCEs are always considered subsections of their nearest ancestor SR/SC,
+   whichever is nearest, regardless of what implied sections other headings
+   may have created - see [inner sce](./issue-inner-sce.md)
 
-* currently only a listing with no particular order
+*notes*
 
-**clarification 1**
+1. what exactly is the heading of a SCE supposed to be?
+   the first heading of the first section? what if that section has no heading,
+   but the 2nd one does?
+1. if there was a clear definition for a SCE's heading, what if there are
+   multiple headings that have the same level/rank? wouldn't that nullify any
+   potential use?
+1. what exactly is the outline of an SCE? -
+   needs an explicit inner/outer reference
 
-* SCs are always considered subsections of their nearest ancestor SR,
-  or their nearest ancestor SC, whichever is nearest, regardless of what implied
-  sections other headings may have created
-* **REM - does not require a direct parent-child relationship;
-  feels more like a 'contains' statement**
-* **REM - does probably imply that there is no cut/break of the parent-child
-  relationship between sections of different nesting level**
+### sectioning roots (SR, SRE)
 
-**clarification 2**
+1. elements - **blockquote, body, details, dialog, fieldset, figure, td**
+1. SRs are distinct from SCs
+1. can have their own outlines
+1. sections and headings inside SRs don't contribute to the outlines of their
+   ancestors; i.e. SCs and/or SRs
 
-* authors are encouraged to explicitly wrap sections in elements of SCs, instead
-  of relying on the implicit sections generated by having multiple headings in
-  one element of SC; i.e. use &lt;section&gt; tags
-* **REM - use section elements similar to using parentheses in arithmetic
-  expression; e.g. '(A * B + C)' vs. '(A * (B + C))'**
-* see also: example 25
+*notes*
 
-**clarification 3**
+1. should say that they also potentially have a heading?
+1. implies an hierarchy of outlines
+1. implies some cut/break of the parent-child relationship between sections
 
-* sections may contain headings of a rank equal to their section nesting level
-* authors should use headings of the appropriate rank for the section's nesting level
-* **REM - probably only relevant for nesting levels lower than or equal to 6?**
-* **REM - for [compatibility reasons](http://html5doctor.com/interview-steve-faulkner-html5-editor-new-doctor/#comment-32325)**
+### heading content (HC, HCE)
 
-**clarification 4**
+1. elements - **h1, h2, h3, h4, h5, h6**
+1. defines the header of a section - whether explicitly marked up using SCEs,
+   or implied by the HC itself
+1. each SCE has a rank given by the number of their name. h1 has highest rank,
+   h6 has lowest rank. two elements with the same name have equal rank
 
-* interactive table of content entries should forward the user to the relevant
-  SC element, if the section was created for a real element, or
-  to the relevant HC element, if the section was generated for a heading
-* note - selecting the first section of a document must forward the user to the
-  top of the document, regardles where the first heading is located
-* **REM - unclear: sections are always created because of a real/existing element**
-* **REM - simpler: jump to the element which caused the creation of a section**
+*notes*
 
-**example 24**
+1. distinction between HC and HE? concept vs. element?
+1. the algorithm will associate an implied heading with each section that does
+   not have a heading associated with it
 
-* an introductory example to show what the generated outline of a simple document
-  would look like.
-* **REM - might be a little too 'complex' to be used as an introductory example**
-* the topmost heading is associated with a paragraph located at the very bottom of the document.
-* a subsection contains a child blockquote SR
-* **REM - so an SR won't be completely ignored in an outline; they themselves will
-  still be associated with their parent section; just their 'inner' outline won't
-  contribute to their parent outline**
+### HCEs inside SEs
 
-**example 25**
+1. the first HCE of a section, that is not part of an inner SE, represents the
+   heading for that section
+1. subsequent headings of lower rank start implied sections that are part of
+   the previous one.
+1. subsequent headings of equal or higher rank start new (implied) sections
+1. in both cases, the HCE represents the heading of the implied section.
 
-* an example related to 'clarification 2'
-* additional section elements can be used to clarify the structure to avoid relying
-  on implicitly generated sections
+*notes, if an SE contains no other inner SE*
 
-**example 26**
+1. when entering an HCE, if the current section *S* has no heading, the algorithm
+   will associate that heading with section *S*
+1. in general, each subsequent HCE will start a new implied section with that
+   HCE, representing the implied section's heading
 
-* an introductory example to show how a document is split into different sections
+*notes, if an SE contains an inner SE*
 
-**example 27**
+### outline depth
 
-* an example related to default/implied headings in 'relationship between HC and SC'
+1. the outline depth of a HCE associated with a section *S* is the number of
+   sections that are ancestors of *S* in the outermost outline that *S* finds
+   itself in when the outlines of its document's element are created, plus 1
+1. the outline depth of a HCE, not associated with a section, is 1
 
-## [4.3.9.2 Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline)
+*in general*
 
-* algorithm for creating an outline for a SC or SR element
-* defined in terms of a walk over DOM nodes in tree-order;
-  visit each node when entering and exiting
-* associates each dom node with a particular section and potentially a heading
-* **REM - this section/chapter should only contain the algorithm itself**
+1. what is this definition used for?
 
-* [outliner-steps](./outliner-steps.md)
+*notes on part 1*
 
-* [outliner-steps](./outliner-steps-mod.md) (modified)
+1. defined for HCEs, not for SEs
+1. what is the outermost outline? - the outline of the first outer SRE or
+   the document/body's outline?
+1. HCEs that have the body element as parent must have depth value 1 -
+   because they have 0 parent sections.
+1. what is the depth value of an HCE inside a nested SR? - distinguis between
+   relative depth (first outer SRE) and absolute depth (body) values?
 
-## [4.3.9.3 Example code fragments]()
+*notes on part 2*
 
-* **REM - this section/chapter should contain sample code fragments to exemplify
-  how to implement the outline algorithm**
-* e.g. JavaScript example for the tree order traversal
+1. note that you do not have to start at the body element to create an outline
+1. only those HCEs will not be associated with a section, that aren't part of
+   the starting node's subtree - i.e. don't have the root as parent/ancestor -
+   i.e. can't be reached by the root's outline.
+1. why give them a depth value that matches the value of a top-level heading?
+1. why not 0, which would allow to determine if a HCE is even part of the outline?
+
+## [4.3.9.1 Examples]()
+
+### example 24
+
+1. body, h1-A, h2-B, blockquote, h3-D, /blockquote, p-E, h2-F, section, h3-G
+   /section, p-H, /body
+1. explicit body section
+1. h1-A contains p-H
+1. h2-B contains blockquote and p-E
+1. a subsection (h2-B) contains a SR - i.e. a SR is itself still associated
+   with their parent section - their 'inner' outliner will still not contribute
+   to its parent outline (body)
+1. h2-F contains only itself
+1. explicit section 'section'
+1. section ends the earlier implicit section (h2-F) so that the later paragraph
+   (p-H) is back at the top level
+
+### example 25
+
+1. semantically identical documents when using section elements
+1. avoid relying on implicitly generated sections
+
+### example 26
+
+1. body, h1-A, p-B, h2-C, p-D, h2-E, p-F, /body
+1. body section associated with h1-A and p-B
+1. h2-C section associated with h2-C and p-D
+1. h2-E section associated with h2-E and p-F
+
+### example 27
+
+1. user agents should provide default/implied headings
+1. not specified by this specification
+1. might vary with the user's language, etc.
+
+## [4.3.9.2 Clarifications]()
+
+*this section should only contain clarifications*
+
+### clarification
+
+1. SCEs are always considered subsections of their nearest ancestor SE,
+   regardless of what implied sections other headings may have created
+
+*notes*
+
+1. see example 24
+1. does not require a direct parent-child relationship - feels more like a
+   'contains' statement
+1. does not seem to imply that there is a cut/break of the parent-child
+   relationship between sections of different nesting level
+
+### clarification
+
+1. when creating an interactive table of contents, entries should forward the
+   user to the relevant SE if the entry's section was created for a real element,
+   or to the relevant HCE, if the entry's section was generated for a heading
+1. selecting the first section of the document always takes the user to the top
+   of the document, regardless of where the first heading in the body is located
+
+*notes*
+
+1. sections are always created because of real/exisiting elements
+1. forward to the node that is the first node associated with that section
+
+### clarification
+
+1. user agents should provide default headings for sections that do not have
+   explicit section headings.
+1. e.g. "Untitled document" for body, "Navigation" for nav, "Sidebar" for aside
+1. default headings not specified by HTML's spec
+1. might vary depending on the user's language, etc.
+
+*notes*
+
+1. see example 27
+
+### clarification
+
+1. authors are also encouraged to explicitly wrap sections in elements of SC,
+   instead of relying on the implicit sections generated by having multiple
+   headings in one SCE
+
+*notes*
+
+1. see example 25
+
+### clarification
+
+1. sections may contain headings of a rank equal to their section nesting level
+1. authors should use headings of the appropriate rank for the section's nesting
+   level
+
+*notes*
+
+1. by itself unclear as what that is supposed to mean ...
+1. HTML 5.1 no longer promotes the use of only h1 elements for
+   [compatibility reasons](http://html5doctor.com/interview-steve-faulkner-html5-editor-new-doctor/#comment-32325)
+
+### clarification
+
+1. HCE must not be used to markup subheadings, subtitles, etc.
+1. instead use the markup patterns in the 4.13 section of this spec
+1. e.g. header, p, span, ul/li, etc.
+
+*notes*
+
+1. same clarification as in 4.3.6. The h1, ..., h6 elements
+
+## [4.3.9.3 Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline)
+
+*this section should only contain the algorithm's steps*
+
+1. algorithm for creating an outline for a SE
+1. defined in terms of a walk over the nodes of a dom tree in tree-order, whith
+   each node being visited when it is entered or exited during the walk.
+1. associates each node with a section and potentially a heading
+
+*notes*
+
+1. [outliner-steps](./outliner-steps.md)
+1. [outliner-steps](./outliner-steps-mod.md) (modified)
+
+## [4.3.9.4 Code fragments]()
+
+*this section should only contain sample or pseudocode fragments*
+
+1. JavaScript tree-order traversal
