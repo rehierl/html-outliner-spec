@@ -12,10 +12,10 @@ Issue - What to do with the sections of an inner SCE?
 
 ## [Steps 4.5.4 and 4.5.5 of the Outline Algorithm](./outliner-steps.md)
 
-1. 4.5.4. - Let current section be the last section in the outline of the current
-   outline target element.
-1. 4.5.5. - Append the outline of the sectioning content element being exited to
-   the current section.
+1. step 4.5.4. - Let current section be the last section in the outline of the
+   current outline target element.
+1. step 4.5.5. - Append the outline of the sectioning content element being
+   exited to the current section.
 1. note - 4.5.5. does not change which section is the last section in the outline
 1. note - 4.5.5. does not change the reference to the current section
 
@@ -44,29 +44,29 @@ Issue - What to do with the sections of an inner SCE?
 1. SCEs are always considered subsections of their first outer SE, regardless of
    what implied sections other headings may have created.
 1. note - an SCE itself isn't a section and therefore can't become a subsection
-   of an SE - they represent sequences of sections
+   of an SE
 1. note - an SE isn't a section and itself can't have subsections
 
 **Version-2** - *one could still read this as*
 
 1. add each section of the SCE being exited to the outline of the first
-   outer SE - or, put differently - add each section of the SCE being exited
+   outer SE - or - add each section of the SCE being exited
    **as new siblings to the last section** of the first outer SE
 1. note - the above use of the word 'subsections' does not refer to any inner
    section of the first outer SCE - i.e. it does not imply to associate an inner
-   SCE with an inner section of the first outer SE, it implies to associate
-   these with the SE itself
+   SCE with an inner section of the first outer SE, it implies to directly
+   associate an inner SCE with the SE itself
 
 **Version-1 vs. Version-2**
 
 1. i.e. (1) add as subsections -vs- (2) add as siblings to the last section
 1. **conclusion** - both statements contradict each other
 
-## Version-2 (as siblings)
+## Version-2: as siblings
 
 1. **to be continued ...........**
 
-## Version-1 (as subsections)
+## Version-1: as subsections
 
 *each SE must always have at least one section object*
 
@@ -81,23 +81,32 @@ Issue - What to do with the sections of an inner SCE?
 
 1. if a section has ended and has no heading, the algorithm will associate a
    pseudo heading (implied heading) with it
-1. these implied headings represent two statements: (1) the section has ended
-   and (2) the section has no heading element
-1. the main reason for this is to keep the steps, that assign headings to sections,
-   from assigning headings to a section of an inner SCE, which have ended
+1. these implied headings represent two statements - (1) the section has been
+   processed/exited and (2) the section has no heading element
+1. the main reason for this is to keep the steps, that assign headings to
+   sections, from assigning headings to a section of an inner SCE, which have
+   already been processed/exited
 1. the sections of the preceeding inner SCE will be hidden inside the
    current/last section of the first outer SE
-1. the steps above steps, that assign headings to sections, start at the current
-   section and, if necessary, work their way up the hierarchy of sections
-1. so these steps can never come into contact with the merged inner sections
+1. the above steps start at the current section and, if necessary, work their
+   way up the hierarchy of sections
+1. therefore, they can never come into contact with the merged inner sections
    from an inner SCE
-1. the construct of implied headings is therefore not needed and should be removed
+1. as a consequence, the construct of implied headings is not needed and
+   should therefore be removed
 
-*must use HCEs outside of `<section>` elements*
+*one must use HCEs outside of `<section>` elements*
 
-1. to get headings of the same topmost level, separate HCEs must be used
-1. with that in mind, the `<section>` element's name `section` is somewhat
-   violated - `<subsection>` would have been more appropriate.
+1. to get headings of the same topmost level, HCEs, isolated from `<section>`
+   elements, must be used - see the below example
+1. with that in mind - the `<section>` element's name `section` is somewhat
+   degraded - `<subsection>` would have been more appropriate
+1. put differently - the `<section>` element can't be used to its full potential
+
+## Example fragments
+
+[Nu Html Checker](https://validator.w3.org/nu/) can be used to create outlines
+for HTML documents.
 
 **example-1**
 
@@ -111,8 +120,7 @@ the following HTML fragment
 </body>
 ```
 
-will produce the following outline
-([Nu Html Checker](https://validator.w3.org/nu/)):
+will produce the following outline:
 
 ```
 1. body element with no heading
@@ -122,3 +130,23 @@ will produce the following outline
 ```
 
 (i.e. 'Nu Html Checker' implements Version-1)
+
+**example-2**
+
+```html
+<body>
+<p>A</p>
+<h1>B</h1>
+<p>C</p>
+</body>
+```
+
+will produce the following outline:
+
+```
+1. heading 'B'
+```
+
+More importantly, both paragraphs (*A* and *C*) will be associated with heading
+*B*. In case of *C*, that is almost always intended by the author. Automatically
+associating *A* with heading *B* on the other hand could be surprising.

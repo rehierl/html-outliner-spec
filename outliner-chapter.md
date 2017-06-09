@@ -83,8 +83,8 @@ A restructured summary of Chapter 4.3.9
    the first heading of the first section? what if that section has no heading,
    but the 2nd one does? if there was a clear definition for a SCE's heading,
    what if there are multiple headings that have the same level/rank? wouldn't
-   that nullify any potential use of 'heading of a section'? - drop that definition
-1. drop the definition - i.e. heading of an SCE
+   that nullify any potential use of 'heading of a section'?
+1. drop that definition - i.e. heading of an SCE
 
 ### sectioning roots (SR, SRE)
 
@@ -135,14 +135,12 @@ A restructured summary of Chapter 4.3.9
    [inner sce](./issue-inner-sce.md)
 1. step 4.5.4 and step 4.5.5 - will add the inner sections of a preceeding SCE
    as subsections to the last/current section of the first outer SE
-1. the terms 'last section' and 'current section' refer to the same section -
-   i.e. before and after executing step 4.5.5
+1. the terms 'last section' and 'current section' refer to the same section
+   object - i.e. before and after executing step 4.5.5
 1. the sections of the preceeding inner SCE are hidden inside the current section
 1. the steps that associate sections with headings, start at the current section
    and, if necessary, work their way up the hierarchy of sections.
 1. with that in mind, the construct of implied headings is not needed
-
-???????????????????????????????????????????????
 
 ### outline depth
 
