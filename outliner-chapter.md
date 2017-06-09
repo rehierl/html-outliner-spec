@@ -5,10 +5,10 @@ A restructured summary of Chapter 4.3.9
 
 *acronyms*
 
-* sectioning element (SE) - can be an SRE or an SCE
-* sectioning content (SC) - SC element (SCE)
-* sectioning root (SR) - SR element (SRE)
-* heading content (HC) - HC element (HCE)
+1. sectioning element (SE) - can be an SRE or an SCE
+1. sectioning content (SC) - SC element (SCE)
+1. sectioning root (SR) - SR element (SRE)
+1. heading content (HC) - HC element (HCE)
 
 *associate a node with a section*
 
@@ -40,8 +40,6 @@ A restructured summary of Chapter 4.3.9
 *notes*
 
 1. does allow for sections to be empty - may contain no nodes/headings at all
-1. the first inner HCE of a section, that is not part of an inner SE, represents
-   the heading for that section
 1. implies a hierarchy (parent-child relationship) of sections
 
 ### outline
@@ -54,82 +52,97 @@ A restructured summary of Chapter 4.3.9
 *notes*
 
 1. does not allow outlines to be empty - must have at least one section
-1. an outline is merely a sequence of one or more sections
+1. an outline is merey a sequence of one or more sections
 
 ### sectioning element (SE)
 
 *notes*
 
-1. define the term "sectioning element" as a general reference for a SCE or SRE
-1. each SE has an outline - combines sections into a sequence of sections
-1. the term **sections of an SE** refers to all sections in its outline,
-   excluding any subsections they might have.
+1. define the term "sectioning element" as a general term for SCEs and SREs
+1. each SE can have an outline, a sequence of sections
+1. in the context of the outline algorithm, an SE acts as a sequence of sections
+1. the term **sections of an SE** refers only to the topmost sections in the
+   outline of an SE. an operation that is said to work on the sections of an SE
+   will only work directly on these root sections; it may implicitly affect the
+   subsections of said root sections, but won't interact with them directly.
 
 ### sectioning content (SC, SCE)
 
 1. elements - **article, aside, nav, section**
 1. sectioning content is content that defines the scope of headings and footers
-1. each SCE potentially has a heading and an outline
-1. SCEs are always considered subsections of their nearest ancestor SR/SC,
-   whichever is nearest, regardless of what implied sections other headings
-   may have created - see [inner sce](./issue-inner-sce.md)
+1. each SCE <s>potentially</s> has <s>a heading and</s> an outline
+1. SCEs are always considered subsections of their nearest ancestor sectioning
+   root or their nearest ancestor element of sectioning content, whichever is
+   nearest, regardless of what implied sections other headings may have created -
+   see [inner sce](./issue-inner-sce.md)
 
 *notes*
 
+1. implies that sections of different outlines can have a parent-child relationship
 1. what exactly is the heading of a SCE supposed to be?
    the first heading of the first section? what if that section has no heading,
-   but the 2nd one does?
-1. if there was a clear definition for a SCE's heading, what if there are
-   multiple headings that have the same level/rank? wouldn't that nullify any
-   potential use?
-1. what exactly is the outline of an SCE? -
-   needs an explicit inner/outer reference
+   but the 2nd one does? if there was a clear definition for a SCE's heading,
+   what if there are multiple headings that have the same level/rank? wouldn't
+   that nullify any potential use of 'heading of a section'? - drop that definition
+1. drop the definition - i.e. heading of an SCE
 
 ### sectioning roots (SR, SRE)
 
 1. elements - **blockquote, body, details, dialog, fieldset, figure, td**
-1. SRs are distinct from SCs
-1. can have their own outlines
+1. each SRE <s>can have</s> has its own outline
 1. sections and headings inside SRs don't contribute to the outlines of their
-   ancestors; i.e. SCs and/or SRs
+   ancestors
 
 *notes*
 
-1. should say that they also potentially have a heading?
-1. implies an hierarchy of outlines
-1. implies some cut/break of the parent-child relationship between sections
+1. implies some cut/break of the relationship between sections - not all sections
+   of a document are interconnected
 
 ### heading content (HC, HCE)
 
 1. elements - **h1, h2, h3, h4, h5, h6**
-1. defines the header of a section - whether explicitly marked up using SCEs,
-   or implied by the HC itself
-1. each SCE has a rank given by the number of their name. h1 has highest rank,
-   h6 has lowest rank. two elements with the same name have equal rank
+1. defines the header of a section - whether (a section is) explicitly marked up
+   using SCEs, or implied by the HC itself
+1. each HCE has a rank given by the number of its name. h1 has highest rank,
+   h6 has lowest rank. two HCEs with the same name have equal rank
 
-*notes*
+*HCEs inside SEs with no inner SCE*
 
-1. distinction between HC and HE? concept vs. element?
-1. the algorithm will associate an implied heading with each section that does
-   not have a heading associated with it
+1. the first HCE of a section represents the heading for that section -
+   implies that there is already a section, i.e. the first heading won't start
+   a new implied section
+1. in general, subsequent HCEs start new implied sections with that HCE
+   representing the implied section's heading - implies that only subsequent
+   headings start new implied sections
+1. the **rank of a section** can be defined through the rank of its HCE -
+   the rank of a section is undefined, if a section has no heading
+1. an implied section *I* with a rank that is lower than the rank of its
+   preceeding section *S* will become a subsection of section *S*.
+1. if *I* has a rank that is greater or equal to the rank of *S*, it will become
+   a subsection of the first ancestor section *A* (of *S*) that has a greater rank.
+1. *A* is identical to the last section *L* of the first outer SE of *S*, if *A*
+   has no further parent section within that SE.
+1. *I* will be added directly to *S*'s first outer SE (its outline), if no such
+   ancestor section *A* was found.
+1. observations - (1) the rank of each subsection is smaller than the rank of its
+   parent section - (2) each section has a heading - (3) a section will only have
+   no heading, if its first outer SE does not have a single HCE at all. in such
+   a case, an SE will only have a single section that has no heading.
 
-### HCEs inside SEs
+*HCEs that follow inner SCEs - concept of implied headings*
 
-1. the first HCE of a section, that is not part of an inner SE, represents the
-   heading for that section
-1. subsequent headings of lower rank start implied sections that are part of
-   the previous one.
-1. subsequent headings of equal or higher rank start new (implied) sections
-1. in both cases, the HCE represents the heading of the implied section.
+1. see [step 4.5.4, step 4.5.5](./outliner-steps.md) and
+   [inner sce](./issue-inner-sce.md)
+1. step 4.5.4 and step 4.5.5 - will add the inner sections of a preceeding SCE
+   as subsections to the last/current section of the first outer SE
+1. the terms 'last section' and 'current section' refer to the same section -
+   i.e. before and after executing step 4.5.5
+1. the sections of the preceeding inner SCE are hidden inside the current section
+1. the steps that associate sections with headings, start at the current section
+   and, if necessary, work their way up the hierarchy of sections.
+1. with that in mind, the construct of implied headings is not needed
 
-*notes, if an SE contains no other inner SE*
-
-1. when entering an HCE, if the current section *S* has no heading, the algorithm
-   will associate that heading with section *S*
-1. in general, each subsequent HCE will start a new implied section with that
-   HCE, representing the implied section's heading
-
-*notes, if an SE contains an inner SE*
+???????????????????????????????????????????????
 
 ### outline depth
 
@@ -138,9 +151,13 @@ A restructured summary of Chapter 4.3.9
    itself in when the outlines of its document's element are created, plus 1
 1. the outline depth of a HCE, not associated with a section, is 1
 
-*in general*
+*notes*
 
-1. what is this definition used for?
+1. what makes such a definition necessary?
+1. used to implement a number system (e.g. 1.3.2.1) for headings? - no, because
+   that requires the knowledge of how many preceeding siblings a heading has.
+1. the term "outline depth" implies that the depth value is assigned to an
+   outline, but that is not the case - defined for HCEs
 
 *notes on part 1*
 

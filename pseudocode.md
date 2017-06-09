@@ -191,6 +191,7 @@ xx:   //- 'section' same meaning as 'parentSection'? see line 36
 25:     vars.currentSection.setImpliedHeading
 26:   end if
 27:   vars.currentOutlineTarget = vars.stack.pop()
+xx:   //- does not make the construct of implied headings a necessity
 28:   vars.currentSection = vars.currentOutlineTarget.outline.lastSection
 29:   vars.currentSection.appendOutline(node.outline)
 30: end if
@@ -290,10 +291,8 @@ not translate into code.
    is unspecific and should refer to the outline's owner</strike>
    (change merged; impending update)
 1. line 20: "Associate ... with" is too unspecific; compare with line 36.
-1. line 29: *Section.appendOutline()*: unclear how to execute this operation;
-   should say "append all sections of the outline"; and then, what does "append"
-   exactly mean? add as subsections, or append as sections that have the same
-   "level" as currentSection? - see [inner sce](./issue-inner-sce.md)
+1. line 29: *Section.appendOutline()*: unclear how to execute this operation -
+   see [issue with inner SCEs](./issue-inner-sce.md)
 1. line 38: note that it does not state to associate currentOutlineTarget with
    the newly created section; compare with line 20.
 1. line 57: <strike>rank is undefined for implied/missing headings;
@@ -346,7 +345,11 @@ not translate into code.
 * SC elements would act like a SR element
 * i.e. create separate outlines
 
-## SectionList Class
+## Not relevant
+
+* for the time being, ignore the following pseudocode:
+
+### SectionList Class
 
 ```
 begin class SectionList
@@ -359,7 +362,7 @@ begin class SectionList
 end
 ```
 
-## Section Class
+### Section Class
 
 ```
 begin class Section
@@ -399,7 +402,7 @@ begin class Section
 end
 ```
 
-## Outline Class
+### Outline Class
 
 ```
 begin class Outline
@@ -431,7 +434,7 @@ begin class Outline
 end
 ```
 
-## ImpliedHeading Class
+### ImpliedHeading Class
 
 ```
 begin class ImpliedHeading
@@ -440,7 +443,7 @@ begin class ImpliedHeading
 end
 ```
 
-## Node Class
+### Node Class
 
 'Node' serves as a wrapper class for a DOM node objects. It supports those
 properties and operations specific to DOM nodes and in addition to that, those
