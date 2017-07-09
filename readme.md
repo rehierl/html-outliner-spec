@@ -33,22 +33,28 @@ implementation > pseudocode-mod > outliner-steps-mod
 
 [W3C, HTML 5.2, Editor's Draft, 2017-05-03](https://w3c.github.io/html/)
 
-* [4.3.9 Headings and sections](https://w3c.github.io/html/sections.html/#headings-and-sections)
-* [4.3.9.1. Creating an outline](https://w3c.github.io/html/sections.html/#creating-an-outline)
+* [4.3.9. Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
+* [4.3.9.1. Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline)
 
 [W3C, HTML 5.2, Working Draft, 2017-05-09](https://www.w3.org/TR/html52/)
 
+* [4.3.9. Headings and sections](https://www.w3.org/TR/html52/sections.html#headings-and-sections)
+* [4.3.9.1. Creating an outline](https://www.w3.org/TR/html52/sections.html#creating-an-outline)
+
 [W3C, HTML 5.1, Recommendation, 2016-11-01](https://www.w3.org/TR/html51/)
+
+* [4.3.10. Headings and sections](https://www.w3.org/TR/html51/sections.html#headings-and-sections)
+* [4.3.10.1. Creating an outline](https://www.w3.org/TR/html51/sections.html#creating-an-outline)
 
 [W3C, HTML 5, Recommendation, 2014-10-28](https://www.w3.org/TR/html5/sections.html)
 
-* [4.3.10 Headings and sections](https://www.w3.org/TR/html5/sections.html/#headings-and-sections)
-* [4.3.10.1 Creating an outline](https://www.w3.org/TR/html5/sections.html/#outlines)
+* [4.3.10. Headings and sections](https://www.w3.org/TR/html5/sections.html#headings-and-sections)
+* [4.3.10.1 Creating an outline](https://www.w3.org/TR/html5/sections.html#outlines)
 
 [W3C, HTML 5, Working Draft, 2008-01-22](https://www.w3.org/TR/2008/WD-html5-20080122)
 
-* [3.8.11 Headings and sections](https://www.w3.org/TR/2008/WD-html5-20080122/#headings)
-* [3.8.11.1 Creating an outline](https://www.w3.org/TR/2008/WD-html5-20080122/#outlines)
+* [3.8.11. Headings and sections](https://www.w3.org/TR/2008/WD-html5-20080122#headings)
+* [3.8.11.1 Creating an outline](https://www.w3.org/TR/2008/WD-html5-20080122#outlines)
 
 W3C, World Wide Web Consortium
 

@@ -2,10 +2,23 @@
 These are notes on different aspects of HTML that are related to the outline algorithm.
 
 * `html-specification`
-* [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html)
-* [HTML's Elements, a tabular overview](https://w3c.github.io/elements-of-html/)
+* [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html), and
+  [HTML's Elements, a tabular overview](https://w3c.github.io/elements-of-html/)
+* [W3C, HTML 5.2, Working Draft, 9 May 2017](https://www.w3.org/TR/html52/)
 
 <hr/>
+
+[**Categories**](https://w3c.github.io/html/dom.html#categories)
+
+* i.e. the 'categories' property of an element's definition
+* a list of categories to which an element belongs
+* used when defining the content models of each element
+
+[**Content model**](https://w3c.github.io/html/dom.html#content-model)
+
+* i.e. the 'content model' property of an element's definition
+* a normative description of what content must be included as children and
+  descendants of an element.
 
 [**hgroup**]()
 
@@ -19,18 +32,6 @@ These are notes on different aspects of HTML that are related to the outline alg
 * [W3C's decision on request to drop hgroup](https://lists.w3.org/Archives/Public/public-html-admin/2013Apr/0003.html), 2013-04-02
 * Plan 2014: request to be dropped due to missing complete implementations of the semantics
 * got removed on 2013-04-16
-
-[**Categories**](https://w3c.github.io/html/dom.html#categories)
-
-* i.e. the 'categories' property of an element's definition
-* a list of categories to which an element belongs
-* used when defining the content models of each element
-
-[**Content model**](https://w3c.github.io/html/dom.html#content-model)
-
-* i.e. the 'content model' property of an element's definition
-* a normative description of what content must be included as children and
-  descendants of an element.
 
 <hr/>
 ### [2.4. Common microsyntaxes](https://w3c.github.io/html/infrastructure.html#common-microsyntaxes)
@@ -84,7 +85,7 @@ var, video, wbr, text
 
 [3.2.4.2.4. **Heading content** (HC)](https://w3c.github.io/html/dom.html#heading-content)
 
-* see elements - **h1, h2, h3, h4, h5, h6** (4.3.6)
+* see elements - **h1, h2, h3, h4, h5, h6** - see also 4.3.6
 * defines the header of a section (whether explicitly marked up using
   SCs, or implied by the HC itself)
 
@@ -114,7 +115,7 @@ template, textarea, time, u, var, video, wbr, text
 * **FCEs that are no PCEs** - address, article, aside, blockquote, details, dialog,
   div, dl, fieldset, figure, footer, form, h1-6, header, hr, main, menu, nav, ol,
   p, pre, section, style, table, ul
-* **FCEs, that are no PCEs** - HCEs, SCEs, SREs
+* **FCEs that are no PCEs** - HCEs, SCEs, SREs
   (body is no FC/PC; td excluded via table)
 
 [3.2.4.2.8. **Palpable content** (PalpC)](https://w3c.github.io/html/dom.html#palpable-content-2)
