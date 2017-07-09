@@ -20,7 +20,7 @@ A restructured summary of Chapter 4.3.9
 
 *this section should only contain definitions*
 
-### 'first inner/outer X' element
+### first inner/outer X element of Y
 
 *notes*
 

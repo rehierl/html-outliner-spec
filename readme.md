@@ -22,12 +22,18 @@ implementation > pseudocode-mod > outliner-steps-mod
 1. [pseudocode](./pseudocode.md) -
    contains the result of trying to write down the outline algorithm's steps using
    pseudocode.
-1. [implementation](./html-outliner.md) (TODO) -
+1. [implementations](./implementations.md) (TODO) -
    contains a short list of available open source implementations.
 1. [pseudocode-mod](./pseudocode-mod.md) (TODO) -
    is the result of writing down an implementation using pseudocode.
 1. [outliner-steps-mod](./outliner-steps-mod.md) (TODO) -
    is the result of transforming the new pseudocode into English language.
+
+--
+
+- [issue-inner-sce](./issue-inner-sce)
+- [spec-fixes](./spec-fixes.md) (TODO) -
+  fixes for the main spec to suggest as pull request.
 
 ## Related Links
 
