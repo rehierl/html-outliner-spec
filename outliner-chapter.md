@@ -13,6 +13,7 @@ A restructured summary of Chapter 4.3.9
 *associate a node with a section*
 
 * (step 4.11) on exit with the current section - issue is 'on exit'
+  and what the current section at that time is
 
 ## [4.3.9 Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
 
@@ -154,27 +155,28 @@ A restructured summary of Chapter 4.3.9
 1. what makes such a definition necessary?
 1. used to implement a number system (e.g. 1.3.2.1) for headings? - no, because
    that requires the knowledge of how many preceeding siblings a heading has.
-1. the term "outline depth" implies that the depth value is assigned to an
-   outline, but that is not the case - defined for HCEs
+1. because of the word "outline", the term "outline depth" might seem to imply
+   that the depth value is assigned to an outline, but that is not the case -
+   defines a depth value for HCEs
 
 *notes on part 1*
 
-1. defined for HCEs, not for SEs
 1. what is the outermost outline? - the outline of the first outer SRE or
-   the document/body's outline?
+   the document/body's outline? - probably only refers to "ignore the outline
+   of inner SCEs"
 1. HCEs that have the body element as parent must have depth value 1 -
    because they have 0 parent sections.
-1. what is the depth value of an HCE inside a nested SR? - distinguis between
+1. what is the depth value of an HCE inside a nested SR? - distinguish between
    relative depth (first outer SRE) and absolute depth (body) values?
 
 *notes on part 2*
 
-1. note that you do not have to start at the body element to create an outline
+1. note - you do not have to start at the body element to create an outline
 1. only those HCEs will not be associated with a section, that aren't part of
    the starting node's subtree - i.e. don't have the root as parent/ancestor -
-   i.e. can't be reached by the root's outline.
+   i.e. can't be reached from the root.
 1. why give them a depth value that matches the value of a top-level heading?
-1. why not 0, which would allow to determine if a HCE is even part of the outline?
+1. why not 0, which would allow to state if an HCE is even part of an outline?
 
 ## [4.3.9.1 Examples]()
 

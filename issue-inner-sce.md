@@ -10,14 +10,15 @@ Issue - What to do with the sections of an inner SCE?
 1. sectioning root (SR) - SR element (SRE)
 1. heading content (HC) - HC element (HCE)
 
-## [Steps 4.5.4 and 4.5.5 of the Outline Algorithm](./outliner-steps.md)
+## [Steps 4.5.4 and 4.5.5](./outliner-steps.md)
 
 1. step 4.5.4. - Let current section be the last section in the outline of the
    current outline target element.
 1. step 4.5.5. - Append the outline of the sectioning content element being
    exited to the current section.
 1. note - 4.5.5. does not change which section is the last section in the outline
-1. note - 4.5.5. does not change the reference to the current section
+1. note - 4.5.5. does not change the reference to the current section - it keeps
+   referencing the last section
 
 *more formal*
 
@@ -62,10 +63,6 @@ Issue - What to do with the sections of an inner SCE?
 1. i.e. (1) add as subsections -vs- (2) add as siblings to the last section
 1. **conclusion** - both statements contradict each other
 
-## Version-2: as siblings
-
-1. **to be continued ...........**
-
 ## Version-1: as subsections
 
 *each SE must always have at least one section object*
@@ -99,9 +96,12 @@ Issue - What to do with the sections of an inner SCE?
 
 1. to get headings of the same topmost level, HCEs, isolated from `<section>`
    elements, must be used - see the below example
-1. with that in mind - the `<section>` element's name `section` is somewhat
-   degraded - `<subsection>` would have been more appropriate
-1. put differently - the `<section>` element can't be used to its full potential
+1. with that in mind - the `<section>` element can't be used to its full
+   potential - `<subsection>` might have been a better choice
+
+## Version-2: as siblings
+
+1. **to be continued ...........**
 
 ## Example fragments
 
@@ -147,6 +147,6 @@ will produce the following outline:
 1. heading 'B'
 ```
 
-More importantly, both paragraphs (*A* and *C*) will be associated with heading
+More importantly, both paragraphs *A* and *C* will be associated with heading
 *B*. In case of *C*, that is almost always intended by the author. Automatically
-associating *A* with heading *B* on the other hand could be surprising.
+associating *A* with heading *B* on the other hand could be surprising to authors.

@@ -52,7 +52,19 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [3.2.4.2.2. **Flow content** (FC)](https://w3c.github.io/html/dom.html#flow-content)
 
-* elements - **a, abbr, address, area, article, aside, audio, ...**
+* elements - **dialog, h1-6, section, text, ...**
+
+```
+a, abbr, address, area (if descendant of map), article, aside
+audio, b, bdi, bdo, blockquote, br, button, canvas, cite, code, data
+datalist, del, details, dfn, dialog, div, dl, em, embed, fieldset, figure
+footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img
+input, ins, kbd, label, link (if allowed inside body), main, map, mark
+MathML, math, menu, meter, nav, noscript, object, ol, output, p, picutre
+pre, progress, q, ruby, s, samp, script, section, select, small, span
+strong, style, sub, sup, svg, table, template, textarea, time, u, ul
+var, video, wbr, text
+```
 
 *notes*
 
@@ -66,25 +78,62 @@ These are notes on different aspects of HTML that are related to the outline alg
 * each SC element **can have a heading and an outline**
 * a sectioning root can also have an outline
 
+*notes*
+
+* content models - **FC** - nav and aside must not contain a main element
+
 [3.2.4.2.4. **Heading content** (HC)](https://w3c.github.io/html/dom.html#heading-content)
 
 * see elements - **h1, h2, h3, h4, h5, h6** (4.3.6)
 * defines the header of a section (whether explicitly marked up using
   SCs, or implied by the HC itself)
-* **REM - distinction between HC and HE? concept vs. element?**
+
+*notes*
+
+* distinction between HC and HE? concept vs. element?
 
 [3.2.4.2.5. **Phrasing content** (PC)](https://w3c.github.io/html/dom.html#phrasing-content-2)
 
-* elements - **a, abbr, area, audio, b, bdi, bdo, br, ...**
+* elements - **i, s, span, strong, sub, sup, text, ...**
+
+```
+a, abbr, area (if descendant of map), audio, b, bdi, bdo,
+br, button, canvas, cite, code, data, datalist, del, dfn, em embed, i,
+iframe, img, input, ins, kbd, label, link (if allowed in body), map,
+mark, math, meter, noscript, object, output, picuture, progress, q,
+ruby, s, samp, script, select, small, span, strong, sub, sup, svg,
+template, textarea, time, u, var, video, wbr, text
+```
+
 * phrasing content is the text (i.e. text nodes or nothing) of the document
 * including the elements that mark up that text at the intra-paragraph level
 * may contain other PCE, but no FCE
-* FCEs that are no PCEs - **address, article, aside, blockquote, details, dialog, div, dl, fieldset, figure, footer, form, h1-6, header, hr, main, menu, nav, ol, p, pre, section, style, table, ul**
-* FCEs, that are no PCEs - HCEs, SCEs, SREs (body is no FC/PC; td excluded via table)
+
+*notes*
+
+* **FCEs that are no PCEs** - address, article, aside, blockquote, details, dialog,
+  div, dl, fieldset, figure, footer, form, h1-6, header, hr, main, menu, nav, ol,
+  p, pre, section, style, table, ul
+* **FCEs, that are no PCEs** - HCEs, SCEs, SREs
+  (body is no FC/PC; td excluded via table)
 
 [3.2.4.2.8. **Palpable content** (PalpC)](https://w3c.github.io/html/dom.html#palpable-content-2)
 
-* elements - **a, abbr, address, article, aside, audio, ...**
+* elements - **h1-6, i, s, section, strong, text, ...**
+
+```
+a, abbr, address, article, aside, audio (if controls present), b,
+bdi, bdo, blockquote, button, canvas, cite, code, data, details, dfn, div,
+dl (if children include one/more name-value group), em, embed,
+fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, i,
+iframe, img, input (if type-attrib not hidden), ins, kbd, label,
+main, map, mark, math, meter, nav, object, ol (if children include one/more li),
+output, p, pre, progress, q, ruby, s, samp,
+section, select, small, span, strong, sub, sup, svg, table, textarea,
+time, u, ul (if chilren include one/more li), var, video,
+text (that is not inter-element white space)
+```
+
 * in general, elements whose content model allows any FC or PC should have at
   least one node in its contents that is palpable content and that does not have
   the hidden attribute specified.
@@ -100,34 +149,41 @@ These are notes on different aspects of HTML that are related to the outline alg
 *notes*
 
 * does not say, like for SCEs that they also can have a heading
+* content models - **FC** - additional requirements for details, fieldset and
+  figure elements
 
 <hr/>
 ### [4.3. Sections](https://w3c.github.io/html/sections.html#sections)
 
 [4.3.1. The **body** element](https://w3c.github.io/html/sections.html#the-body-element)
 
+* categories - **SR** - content model - **FC**
 * represents the content of a document
 * only one per document
 
 [4.3.2. The **article** element](https://w3c.github.io/html/sections.html#the-article-element)
 
+* categories - **FC (no main), SC, PalpC** - content model - **FC**
 * represents a complete, or self-contained, composition in a document - e.g. a forum post
 * in general only appropriate if the contents would be listed explicitly in the outline
 * nested inner articles are in principle related to the outer article
 
 [4.3.3. The **section** element](https://w3c.github.io/html/sections.html#the-section-element)
 
+* categories - **FC, SC, PalpC** - content model - **FC**
 * represents a generic section - e.g. chapters
 * a section, in this context, is a thematic grouping of content
 * each section should be identified by including a heading (h1-6) element as a child
 
 [4.3.4. The **nav** element](https://w3c.github.io/html/sections.html#the-nav-element)
 
+* categories - **FC, SC, PalpC** - content model - **FC (no main)**
 * represents a section of a page that links to other pages/parts
 * so basically a section with navigational links
 
 [4.3.5. The **aside** element](https://w3c.github.io/html/sections.html#the-aside-element)
 
+* categories - **FC, SC, PalpC** - content model - **FC (no main)**
 * represents a section of a page that consists of content that is tangentially
   related to the content around the aside element - e.g. remarks, external links
 * often represented as sidebars when printed
@@ -148,6 +204,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [4.3.7. The **header** element](https://w3c.github.io/html/sections.html#the-header-element)
 
+* categories - **FC, PalpC** - content model - **FC (no main, header, ...)**
 * represents introductory content for its nearest ancestor (i.e. main, SC, SR)
 * typically contains introductory or navigational aids
 * applies to the whole page if the ancestor is the body element
@@ -155,6 +212,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [4.3.8. The **footer** element](https://w3c.github.io/html/sections.html#the-footer-element)
 
+* categories - **FC, PalpC** - content model - **FC (no main, header, ...)**
 * a footer for its nearest ancestor (main element, sectioning content, sectioning root)
 * contains information about its section - e.g. links to related documents
 * doesn't have to appear at the end of a section
@@ -164,6 +222,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [4.4.2. The **address** element](https://w3c.github.io/html/grouping-content.html#the-address-element)
 
+* categories - **FC, PalpC** - content model - **FC (no HC, SC, ...)**
 * represents contact information for a person, people or organization
 * must not be used for arbitrary addresses
 * typically included in a footer element
@@ -171,6 +230,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [4.4.5. The **blockquote** element](https://w3c.github.io/html/grouping-content.html#the-blockquote-element)
 
+* categories - **FC, SR, PalpC** - content model - **FC**
 * represents content that is quoted from another source
 * optionally with a citation, which must be within a footer or cite element
 * optionally with in-line changes such as annotations an abbreviations
@@ -179,14 +239,24 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [4.4.12. The **figure** element](https://w3c.github.io/html/grouping-content.html#the-figure-element)
 
+* categories - **FC, SR, PalpC** - content model - **FC (figcaption?)**
 * represents some flow content that is self-contained
 * typically referenced as a single unit from the main flow of the document
+
+[4.4.14. The **main** element](https://w3c.github.io/html/grouping-content.html#elementdef-main)
+
+* categories - **FC, PalpC** - content model - **FC**
+* represents the main content of the body of a document
+* has no effect on the document outline
+* there must not be more than one visible main element in a document
+* must not be used as a descendant of article, aside, footer, header, nav
 
 <hr/>
 ### [4.9. Tabular data](https://w3c.github.io/html/tabular-data.html#tabular-data)
 
 [4.9.9. The **td** element](https://w3c.github.io/html/tabular-data.html#the-td-element)
 
+* categories - **SR** - content model - **FC**
 * represents a data cell in a table
 * with its 'colspan, rowspan, headers' attributes takes part in the
   [table model](https://w3c.github.io/html/tabular-data.html#tabular-data-processing-model)
@@ -196,6 +266,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 [4.10.15. The **fieldset** element](https://w3c.github.io/html/sec-forms.html#the-fieldset-element)
 
+* categories - **FC, SR, PalpC, ...** - content model - **(legend?, FC*)**
 * represents a set of form controls under an optional common name
 * the name of the group is given by the first legend child element
 * the disabled attribute allows to disable all controls, except for those
@@ -207,6 +278,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 [4.11.1. The **details** element](https://w3c.github.io/html/interactive-elements.html#the-details-element)
 
 * new since html5.1?
+* categoires - **FC, SR, IC, PalpC** - content model - **(summary, FC*)**
 * represents a disclosure widget from which the user can obtain additional
   information or controls
 * not appropriate for footnotes
@@ -217,6 +289,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 [4.11.7. The **dialog** element](https://w3c.github.io/html/interactive-elements.html#the-dialog-element)
 
 * new since html5.2?
+* categories - **FC, SR** - content model - **FC**
 * represents a part of an application the user interacts with; e.g. dialog box
 * the open attribute, if specified, indicates that the dialog element is active
 
