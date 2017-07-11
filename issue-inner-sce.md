@@ -3,18 +3,19 @@ Issue - What to do with the sections of an inner SCE?
 
 * [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html)
 * [W3C, HTML 5.2, Working Draft, 9 May 2017](https://www.w3.org/TR/html52/)
+* [Nu Html Checker](https://validator.w3.org/nu/)
 
 *acronyms*
 
-1. sectioning element (SE) - can be an SRE or an SCE
-1. sectioning content (SC) - SC element (SCE)
-1. sectioning root (SR) - SR element (SRE)
-1. heading content (HC) - HC element (HCE)
+- sectioning element (SE) - can be an SRE or an SCE
+- sectioning content (SC) - SC element (SCE)
+- sectioning root (SR) - SR element (SRE)
+- heading content (HC) - HC element (HCE)
 
 *definitions*
 
-1. see [outliner-chapter](./outliner-chapter.md) for a definition of the expression
-   "first inner/outer X element of element Y"
+- see [outliner-chapter](./outliner-chapter.md) for a definition of the
+  expression "first inner/outer X element of element Y"
 
 ## [Steps 4.5.4 and 4.5.5](./outliner-steps.md)
 
@@ -116,10 +117,9 @@ Issue - What to do with the sections of an inner SCE?
 
 ## Example fragments
 
-[Nu Html Checker](https://validator.w3.org/nu/) can be used to create outlines
-for HTML documents.
+Nu Html Checker can be used to create outlines for HTML documents.
 
-**example-1**
+**example**
 
 the following HTML fragment
 
@@ -141,26 +141,3 @@ will produce the following outline:
 ```
 
 (i.e. 'Nu Html Checker' implements Version-1)
-
-**example-2**
-
-```html
-<body>
-<p>A</p>
-<h1>B</h1>
-<p>C</p>
-</body>
-```
-
-will produce the following outline:
-
-```
-1. heading 'B'
-```
-
-More importantly, both paragraphs *A* and *C* will be associated with heading
-*B*. In case of *C*, that is almost always intended by the author. Automatically
-associating paragraph *A* with heading *B* on the other hand could turn out to
-be not intended.
-
-The problem is, with that implementation, this behavior cannot be avoided!
