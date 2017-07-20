@@ -37,8 +37,8 @@ Issue - What to do with the sections of an inner SCE?
 
 **Version-1** - *one could still read this as*
 
-1. add each section of the inner SCE being exited **as new <u>subsections</u> to the
-   last section** of the first outer SE
+1. add each section of the inner SCE being exited **as new <u>subsections</u> to
+   the last section** of the first outer SE
 1. recall that 'section of an SE' only refers to the topmost sections and only
    implicitly includes inner subsections, if any
 
@@ -95,8 +95,8 @@ Issue - What to do with the sections of an inner SCE?
 1. the main reason for this is to keep the steps, that assign headings to
    sections, from assigning headings to a section of an inner SCE, which have
    already been processed/exited
-1. the sections of the preceeding inner SCE will be hidden as subsections inside the
-   current/last section of the first outer SE
+1. the sections of the preceeding inner SCE will be hidden as subsections inside
+   the current/last section of the first outer SE
 1. the above steps start at the current section and, if necessary, work their
    way up the hierarchy of sections
 1. therefore, they can never come into contact with the merged inner sections
