@@ -1,18 +1,11 @@
 
-These are the results when trying to write down the [outliner-steps](./outliner-steps)
+These are the results when trying to write down the [outliner-steps](./outliner-steps.md)
 using pseudocode as accurately as possible (i.e. almost word-by-word).
 
 * `outliner-steps > pseudocode`
-* The algorithm's main entry point is reflected by the pseudocode's
-  **createOutline()** function.
-* The most important part of this document is the **visit()** function's
-  pseudocode and the **issues** listing beneath it.
-
-## cancelled
-
-* unfortunately, this transformation does not result in an easy-to-follow pseudocode.
-* **see the [issues](#issues) listing below the *visit()* function**
-* the only way to clear things up is to try a hands-on approach ...
+* The algorithm's main entry point is the [createOutline()](#create-outline-func) function.
+* The most important part of this document is the [visit()](#visit-func) function
+  and the [listing of issues](#visit-issues) beneath it.
 
 ## skipped
 
@@ -25,14 +18,20 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * (6) Associate all nodes in the subtree with the heading of the section with
   which they are associated, if any. (REM not necessary: node.section.heading)
 
-## Globals Class
+## cancelled
+
+* unfortunately, this transformation does not result in an easy-to-follow pseudocode.
+* the only way to clear things up is to try a hands-on approach ...
+
+<hr/>
+## <span id="globals-class">Globals Class</span>
 
 'Globals' will be used to provide access to the shared variables mentioned in
 (1), (2) and (3).
 
 ### variables
 
-* *currentOutlineTarget* : the current Node element whose outline is being
+* *currentOutlineOwner* : the current Node element whose outline is being
   created (1); also known as the current **outline's owner**.
 * *currentSection* : a reference to a section object, so that elements in the
   DOM tree can be associated with it (2).
@@ -42,13 +41,14 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 
 ```
 begin class Globals
-  currentOutlineTarget = null
+  currentOutlineOwner = null
   currentSection = null
   stack = new Stack()
 end
 ```
 
-## Stack Class
+<hr/>
+## <span id="stack-class">Stack Class</span>
 
 'Stack' is a class that supports the commonly known stack operations:
 
@@ -76,7 +76,8 @@ begin class Stack
 end
 ```
 
-## createOutline()
+<hr/>
+## <span id="create-outline-func">createOutline()</span>
 
 The algorithm's overall steps can be looked at as being executed by a global
 'createOutline()' function:
@@ -103,7 +104,8 @@ Outline createOutline(Node node) begin
 end
 ```
 
-## walk()
+<hr/>
+## <span id="walk-func">walk()</span>
 
 For the sake of simplicity, let 'walk()' recursively traverse the node subtree:
 
@@ -129,7 +131,8 @@ void walk(Globals vars, Node node) begin
 end
 ```
 
-## visit()
+<hr/>
+## <span id="visit-func">visit()</span>
 
 'visit()' implements the steps as defined in (4).
 
@@ -172,50 +175,50 @@ void visit(Globals vars, Node node, bool entering, bool exiting) begin
 10: end if
 
 11: if(entering && node.isSectioningContent) then
-12:   if(vars.currentOutlineTarget != null) then
+12:   if(vars.currentOutlineOwner != null) then
 13:     if(!vars.currentSection.hasHeading) then
 14:       vars.currentSection.setImpliedHeading
 15:     end if
-16:     vars.stack.push(vars.currentOutlineTarget)
+16:     vars.stack.push(vars.currentOutlineOwner)
 17:   end if
-18:   vars.currentOutlineTarget = node
-xx:   //- currentSection, then currentOutlineTarget.section; see line 36
-19:   vars.currentSection = new Section(vars.currentOutlineTarget)
+18:   vars.currentOutlineOwner = node
+xx:   //- currentSection, then currentOutlineOwner.section - see line 36
+19:   vars.currentSection = new Section(vars.currentOutlineOwner)
 xx:   //- 'section' same meaning as 'parentSection'? see line 36
-20:   vars.currentOutlineTarget.section = vars.currentSection
-21:   vars.currentOutlineTarget.outline = new Outline(vars.currentSection)
+20:   vars.currentOutlineOwner.section = vars.currentSection
+21:   vars.currentOutlineOwner.outline = new Outline(vars.currentSection)
 22: end if
 
 23: if(exiting && node.isSectioningContent && !vars.stack.isEmpty) then
 24:   if(!vars.currentSection.hasHeading) then
 25:     vars.currentSection.setImpliedHeading
 26:   end if
-27:   vars.currentOutlineTarget = vars.stack.pop()
+27:   vars.currentOutlineOwner = vars.stack.pop()
 xx:   //- does not make the construct of implied headings a necessity
-28:   vars.currentSection = vars.currentOutlineTarget.outline.lastSection
+28:   vars.currentSection = vars.currentOutlineOwner.outline.lastSection
 29:   vars.currentSection.appendOutline(node.outline)
 30: end if
 
 31: if(entering && node.isSectioningRoot) then
-32:   if(vars.currentOutlineTarget != null) then
-xx:     //- no set-implied-heading here; see line 13
-33:     vars.stack.push(vars.currentOutlineTarget)
+32:   if(vars.currentOutlineOwner != null) then
+xx:     //- no set-implied-heading here - see line 13
+33:     vars.stack.push(vars.currentOutlineOwner)
 34:   end if
-35:   vars.currentOutlineTarget = node
-xx:   //- currentOutlineTarget.parentSection, then currentSection; see line 19
-xx:   //- save the current section; see line 44
-36:   vars.currentOutlineTarget.parentSection = vars.currentSection
-37:   vars.currentSection = new Section(vars.currentOutlineTarget)
-38:   vars.currentOutlineTarget.outline = new Outline(vars.currentSection)
+35:   vars.currentOutlineOwner = node
+xx:   //- currentOutlineOwner.parentSection, then currentSection - see line 19
+xx:   //- save the current section - see line 44
+36:   vars.currentOutlineOwner.parentSection = vars.currentSection
+37:   vars.currentSection = new Section(vars.currentOutlineOwner)
+38:   vars.currentOutlineOwner.outline = new Outline(vars.currentSection)
 39: end if
 
 40: if(exiting && node.isSectioningRoot && !vars.stack.isEmpty) then
 41:   if(!vars.currentSection.hasHeading) then
 42:     vars.currentSection.setImpliedHeading
 43:   end if
-xx:   //- restore the current section; see line 36
-44:   vars.currentSection = vars.currentOutlineTarget.parentSection
-45:   vars.currentOutlineTarget = vars.stack.pop()
+xx:   //- restore the current section - see line 36
+44:   vars.currentSection = vars.currentOutlineOwner.parentSection
+45:   vars.currentOutlineOwner = vars.stack.pop()
 46: end if
 
 47: if(exiting && vars.stack.isEmpty
@@ -229,19 +232,19 @@ xx:   //- restore the current section; see line 36
 54: if(entering && node.isHeadingContent) then
 55:   if(!vars.currentSection.hasHeading) then
 56:     vars.currentSection.heading = node
-57:   else if(vars.currentOutlineTarget.outline.lastSection.hasImpliedHeading
-58:   || (node.rank >= vars.currentOutlineTarget.outline.lastSection.heading.rank)) then
-59:     vars.currentOutlineTarget.outline.appendSection(new Section())
-60:     vars.currentSection = vars.currentOutlineTarget.outline.lastSection
+57:   else if(vars.currentOutlineOwner.outline.lastSection.hasImpliedHeading
+58:   || (node.rank >= vars.currentOutlineOwner.outline.lastSection.heading.rank)) then
+59:     vars.currentOutlineOwner.outline.appendSection(new Section())
+60:     vars.currentSection = vars.currentOutlineOwner.outline.lastSection
 61:     vars.currentSection.heading = node
 62:   else
 63:     candidateSection = vars.currentSection
-64:     while(true) begin
+64:     while(true) begin //- "Heading loop"
 65:       if(node.rank < candidateSection.heading.rank) begin
 66:         candidateSection.appendSection(new Section())
 67:         vars.currentSection = candidateSection.lastSection
 68:         vars.currentSection.heading = node
-69:         break
+69:         break //- "Abort these substeps"
 70:       end if
 71:       candidateSection = candidateSection.parentSection
 72:     end while
@@ -255,7 +258,7 @@ xx:   //- restore the current section; see line 36
 end
 ```
 
-### notes
+### <span id="visit-notes">notes</span>
 
 These notes are statements/notes taken from the algorithm's definition that do
 not translate into code.
@@ -265,7 +268,7 @@ not translate into code.
 * line 09: This will cause the algorithm to skip that element and any of its
   descendants.
 * line 29: This does not change which section is the last section in the outline.
-* line 48: currentOutlineTarget is the element being exited and is the
+* line 48: currentOutlineOwner is the element being exited and is the
   sectioning content or sectioning root element at the root of the subtree for
   which the outline is being generated.
 * line 51: Skip to the next step in the overall set of steps. (The walk is over)
@@ -275,7 +278,7 @@ not translate into code.
 * line 74: This causes the algorithm to skip any descendants of the element.
 * line 77: Otherwise, Do nothing.
 
-### issues
+### <span id="visit-issues">issues</span>
 
 1. Introduction to (4) : does not state what to do if succeeding steps would
    also be applicable. it merely states "trigger the first relevant step".
@@ -287,40 +290,34 @@ not translate into code.
 1. line 04: unclear what tos refers to when executing visit() during an "exit"
    event and when stack.pop() (see line 02) was executed. strictly implemented,
    this would be the next tos entry after the one that was popped.
-1. line 12: <strike>replace the word 'target' with 'owner'; the word 'target'
-   is unspecific and should refer to the outline's owner</strike>
-   (change merged; impending update)
 1. line 20: "Associate ... with" is too unspecific; compare with line 36.
 1. line 29: *Section.appendOutline()*: unclear how to execute this operation -
    see [issue with inner SCEs](./issue-inner-sce.md)
-1. line 38: note that it does not state to associate currentOutlineTarget with
+1. line 38: note that it does not state to associate currentOutlineOwner with
    the newly created section; compare with line 20.
-1. line 57: <strike>rank is undefined for implied/missing headings;
-   reorder the if-cases from 'if(A or B)' to 'if(B or A)'</strike>
-   (change merged; impending update)
 1. line 59: it should say "create a new section for the element that is being
    entered", not just "create a new section and".
-1. line 65: *rank* is not defined for implied headings; an implied heading
-   represents a heading that does not exits.
+1. line 65: possible problem - *rank* is not defined for implied headings; an
+   implied heading represents a heading that does not exits.
 1. line 66: same as 59
 1. line 71: 'Let candidateSection be the section that contains candidateSection
-   in the outline of currentOutlineTarget' is quite unclear. should state the
+   in the outline of currentOutlineOwner' is quite unclear. should state the
    parent-child relationship between sections established when appending a
    section to another one (line 66).
-1. line 65 after 71: implies that a section always has a parent section, which
-   is not the case once you reach a SR or SC.
+1. line 65 after executing 71: implies that a section always has a parent
+   section, which is not the case once you reach a SR or SC.
 1. lines 02, 27, 45: push/pop stack operations are rather decoupled from each other.
 1. lines 36, 44: the *Node.parentSection* property is only used to *save and
    restore* the current section.
 
-### faq-like notes
+### <span id="faq-like-notes">faq-like notes</span>
 
 #### line 13
 
 * could currentSection still not be set (i.e. null)?
 * the algorithm requires to begin with a SC or a SR element
-* entering a SC element will always set currentOutlineTarget and currentSection
-* entering a SR element will always set currentOutlineTarget and currentSection
+* entering a SC element will always set currentOutlineOwner and currentSection
+* entering a SR element will always set currentOutlineOwner and currentSection
 * result : line 13 cannot fail
 
 #### lines 13, 24, 32, 41, 48, 55:
@@ -345,11 +342,12 @@ not translate into code.
 * SC elements would act like a SR element
 * i.e. create separate outlines
 
-## Not relevant
+<hr/>
+## <span id="not-relevant">Not relevant</span>
 
 * for the time being, ignore the following pseudocode:
 
-### SectionList Class
+### <span id="section-list-class">SectionList Class</span>
 
 ```
 begin class SectionList
@@ -362,7 +360,7 @@ begin class SectionList
 end
 ```
 
-### Section Class
+### <span id="section-class">Section Class</span>
 
 ```
 begin class Section
@@ -402,7 +400,7 @@ begin class Section
 end
 ```
 
-### Outline Class
+### <span id="outline-class">Outline Class</span>
 
 ```
 begin class Outline
@@ -434,7 +432,7 @@ begin class Outline
 end
 ```
 
-### ImpliedHeading Class
+### <span id="implied-heading-class">ImpliedHeading Class</span>
 
 ```
 begin class ImpliedHeading
@@ -443,7 +441,7 @@ begin class ImpliedHeading
 end
 ```
 
-### Node Class
+### <span id="node-class">Node Class</span>
 
 'Node' serves as a wrapper class for a DOM node objects. It supports those
 properties and operations specific to DOM nodes and in addition to that, those
