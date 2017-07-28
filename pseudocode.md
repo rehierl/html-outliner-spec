@@ -7,17 +7,6 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * The most important part of this document is the [visit()](#visit-func) function
   and the [listing of issues](#visit-issues) beneath it.
 
-## skipped
-
-* (4.11) In addition, whenever the walk exits a node, after doing the steps above,
-  if the node is not associated with a section yet, associate the node with current
-  section.
-* (5) Associate all non-element nodes (REM e.g. text nodes?) that are in the
-  subtree for which an outline is being created, with the section with which
-  their parent element is associated.
-* (6) Associate all nodes in the subtree with the heading of the section with
-  which they are associated, if any. (REM not necessary: node.section.heading)
-
 ## cancelled
 
 * unfortunately, this transformation does not result in an easy-to-follow pseudocode.
@@ -184,6 +173,7 @@ void visit(Globals vars, Node node, bool entering, bool exiting) begin
 18:   vars.currentOutlineOwner = node
 xx:   //- currentSection, then currentOutlineOwner.section - see line 36
 19:   vars.currentSection = new Section(vars.currentOutlineOwner)
+xx:   //- associate currentOutlineOwner with currentSection
 xx:   //- 'section' same meaning as 'parentSection'? see line 36
 20:   vars.currentOutlineOwner.section = vars.currentSection
 21:   vars.currentOutlineOwner.outline = new Outline(vars.currentSection)
@@ -196,6 +186,7 @@ xx:   //- 'section' same meaning as 'parentSection'? see line 36
 27:   vars.currentOutlineOwner = vars.stack.pop()
 xx:   //- does not make the construct of implied headings a necessity
 28:   vars.currentSection = vars.currentOutlineOwner.outline.lastSection
+xx:   //- section.append(outline) - unclear operation
 29:   vars.currentSection.appendOutline(node.outline)
 30: end if
 
@@ -217,6 +208,7 @@ xx:   //- save the current section - see line 44
 42:     vars.currentSection.setImpliedHeading
 43:   end if
 xx:   //- restore the current section - see line 36
+xx:   //- this line is what makes write-access to the dom tree necessary
 44:   vars.currentSection = vars.currentOutlineOwner.parentSection
 45:   vars.currentOutlineOwner = vars.stack.pop()
 46: end if
@@ -257,6 +249,17 @@ xx:   //- restore the current section - see line 36
 78: end if
 end
 ```
+
+### <span id="skipped">skipped</span>
+
+* (4.11) In addition, whenever the walk exits a node, after doing the steps above,
+  if the node is not associated with a section yet, associate the node with current
+  section.
+* (5) Associate all non-element nodes (REM e.g. text nodes?) that are in the
+  subtree for which an outline is being created, with the section with which
+  their parent element is associated.
+* (6) Associate all nodes in the subtree with the heading of the section with
+  which they are associated, if any. (REM not necessary: node.section.heading)
 
 ### <span id="visit-notes">notes</span>
 
