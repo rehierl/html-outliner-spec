@@ -158,7 +158,7 @@ the references to `current section`, `currentOutlineOwner` and the current outli
 could also be executed when **entering** these nodes.
 
 <!-- ======================================================================= -->
-<h3 id="type-6>Type 6) Associate non-element node X with parent.section</h3>
+<h3 id="type-6">Type 6) Associate non-element node X with parent.section</h3>
 
 [step 5.](./outliner-steps/#5) states:
 Associate all non-element nodes that are in the subtree for which an outline is
