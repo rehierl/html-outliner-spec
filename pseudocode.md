@@ -12,13 +12,13 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * unfortunately, this transformation does not result in an easy-to-follow pseudocode.
 * the only way to clear things up is to try a hands-on approach ...
 
-<hr />
+<hr /><!-- ################################################################# -->
 <h2 id="globals-class">Globals Class</h2>
 
 'Globals' will be used to provide access to the shared variables mentioned in
 (1), (2) and (3).
 
-### variables
+<h3>variables</h3>
 
 * *currentOutlineOwner* : the current Node element whose outline is being
   created (1); also known as the current **outline's owner**.
@@ -26,7 +26,7 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
   DOM tree can be associated with it (2).
 * *stack* : used to skip nodes and handle nesting (3).
 
-### pseudocode
+<h3>pseudocode</h3>
 
 ```
 begin class Globals
@@ -36,12 +36,12 @@ begin class Globals
 end
 ```
 
-<span id="stack-class" />
-## Stack Class
+<hr /><!-- ################################################################# -->
+<h2 id="stack-class">Stack Class</h2>
 
 'Stack' is a class that supports the commonly known stack operations:
 
-### interface
+<h3>interface</h3>
 
 * The topmost Node entry of the stack, also known as the top-of-the-stack
   entry, which will simply be referred to as **tos** entry.
@@ -54,7 +54,7 @@ end
 * *bool isEmpty()* : will return true, if the stack has no tos entry, and false
   otherwise. This function must not throw any error.
 
-### pseudocode
+<h3>pseudocode</h3>
 
 ```
 begin class Stack
@@ -65,13 +65,13 @@ begin class Stack
 end
 ```
 
-<span id="create-outline-func" />
-## createOutline()
+<hr /><!-- ################################################################# -->
+<h2 id="create-outline-func">createOutline()</h2>
 
 The algorithm's overall steps can be looked at as being executed by a global
 'createOutline()' function:
 
-### signature
+<h3>signature</h3>
 
 * *Outline createOutline(Node node)*
 * *node parameter* : the node for which to create the outline. 'node' must refer
@@ -79,7 +79,7 @@ The algorithm's overall steps can be looked at as being executed by a global
   represent a hidden element.
 * *returns* : the outline created for the input node object.
 
-### pseudocode
+<h3>pseudocode</h3>
 
 ```
 Outline createOutline(Node node) begin
@@ -93,18 +93,18 @@ Outline createOutline(Node node) begin
 end
 ```
 
-<span id="walk-func" />
-## walk()
+<hr /><!-- ################################################################# -->
+<h2 id="walk-func">walk()</h2>
 
 For the sake of simplicity, let 'walk()' recursively traverse the node subtree:
 
-### signature
+<h3>signature</h3>
 
 * *void walk(Globals vars, Node node)*
 * *vars parameter* : a Globals object that provides access to shared variables.
 * *node parameter* : the current node to traverse.
 
-### pseudocode
+<h3>pseudocode</h3>
 
 ```
 void walk(Globals vars, Node node) begin
@@ -120,8 +120,8 @@ void walk(Globals vars, Node node) begin
 end
 ```
 
-<span id="visit-func" />
-## visit()
+<hr /><!-- ################################################################# -->
+<h2 id="visit-func">visit()</h2>
 
 'visit()' implements the steps as defined in (4).
 
@@ -130,7 +130,7 @@ sectioning content or sectioning root element at the root of the subtree for
 which an outline is to be created, and trigger the first relevant step below for
 each element as the walk enters and exits it.
 
-### signature
+<h3>signature</h3>
 
 * *void visit(Globals vars, Node node, bool entering, bool exiting)*
 * *vars parameter* : A Globals object that provides access to shared variables.
@@ -138,7 +138,7 @@ each element as the walk enters and exits it.
 * *entering parameter* : true if node is being entered, false otherwise.
 * *exiting parameter* : true if the node is being exited, false otherwise.
 
-### pseudocode
+<h3>pseudocode</h3>
 
 * As *Introduction to (4)* does not state what to do with steps that follow the
   first relevant step, lets assume that these need to be implemented as a
@@ -250,8 +250,7 @@ xx:   //- this line is what makes write-access to the dom tree necessary
 end
 ```
 
-<span id="skipped" />
-### skipped
+<h3 id="skipped">skipped</h3>
 
 * (4.11) In addition, whenever the walk exits a node, after doing the steps above,
   if the node is not associated with a section yet, associate the node with current
@@ -262,8 +261,7 @@ end
 * (6) Associate all nodes in the subtree with the heading of the section with
   which they are associated, if any. (REM not necessary: node.section.heading)
 
-<span id="visit-notes" />
-### notes
+<h3 id="visit-notes">notes</h3>
 
 These notes are statements/notes taken from the algorithm's definition that do
 not translate into code.
@@ -283,8 +281,7 @@ not translate into code.
 * line 74: This causes the algorithm to skip any descendants of the element.
 * line 77: Otherwise, Do nothing.
 
-<span id="visit-issues" />
-### issues
+<h3 id="visit-issues">issues</h3>
 
 1. Introduction to (4) : does not state what to do if succeeding steps would
    also be applicable. it merely states "trigger the first relevant step".
@@ -316,10 +313,9 @@ not translate into code.
 1. lines 36, 44: the *Node.parentSection* property is only used to *save and
    restore* the current section.
 
-<span id="faq-like-notes" />
-### faq-like notes
+<h3 id="faq-like-notes">faq-like notes</h3>
 
-#### line 13
+<h4>line 13</h4>
 
 * could currentSection still not be set (i.e. null)?
 * the algorithm requires to begin with a SC or a SR element
@@ -327,7 +323,7 @@ not translate into code.
 * entering a SR element will always set currentOutlineOwner and currentSection
 * result : line 13 cannot fail
 
-#### lines 13, 24, 32, 41, 48, 55:
+<h4>lines 13, 24, 32, 41, 48, 55</h4>
 
 * why all the create-and-set-implied-heading statements? - compare lines 12 and 32
 * child SRs must not have any effect (don't contribute to) parent outlines
@@ -335,7 +331,7 @@ not translate into code.
 * once the outliner has finished, the distinction (exists || implied) is no
   longer relevant; i.e. "implied" will completely count as "doesn't exits"
 
-#### line 23
+<h4>line 23</h4>
 
 * is '&& !vars.stack.isEmpty' necessary?
 * run the algorithm with an empty SC element
@@ -343,19 +339,18 @@ not translate into code.
 * yes, it is necessary
 * similar for line 40
 
-#### line 29
+<h4>line 29</h4>
 
 * without 'currentSection.appendOutline(node.outline)',
 * SC elements would act like a SR element
 * i.e. create separate outlines
 
-<span id="not-relevant" />
-## Not relevant
+<hr /><!-- ################################################################# -->
+<h2 id="not-relevant">Not relevant</h2>
 
 * for the time being, ignore the following pseudocode:
 
-<span id="section-list-class" />
-### SectionList Class
+<h3 id="section-list-class">SectionList Class</h3>
 
 ```
 begin class SectionList
@@ -368,8 +363,7 @@ begin class SectionList
 end
 ```
 
-<span id="section-class" />
-### Section Class
+<h3 id="section-class">Section Class</h3>
 
 ```
 begin class Section
@@ -409,8 +403,7 @@ begin class Section
 end
 ```
 
-<span id="outline-class" />
-### Outline Class
+<h3 id="outline-class">Outline Class</h3>
 
 ```
 begin class Outline
@@ -442,8 +435,7 @@ begin class Outline
 end
 ```
 
-<span id="implied-heading-class" />
-### ImpliedHeading Class
+<h3 id="implied-heading-class">ImpliedHeading Class</h3>
 
 ```
 begin class ImpliedHeading
@@ -452,8 +444,7 @@ begin class ImpliedHeading
 end
 ```
 
-<span id="node-class" />
-### Node Class
+<h3 id="node-class">Node Class</h3>
 
 'Node' serves as a wrapper class for a DOM node objects. It supports those
 properties and operations specific to DOM nodes and in addition to that, those
