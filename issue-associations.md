@@ -17,7 +17,7 @@ sections are rather unclear. To make this more obvious, it helps to split the
 algorithm's steps into [separate expressions](./outliner-steps.md) and to turn
 those into [pseudocode](./pseudocode.md/#visit-func).
 
-<span id="node-outline">
+<span id="node-outline" />
 ## Associate node X with outline Y
 
 As stated before that part of the algorithm is rather straight forward. The
@@ -44,13 +44,13 @@ it extends by an `innerOutline` property. This would then allow to refine the
 above two properties into: `Outline SectioningElement.innerOutline` and
 `SectioningElement Outline.outlineOwner`.
 
-<span id="node-section">
+<span id="node-section" />
 ## Associate node X with section Y
 
 The following sections identify the steps that establish a connection between
 nodes and section objects.
 
-<span id="type-1">
+<span id="type-1" />
 ### Type 1) When creating a new section object
 
 The first time a section object will be created is when executing
@@ -78,7 +78,7 @@ NOTE - I don't require this connection to define a two-way relationship; i.e. I
 don't implement an `Element` property that implements the other direction (from
 a node object towards a section object).
 
-<span id="type-2">
+<span id="type-2" />
 ### Type 2) When entering a sectioning content element
 
 In [step 4.4.4.](./outliner-steps.md/#4-4-4), the definition states to associate
@@ -96,7 +96,7 @@ connection, hence it is unclear if this step is meant to represent the counter
 part of "create section for". Therefore this could refer to a completely
 different type of relationship.
 
-<span id="type-3">
+<span id="type-3" />
 ### Type 3) When entering a sectioning root element
 
 Before creating a new section object, [step 4.6.3.](./outliner-steps.md/#4-6-3)
@@ -127,7 +127,7 @@ overwriting this variable with a reference to the first inner section in
 save-and-restore method is that it turns write-access to the nodes in the dom
 subtree into a mandatory requirement for the outline algorithm.
 
-<span id="type-4">
+<span id="type-4" />
 ### Type 4) When entering a heading content element
 
 Although the algorithm's definition does not (yet) use the exact same wording
@@ -140,7 +140,7 @@ NOTE - In contrary to type-1, the heading content element being entered will
 always be an inner element of the created section as this heading element must
 always represent the heading of that new section.
 
-<span id="type-5">
+<span id="type-5" />
 ### Type 5) Associate node X with 'current section'
 
 [step 4.11.](./outliner-steps/#4-11) states:
@@ -157,7 +157,7 @@ the references to `current section`, `currentOutlineOwner` and the current outli
 (enter and exit) of these remaining nodes. And because of that, this very step
 could also be executed when **entering** these nodes.
 
-<span id="type-6">
+<span id="type-6" />
 ### Type 6) Associate non-element node X with parent.section
 
 [step 5.](./outliner-steps/#5) states:
@@ -169,7 +169,7 @@ unnecessary to clarify if a non-element node can have a non-element node as its
 parent - that is if the `Node.parentElement` property is used instead of the
 `Node.parentNode` property.
 
-<span id="node-heading">
+<span id="node-heading" />
 ## Associate node X with heading Y
 
 [step 6.](./outliner-steps/#6) states:
