@@ -7,12 +7,13 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * The most important part of this document is the [visit()](#visit-func) function
   and the [listing of issues](#visit-issues) beneath it.
 
-## cancelled
+<h2>cancelled</h2>
 
 * unfortunately, this transformation does not result in an easy-to-follow pseudocode.
 * the only way to clear things up is to try a hands-on approach ...
 
-## <span id="id-globals-class">Globals Class</span>
+<hr />
+<h2 id="globals-class">Globals Class</h2>
 
 'Globals' will be used to provide access to the shared variables mentioned in
 (1), (2) and (3).
