@@ -14,7 +14,6 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 
 <hr />
 ## Globals Class
-<span id="globals-class" />
 
 'Globals' will be used to provide access to the shared variables mentioned in
 (1), (2) and (3).
