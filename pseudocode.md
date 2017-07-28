@@ -12,8 +12,8 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * unfortunately, this transformation does not result in an easy-to-follow pseudocode.
 * the only way to clear things up is to try a hands-on approach ...
 
-<hr />
-## <a id="globals-class">Globals Class</a>
+<a id="globals-class" />
+## Globals Class
 
 'Globals' will be used to provide access to the shared variables mentioned in
 (1), (2) and (3).
