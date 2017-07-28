@@ -12,8 +12,9 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * unfortunately, this transformation does not result in an easy-to-follow pseudocode.
 * the only way to clear things up is to try a hands-on approach ...
 
-<hr/>
-## <span id="globals-class">Globals Class</span>
+<hr />
+<span id="globals-class" />
+## Globals Class
 
 'Globals' will be used to provide access to the shared variables mentioned in
 (1), (2) and (3).
@@ -37,7 +38,8 @@ end
 ```
 
 <hr/>
-## <span id="stack-class">Stack Class</span>
+<span id="stack-class" />
+## Stack Class
 
 'Stack' is a class that supports the commonly known stack operations:
 
@@ -66,7 +68,8 @@ end
 ```
 
 <hr/>
-## <span id="create-outline-func">createOutline()</span>
+<span id="create-outline-func" />
+## createOutline()
 
 The algorithm's overall steps can be looked at as being executed by a global
 'createOutline()' function:
@@ -94,7 +97,8 @@ end
 ```
 
 <hr/>
-## <span id="walk-func">walk()</span>
+<span id="walk-func" />
+## walk()
 
 For the sake of simplicity, let 'walk()' recursively traverse the node subtree:
 
@@ -121,7 +125,8 @@ end
 ```
 
 <hr/>
-## <span id="visit-func">visit()</span>
+<span id="visit-func" />
+## visit()
 
 'visit()' implements the steps as defined in (4).
 
@@ -250,7 +255,8 @@ xx:   //- this line is what makes write-access to the dom tree necessary
 end
 ```
 
-### <span id="skipped">skipped</span>
+<span id="skipped" />
+### skipped
 
 * (4.11) In addition, whenever the walk exits a node, after doing the steps above,
   if the node is not associated with a section yet, associate the node with current
@@ -261,7 +267,8 @@ end
 * (6) Associate all nodes in the subtree with the heading of the section with
   which they are associated, if any. (REM not necessary: node.section.heading)
 
-### <span id="visit-notes">notes</span>
+<span id="visit-notes" />
+### notes
 
 These notes are statements/notes taken from the algorithm's definition that do
 not translate into code.
@@ -281,7 +288,8 @@ not translate into code.
 * line 74: This causes the algorithm to skip any descendants of the element.
 * line 77: Otherwise, Do nothing.
 
-### <span id="visit-issues">issues</span>
+<span id="visit-issues" />
+### issues
 
 1. Introduction to (4) : does not state what to do if succeeding steps would
    also be applicable. it merely states "trigger the first relevant step".
@@ -313,7 +321,8 @@ not translate into code.
 1. lines 36, 44: the *Node.parentSection* property is only used to *save and
    restore* the current section.
 
-### <span id="faq-like-notes">faq-like notes</span>
+<span id="faq-like-notes" />
+### faq-like notes
 
 #### line 13
 
@@ -346,11 +355,13 @@ not translate into code.
 * i.e. create separate outlines
 
 <hr/>
-## <span id="not-relevant">Not relevant</span>
+<span id="not-relevant" />
+## Not relevant
 
 * for the time being, ignore the following pseudocode:
 
-### <span id="section-list-class">SectionList Class</span>
+<span id="section-list-class" />
+### SectionList Class
 
 ```
 begin class SectionList
@@ -363,7 +374,8 @@ begin class SectionList
 end
 ```
 
-### <span id="section-class">Section Class</span>
+<span id="section-class" />
+### Section Class
 
 ```
 begin class Section
@@ -403,7 +415,8 @@ begin class Section
 end
 ```
 
-### <span id="outline-class">Outline Class</span>
+<span id="outline-class" />
+### Outline Class
 
 ```
 begin class Outline
@@ -435,7 +448,8 @@ begin class Outline
 end
 ```
 
-### <span id="implied-heading-class">ImpliedHeading Class</span>
+<span id="implied-heading-class" />
+### ImpliedHeading Class
 
 ```
 begin class ImpliedHeading
@@ -444,7 +458,8 @@ begin class ImpliedHeading
 end
 ```
 
-### <span id="node-class">Node Class</span>
+<span id="node-class" />
+### Node Class
 
 'Node' serves as a wrapper class for a DOM node objects. It supports those
 properties and operations specific to DOM nodes and in addition to that, those
