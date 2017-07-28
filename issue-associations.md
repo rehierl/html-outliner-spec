@@ -131,9 +131,9 @@ subtree into a mandatory requirement for the outline algorithm.
 <h3 id="type-4">Type 4) When entering a heading content element</h3>
 
 Although the algorithm's definition does not (yet) use the exact same wording
-as in [step 4.4.3](./outliner-steps/#4-4-3) (i.e. "create a section *for*") when
-entering a heading content element, [step 4.9.2.3](./outliner-steps/#4-9-2-3) and
-[step 4.9.3.2.1.1](./outliner-steps/#4-9-3-2-1-1) can be seen to establish the
+as in [step 4.4.3](./outliner-steps.md/#4-4-3) (i.e. "create a section *for*") when
+entering a heading content element, [step 4.9.2.3](./outliner-steps.md/#4-9-2-3) and
+[step 4.9.3.2.1.1](./outliner-steps.md/#4-9-3-2-1-1) can be seen to establish the
 same type of connection. **(type-4 == type-1)**
 
 NOTE - In contrary to type-1, the heading content element being entered will
@@ -143,7 +143,7 @@ always represent the heading of that new section.
 <!-- ======================================================================= -->
 <h3 id="type-5">Type 5) Associate node X with 'current section'</h3>
 
-[step 4.11.](./outliner-steps/#4-11) states:
+[step 4.11.](./outliner-steps.md/#4-11) states:
 Whenever the walk exits a node, if the node is not already associated with a
 section, then associate the node with `current section`.
 
@@ -160,7 +160,7 @@ could also be executed when **entering** these nodes.
 <!-- ======================================================================= -->
 <h3 id="type-6">Type 6) Associate non-element node X with parent.section</h3>
 
-[step 5.](./outliner-steps/#5) states:
+[step 5.](./outliner-steps.md/#5) states:
 Associate all non-element nodes that are in the subtree for which an outline is
 being created with the section with which their parent element is associated.
 
@@ -172,6 +172,6 @@ parent - that is if the `Node.parentElement` property is used instead of the
 <!-- ####################################################################### -->
 <h2 id="node-heading">Associate node X with heading Y</h2>
 
-[step 6.](./outliner-steps/#6) states:
+[step 6.](./outliner-steps.md/#6) states:
 Associate all nodes in the subtree with the heading of the section with which
 they are associated, if any.
