@@ -12,7 +12,6 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * unfortunately, this transformation does not result in an easy-to-follow pseudocode.
 * the only way to clear things up is to try a hands-on approach ...
 
-<hr />
 <span id="globals-class" />
 ## Globals Class
 
