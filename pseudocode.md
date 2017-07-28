@@ -12,7 +12,6 @@ using pseudocode as accurately as possible (i.e. almost word-by-word).
 * unfortunately, this transformation does not result in an easy-to-follow pseudocode.
 * the only way to clear things up is to try a hands-on approach ...
 
-<hr />
 <span id="globals-class" />
 ## Globals Class
 
@@ -37,7 +36,6 @@ begin class Globals
 end
 ```
 
-<hr/>
 <span id="stack-class" />
 ## Stack Class
 
@@ -67,7 +65,6 @@ begin class Stack
 end
 ```
 
-<hr/>
 <span id="create-outline-func" />
 ## createOutline()
 
@@ -96,7 +93,6 @@ Outline createOutline(Node node) begin
 end
 ```
 
-<hr/>
 <span id="walk-func" />
 ## walk()
 
@@ -124,7 +120,6 @@ void walk(Globals vars, Node node) begin
 end
 ```
 
-<hr/>
 <span id="visit-func" />
 ## visit()
 
@@ -354,7 +349,6 @@ not translate into code.
 * SC elements would act like a SR element
 * i.e. create separate outlines
 
-<hr/>
 <span id="not-relevant" />
 ## Not relevant
 

@@ -3,7 +3,7 @@ The purpose of this document is to isolate the different relationships needed
 between nodes and sections and to clearly define those. It is based upon:
 
 * [Outliner steps](./outliner-steps.md)
-* [Outliner pseudocode](./pseudocode)
+* [Outliner pseudocode](./pseudocode.md)
 
 One of the problems the outline algorithm currently has is that it does not
 clearly define what you will get as a result if you decide to run it. The general
