@@ -39,10 +39,10 @@ NOTE - An outline is only defined for elements of sectioning content and
 sectioning root elements.
 
 If a term would exist (e.g. **sectioning element**) that allowed to refer to the
-group/class of elements for which an inner outline is defined, this term could
-then be used for the name of a class that inherits from the `Element` type and
-which it extends by an `innerOutline` property. This would then allow to refine
-the above two properties into: `Outline SectioningElement.innerOutline` and
+group/class of elements for which an inner outline is defined, it could be used
+for the name of a class that inherits from the `Element` type and which it extends
+by an `innerOutline` property. This would then allow to refine the above two
+properties into: `Outline SectioningElement.innerOutline` and
 `SectioningElement Outline.outlineOwner`.
 
 <!-- ####################################################################### -->
@@ -71,11 +71,12 @@ NOTE - `startingNode` will always be either a sectioning root element, an elemen
 of sectioning content or a heading element (see [type-5](#type-5)).
 
 NOTE - Here I assume that a sectioning element will never be an inner element of
-one of its inner sections.
+any of its inner sections.
 
 The main characteristic of that connection seems to be that the section object
 is created when reaching the given node. Therefore, this connection could be
-described as: "This element triggered the creation of that section container".
+described as: "This element triggered the creation of that section container" or
+"This section starts with or right behind the starting tag of the given node".
 
 To understand why this connection has its use, it might help to recall the
 paragraph related to creating an interactive table of contents (TOC). In order
@@ -105,8 +106,8 @@ towards its first inner section.
 
 NOTE - The algorithm's definition does not state the purpose of this type of
 connection, hence it is unclear if this step is meant to represent the counter
-part of "create section for". Therefore this could refer to an unspecified, but
-completely different type of relationship.
+part of "create section for". Because of that, this step might as well refer to
+an unspecified, but completely different type of relationship.
 
 **TODO** - This must be a **bug**, as that step is probably supposed to directly
 follow step 4.4.2 - i.e. it should appear before creating the first inner section.
@@ -151,28 +152,41 @@ entering a heading content element, [step 4.9.2.3](./outliner-steps.md/#4-9-2-3)
 [step 4.9.3.2.1.1](./outliner-steps.md/#4-9-3-2-1-1) can be seen to establish the
 same type of connection. **(type-4 == type-1)**
 
-NOTE - In contrary to type-1, the heading content element being entered clearly
-is an inner element of the created section because this heading element represents
-the heading of that new section.
+NOTE - In contrary to type-1, additional heading elements must also be inner
+nodes to the implied sections they create because these heading element represent
+the headings of their sections.
 
 <!-- ======================================================================= -->
 <h3 id="type-5">Type 5) Associate node X with 'current section'</h3>
 
 [step 4.11.](./outliner-steps.md/#4-11) states:
 Whenever the walk exits a node, if the node is not already associated with a
-section, then associate the node with `current section`.
+section, associate the node with `current section`.
 
-NOTE - This step uses the wording "a node", it applies to **any nodes** (element
-nodes and non-element nodes) that the previous steps have not already been processed.
+NOTE - Because this step uses the description "a node", it applies to **any nodes**
+(element nodes and non-element nodes) for which the previous steps didn't create
+an association.
 
-NOTE - The previous steps apply to any elements that extend the outlines of their
-ancestors. When entering or exiting any other element node, the references to
-`current section`, `currentOutlineOwner` and the current outline (i.e.
-`currentOutlineOwner.innerOutline`) stay the same throughout the visit (enter and
-exit) of these remaining nodes. And because of that, this very step could also be
-executed when **entering** these nodes.
+NOTE - The previous steps apply only to element nodes that extend the outlines of
+their ancestors (sectioning content elements or heading element) or that create
+new outlines and sections (sectioning roots). When entering or exiting any other
+element node, the references to `current section`, `currentOutlineOwner` and the
+current outline (i.e. `currentOutlineOwner.innerOutline`) stay the same throughout
+the visit (enter and exit) of the remaining nodes.
 
-**TODO** - exit is a bug - order when associating section with node
+NOTE - Recall that "associate node X with section Y" can be read as defining
+a two-way relationship defined by the following two properties:
+`Section Node.parentSection` and `Node[] Section.innerNodes`. Because
+`parentSection` represents only a single reference, this step could be executed
+either when entering, or when exiting a node. With regards to `innerNodes`, this
+step turns out to be **bugged**, if the association is established when exiting
+those nodes. The reason for this is that adding a node to the `innerNodes` array
+will append it to the end of that array. The node sequence that this array
+represents will not correspond to the document's structure if nodes are added
+when exiting them (reversed order). So with regards to a `innerNodes` list/array,
+this step must be executed while entering these remaining nodes.
+
+<h4 id="type-5-sections">What is 'current section'?</h4>
 
 <!-- ======================================================================= -->
 <h3 id="type-6">Type 6) Associate non-element node X with parent.section</h3>
@@ -181,12 +195,41 @@ executed when **entering** these nodes.
 Associate all non-element nodes that are in the subtree for which an outline is
 being created with the section with which their parent element is associated.
 
+```
+case 1:                  case 2:
+=======                  =======
+
+<body>                   <body>
+  hello world!             <section>
+<body>                       hello world!
+                           </section>
+                         </body>
+```
+
+**case 1**
+The `<body>` element is the topmost content element of a document and, as such,
+does not have an outer section object associated with it. Because of that, this
+step can not associate the non-element `#text` node "hello world!" with any
+section, although it must be associated with `<body>`'s first inner section.
+
+**case 2**
+The `<section>` element is `#text` node's parent element. Because of that, this
+step will associate the `#text` node with the `<section>` element's parent section,
+i.e. a section object that is located outside of the `<section>` element. Same
+issue here: It must instead be associated with `<section>`'s first inner section.
+
+NOTE - If all sectioning elements are associated with some outer section object,
+then this step is **bugged** with regards to both cases.
+
+NOTE - With the current association of sectioning content elements (inwards) and
+sectioning root elements (outwards), case-1 will produce a **bug** and case-2
+turns out to be a non-issue.
+
 NOTE - The DOM Node type defines a `Node.parentElement` property which makes it
 unnecessary to clarify if a non-element node can have a non-element node as its
-parent - that is if the `Node.parentElement` property is used instead of the
-`Node.parentNode` property.
-
-**TODO** - bug - body, text, /body - body has no parent section
+parent - that is as far as the `Node.parentElement` property is used instead of
+`Node.parentNode`. - that is if [step 4.11.](./outliner-steps.md/#4-11) is
+intended to be limited to element nodes only.
 
 <!-- ####################################################################### -->
 <h2 id="node-heading">Associate node X with heading Y</h2>
@@ -194,3 +237,15 @@ parent - that is if the `Node.parentElement` property is used instead of the
 [step 6.](./outliner-steps.md/#6) states:
 Associate all nodes in the subtree with the heading of the section with which
 they are associated, if any.
+
+NOTE - Having this step as an explicit step inside the algorithm's specification
+turnes it into a mandatory step unless it is explicitly marked as "otpional".
+
+NOTE - I don't see a real need for this step as you could always use the
+following expression: `node.section.heading`
+
+NOTE - if node's section has a heading, the following must be true:
+`(node.section === node.section.heading.section)`
+
+NOTE - after executing this step, the following must be true:
+`(node.section === node.heading.section)`
