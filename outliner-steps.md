@@ -1,5 +1,5 @@
 
-These are the outline algorithm's steps as defined in [4.3.9. Headings and sections](./outliner-4.3.9.md) and split up into single steps which allow to refer to each one of them. This document is the basis for [psuedocode](./psuedocode.md).
+These are the outline algorithm's steps as defined in [4.3.9. Headings and sections](./outliner-4.3.9.md) and split up into single steps which allows to reference each one of them. This document is the basis for [psuedocode](./psuedocode.md).
 
 * `html-specification > outliner-steps`
 * [W3C, HTML Editor's Draft, 18 July 2017](https://w3c.github.io/html)
