@@ -358,6 +358,23 @@ limit to the top-level nodes of a section? -
 the latter might exclude inner sectioning element and even heading elements if
 they are buried inside `div` containers.
 
+................
+
+If a heading's inner #text node is associated with the heading's section, then
+that #text node will appear as if it were a sibling node of the heading element.
+So with that in mind, this step is **bugged**. In contrary to the other bugs,
+this can not be fixed easily.
+
+**TODO** - "associate node with section" will result in a flat list of nodes -
+what is the intended use? - would it be better to only associate direct child
+nodes?
+
+when adding a node to the list, check if it is a descendant of the last node that
+was added to the list - can this checking be simplified (tree traversal)?
+
+NOTE - This will only apply for any nodes that are inner child nodes of a heading
+element - i.e. the #text nodes that define the title of a heading element.
+
 <!-- ----------------------------------------------------------------------- -->
 <h4 id="type-4-current-section">What does 'current section' represent?</h4>
 
@@ -412,23 +429,6 @@ sections.
 
 NOTE - Both of these cases need to taken into consideration because heading
 elements do hold inner non-element #text nodes that define a heading's title.
-
-...
-
-If a heading's inner #text node is associated with the heading's section, then
-that #text node will appear as if it were a sibling node of the heading element.
-So with that in mind, this step is **bugged**. In contrary to the other bugs,
-this can not be fixed easily.
-
-**TODO** - "associate node with section" will result in a flat list of nodes -
-what is the intended use? - would it be better to only associate direct child
-nodes?
-
-when adding a node to the list, check if it is a descendant of the last node that
-was added to the list - can this checking be simplified (tree traversal)?
-
-NOTE - This will only apply for any nodes that are inner child nodes of a heading
-element - i.e. the #text nodes that define the title of a heading element.
 
 When exiting a heading element, the `current section` variable will remain
 unchanged - i.e. it will keep referencing the section of the heading element
