@@ -222,8 +222,8 @@ it is therefore unclear if this step is intended to represent the counter part o
 unspecified, but completely different type of relationship.
 
 I can only assume that the intended association is meant to be the same as in
-[type 2](#type-2) and [type 6](#type-6). If that is the case, then this statement
-is **bugged** as it points into the wrong direction.
+[type 2](#type-2). If that is the case, then this statement is **bugged** as it
+points into the wrong direction.
 
 **TODO** - how to fix it
 
@@ -273,11 +273,13 @@ write-access by including the `current section` when saving the current context
 <!-- ======================================================================= -->
 <h3 id="type-3">Type 3 - When entering a heading content (HC) element</h3>
 
-[step 4.9.1.](./outliner-steps.md/#4-9-1) states: ..., let the element being
-entered be the heading for the current section.
+None of the steps inside [section 4.9.](./outliner-steps.md/#4-9) does explicitly
+associate heading elements with sections with regards to a parent-child relationship
+as defined in [type 2](#type-2).
 
-NOTE - 4.9. does not explicitly associate heading elements with sections with
-regards to a parent-child relationship as defined in [type 2](#type-2).
+I can therefore only assume that, for heading elements, [type 4](#type-4) applies.
+
+**TODO** - there need to be explicit statements
 
 <!-- ======================================================================= -->
 <h3 id="type-4">Type 4 - Associate node X with 'current section'</h3>
@@ -290,12 +292,18 @@ Because this step uses the unspecific description "a node", it applies to
 **any nodes** (element nodes and non-element nodes alike) for which the previous
 steps didn't create an association.
 
-NOTE - The previous steps apply only to element nodes that extend the outlines of
-their ancestors (sectioning content elements or heading element) or that create
-new outlines and sections (sectioning roots). When entering or exiting any other
+The previous steps apply only to element nodes that extend the outlines of their
+ancestors (sectioning content elements or heading element) or that create new
+outlines and sections (sectioning roots). When entering or exiting any other
 element node, the references to `current section`, `currentOutlineOwner` and the
 current outline (i.e. `currentOutlineOwner.innerOutline`) stay the same throughout
 the visit (enter and exit) of those remaining nodes.
+
+NOTE - It seems that, with regards to heading content elements, the substeps in
+[step 4.9.](./outliner-steps.md/#4-9) need to be executed before step 4.11. can
+be applied. To make things more clear, the spec **should** explicitly associate
+headings with sections with regards to [type 2](#type-2) because this step must
+be executed when entering the remaining nodes (see below).
 
 Recall that "associate node X with section Y" can be read as defining a two-way
 relationship defined by the following two properties: `Section Node.parentSection`
@@ -304,39 +312,31 @@ and `Node[] Section.innerNodes`.
 Because `parentSection` represents only a single reference, this step could be
 executed either when entering, or when exiting a node. With regards to `innerNodes`,
 this step turns out to be **bugged**, if the association is established when
-exiting the remaining nodes.
+exiting the remaining nodes (reversed order).
 
 The reason for this is, that adding a node to the `innerNodes` list will append
-it to the end of that list. The sequence of nodes that this array represents
-will not correspond to the document's structure, if nodes are added when exiting
-them (reversed order). So with regards to an `innerNodes` list, this step must
-be executed when entering the remaining nodes.
+it to the end of that list. The sequence of nodes that this list will represent
+does however not correspond with the document's structure, if nodes are added
+when exiting them. So with regards to an `innerNodes` list, this step must be
+executed when entering the remaining nodes.
 
-<h5 id="type-5-current-section">What does 'current section' represent?</h5>
-
-In order to understand the meaning of this step, it is necessary to know what the
-value of the `current section` variable represents when this step is supposed to
-be executed.
-
-NOTE - Recall, that each node in the DOM tree will be visited in tree order. This
-means that a node's parent element will be entered before its inner child nodes.
+Recall, that each node in the DOM tree will be visited in tree order. This means
+that a node's parent element will be entered before its inner child nodes.
 Likewise, parent elements will be exited after their child nodes have been
 processed. In addition to that, preceeding siblings will have been visited before
 a node is entered.
 
+<!-- ----------------------------------------------------------------------- -->
+<h4 id="type-4-current-section">What does 'current section' represent?</h4>
+
+In order to understand the meaning of this step, it is necessary to understand
+what the value of the `current section` variable in a given context represents
+when this step is supposed to be executed.
+
 The relevant parts that change the 'current section' variable are:
 
-1. When entering a sectioning content (SC) element -
-   changed to the SC's first inner section
-2. When exiting a SC element -
-   changed to the last section of the outline of the SC's
-   parent sectioning element (SE)
-
-2 - **TODO** - is that another bug ?!?
-
 <!-- ----------------------------------------------------------------------- -->
-<h5 id="type-3-current-section">current section variable</h5>
--- enter/exit sectioning content
+<h4 id="type-4-current-section-sc">enter/exit sectioning content</h4>
 
 When entering a SC element, [step 4.4.3](./outliner-steps.md/#4-4-3) changes
 the `current section` variable to reference the first inner section of the SC
@@ -351,9 +351,10 @@ NOTE - With regards to [type 5](#type-5), both cases work as intended.
 
 **TODO** - what is the meaning of `current section` after exiting a SC?
 
+2 - **TODO** - is that another bug ?!?
+
 <!-- ----------------------------------------------------------------------- -->
-<h5 id="type-3-current-section">current section variable</h5>
--- enter/exit sectioning root
+<h4 id="type-4-current-section-sr">enter/exit sectioning root</h4>
 
 When entering a SR element, the `current section` variable will be changed to
 reference the first inner section of the SR element.
@@ -362,12 +363,11 @@ When exiting a SR element, the `current section` variable will be reset to the
 same reference that it had before entering the SR element - i.e. the last section
 that is located in front of the SR element.
 
-NOTE - With regards to [type 5](#type-5), both cases work as intended. That is,
-a SR element does not contribute to the outline of its ancestor SE.
+NOTE - With regards to the current step, both cases work as intended. That is,
+a SR element does not contribute to the outline of its ancestor sectioning element.
 
 <!-- ----------------------------------------------------------------------- -->
-<h5 id="type-4-current-section">current section variable</h5>
--- enter/exit heading
+<h4 id="type-4-current-section-hc">enter/exit heading content</h4>
 
 When entering the first heading element inside some sectioning element, this
 heading will be used as the heading of the first inner section of the sectioning
@@ -378,12 +378,31 @@ When entering additional heading elements, new implied sections will be created
 and the `current section` variable will be changed to reference these new implied
 sections.
 
+Both of the above cases need to be taken into consideration as heading elements
+do contain inner non-element #text nodes that contain the headings title.
+
+If a heading's inner #text node is associated with the heading's section, then
+that #text node will appear as if it were a sibling node of the heading element.
+So with that in mind, this step is **bugged**. In contrary to the other bugs,
+this can not be fixed easily.
+
+**TODO** - "associate node with section" will result in a flat list of nodes -
+what is the intended use? - would it be better to only associate direct child
+nodes?
+
+when adding a node to the list, check if it is a descendant of the last node that
+was added to the list - can this checking be simplified (tree traversal)?
+
+NOTE - This will only apply for any nodes that are inner child nodes of a heading
+element - i.e. the #text nodes that define the title of a heading element.
+
 When exiting a heading element, the `current section` variable will remain
 unchanged - i.e. it will keep referencing the section of the heading element
 being exited.
 
-NOTE - With regards to [type 5](#type-5), all cases work as intended. That is,
-other nodes will be associated with the section of the last heading element.
+NOTE - With regards to the current step, this last case will as intended.
+That is, other nodes will be associated with the section of the last heading
+element.
 
 <!-- ======================================================================= -->
 <h3 id="type-5">Type 5 - Associate non-element node X with parent.section</h3>
