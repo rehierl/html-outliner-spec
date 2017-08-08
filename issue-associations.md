@@ -4,16 +4,6 @@ This document is based upon:
 * [Outliner steps](./outliner-steps.md)
 * [Outliner pseudocode](./pseudocode.md)
 
-*acronyms*
-
-1. heading content element (HC)
-1. sectioning content element (SC)
-1. sectioning root element (SR)
-1. sectioning element (SE) - a SC or SR element
-
-<!-- ####################################################################### -->
-<h2 id="abstract">Abstract</h2>
-
 One of the problems the outline algorithm currently has is that it does not
 clearly define what you will get as a result. The general idea should be that it
 will create outline and section objects, connect them with each other and attach
@@ -25,6 +15,13 @@ and sections are rather vague and contradictory.
 
 The goal of this document is to identify which relationships the algorithm
 establishes and to clearly define those.
+
+*acronyms*
+
+- heading content element (HC)
+- sectioning content element (SC)
+- sectioning root element (SR)
+- sectioning element (SE) - a SC or SR element
 
 <!-- ####################################################################### -->
 <h2 id="node-outline">node.innerOutline -
@@ -47,27 +44,27 @@ NOTE - The exact same kind of connection will be established when executing
 [step 4.6.5.](./outliner-steps.md/#4-6-5).
 
 NOTE - `outlineOwner` will always be a sectioning element because new outline
-objects will only be created when entering one of those elements.
+objects will only be created when entering such an element.
 
-One aspect worth mentioning is that, if there was only an Element type, the DOM
-node tree would hold many elements with an undefined `innerOutline` property
+One aspect worth mentioning is that, if there is only an Element type, the DOM
+node tree will have many elements with an undefined `innerOutline` property
 because the majority of elements does not have a definition for such a property.
 
 If an official term, e.g. 'sectioning element', would exist that allowed to refer
 to the group/class of elements for which an inner outline is defined, it could
 be used for the name of a class that inherits from the `Element` type and which
-would define these properties as follows:
+would allow to define these properties as follows:
 
 - `Outline SectioningElement.innerOutline`
 - `SectioningElement Outline.outlineOwner`
 - `(sectioningElement == sectioningElement.innerOutline.outlineOwner)`
 
 In other words: Instances of the Element type would not have to have an
-`innerOutline` property that can not be used because the element instance does
+`innerOutline` property that can not be used because an element instance does
 not represent a sectioning element.
 
 <!-- ####################################################################### -->
-<h2 id="section-starting-node">section.startingNode -
+<h2 id="section-starting-node">section.startingElement -
 Create section X (for node Y)</h2>
 
 <!-- ======================================================================= -->
@@ -83,25 +80,27 @@ This can be translated into the following pseudocode:
 
 Which can be understood as initializing the following property:
 
-- `Element Section.startingNode`
+- `Element Section.startingElement`
 
 NOTE - The exact same kind of connection will be established when entering a
 sectioning root element ([step 4.6.4.](./outliner-steps.md/#4-6-4)).
 
-NOTE - `startingNode` will always be a sectioning element, or an element of
+NOTE - `startingElement` will always be a sectioning element, or an element of
 heading content because new section objects will only be created when entering
-one of those elements.
+such an element.
 
-I do not read this property to state that `startingNode` must always be an inner
+I do not read this property to state that `startingElement` must always be an inner
 element of the property's section object. The referenced element can be an inner
-element, but it does not always have to be one - i.e. the name `startingNode` is
-not entirely accurate.
+element, but it does not always have to be one - i.e. the name `startingElement` is
+not entirely accurate as it implies that the given node is the first node of a
+section and, as such, an inner node of that section.
 
-**TODO** - In addition to that, I assume that a sectioning element is never
-considered to be an inner element of any of its inner sections. The spec does
-not have a statement that supports this point of view, but a `parentSection`
-property does actually disallow them to be an inner node of any of their inner
-sections. - There needs to be a clear statement.
+In addition to that, I assume that a sectioning element is never considered to
+be an inner element of any of its inner sections. The spec does not have a clear
+statement that supports this point of view, but a `parentSection` property (see
+below) implies that these elements are inner elements of their parent section.
+
+**TODO** - There needs to be a clear statement.
 
 The main characteristic of these kind of connections seems to be that the section
 object is created when reaching the given element. Therefore, this connection could
@@ -113,10 +112,10 @@ do not implement an `Element` property that implements the other direction (from
 an element towards a section object) and that has the exact same meaning.
 
 To understand why this property has its use, it will help to recall the paragraph
-related to interactive tables of contents (TOCs). In order to support those it
+related to interactive tables of contents (TOCs). In order to support those, it
 must be possible to forward the user to the top of the section the user selected
 by clicking the heading that is associated with it - i.e.
-`heading.section.startingNode`.
+`heading.section.startingElement`.
 
 **TODO** - is this connection absolutely necessary? -
 is there any other way to jump to the beginning of a section -
@@ -203,8 +202,8 @@ The last expression can be understood to define the following two properties:
 
 The `parentSection` property will remain initialized to a `null` reference for
 section objects that are added as inner sections of an outline (see
-[innerSections](#section-parent-outline)). The only exception to that rule is
-when the inner sections of an outline are added to the outline of an ancestor
+[innerSections](#section-parent-outline)). The only exception to that statement
+is when the inner sections of an outline are added to the outline of an ancestor
 sectioning element in [step 4.5.4](./outliner-steps.md/#4-5-4).
 
 <!-- ####################################################################### -->
@@ -512,9 +511,9 @@ content elements and heading elements excluded). I consider this to also apply
 to heading elements that create new implied sections - Either all in, or all out.
 
 NOTE - A section may end up with no heading associated with it. This will be the
-case if a sectioning element contains not even one heading element - it may have
-still contain a heading elements inside an inner sectioning root element, but not
-inside inner sectioning content elements.
+case if a sectioning element contains not even one heading element - it may still
+contain heading elements inside an inner sectioning root element, but not inside
+any inner sectioning content elements.
 
 **TODO** - why not treat heading elements as another category of sectioning
 elements? - this would make it necessary to start a new section with each heading -
@@ -535,12 +534,17 @@ Which can be understood to define the following property:
 - `Element Node.heading`
 - `(node.parentSection == node.heading.parentSection)`
 
-Having this step as an explicit step inside the algorithm's specification turns
-it into a mandatory step unless it is explicitly declared to be optional. This
-step should probably be marked to be an optional step.
-
 **TODO** - What would be the use of a `Node.heading` property?
 Couldn't you always use `node.parentSection.heading` instead?
+
+Having this step as an explicit step inside the algorithm's specification turns
+it into a mandatory step unless it is explicitly declared to be optional. This
+step should probably be marked to be an optional one.
+
+NOTE - This property is in direct conflict with the definition of a heading for
+an element of sectioning content. In essence, there are two definitions for a
+heading of a sectioning content element: One refers to an outer heading element
+and the other to an inner heading element.
 
 <!-- ####################################################################### -->
 <h2 id="conclusion">Conclusion</h2>
