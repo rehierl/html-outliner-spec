@@ -234,7 +234,8 @@ I can only assume that the intended association is meant to be the same as in
 [type-2](#type-2). If that is the case, then this statement is **bugged** as it
 points into the wrong direction.
 
-**TODO** - how to fix it
+**TODO** - how to fix it - anything but easy - depends on the following definition
+"the heading of a sectioning content element is..." 
 
 <!-- ======================================================================= -->
 <h3 id="type-2">Type 2 - When entering a sectioning root (SR) element</h3>
@@ -269,7 +270,7 @@ Which can be understood to define the following two properties:
 reason is non-element nodes need to be associated as well
 
 NOTE - The `parentSection` property allows to implement interactive TOCs -
-you scroll down within a large web page and parts of the document's TOC get
+you scroll down within a large document and parts of the document's TOC get
 folded and unfolded depending on which nodes is visible inside the browser
 window.
 
@@ -277,10 +278,10 @@ NOTE - The `innerNodes` property allows folding and unfolding a large document
 depending on which TOC entry was selected.
 
 NOTE - The `innerNodes` list property itself does not state that any node within
-a section must be added to that list. The number of nodes associated with a certain
-section (`Node.parentSection`) could be different to the number of nodes within
-the section's `innerNodes` list. Still, the `parentSection` property should be
-set for all the nodes within a section.
+a section must be added to that list. The number of nodes associated with a
+certain section (`Node.parentSection`) could be different to the number of nodes
+within the section's `innerNodes` list. Still, the `parentSection` property should
+be set for all the nodes within a section.
 
 **TODO** - Is there any plausible reason to add all the nodes and not just the
 immediate descendant element and non-element nodes of a sectioning element?
@@ -357,7 +358,7 @@ limit to the top-level nodes of a section? -
 the latter might exclude inner sectioning element and even heading elements if
 they are buried inside `div` containers.
 
-................
+................ (not quite there yet)
 
 If a heading's inner #text node is associated with the heading's section, then
 that #text node will appear as if it were a sibling node of the heading element.
