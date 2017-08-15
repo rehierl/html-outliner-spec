@@ -2,15 +2,15 @@
 - Related to W3C`s HTML outline algorithm
 - A much needed overview
 
-In general, the algorithm creates outline and section objects, connects them with
-each other and attaches those to the DOM subtree for which the algorithm was started.
-These objects and their properties can be described as follows.
+In general, the algorithm creates outline and section objects, connects them
+with each other and attaches those to the DOM subtree for which the algorithm
+was started. These objects and their properties can be described as follows.
 
 Note that, depending on the goal of an implementation, certain properties are
 optional. The object and properties below describe what is needed to implement
-an outliner intended to support all its features.
+the algorithm with the intention to support all its features.
 
-Note that array types like `Section[]` are intended to represent lists of
+Note that array types like `Section[]` are intended to only represent lists of
 certain objects. These kind of properties could also be implemented as linked
 lists instead of actual arrays.
 
@@ -44,16 +44,19 @@ never hold a null reference. This property is needed in order to allow to jump
 to the beginning of a section if its corresponding table of contents entry is
 selected.
 
-Note that the property's name is not entirely accurate: A sectioning element is
-not considered to be an inner node of one of its inner sections. In contrary to
-that, an element of heading content is always considered to be an inner node of
-the section to which it is assigned as heading.
+Note that a sectioning element is not considered to be an inner node of one of
+its inner sections. In contrary to that, an element of heading content is always
+considered to be an inner node of the section to which it is assigned as heading.
+With that regards, the property's name is not entirely accurate because a section
+does not always start with its `startingElement`.
 
 **TODO** - The first node within a section may be a non-element node (a text node
 for example). Is it possible to jump to a non-element node? If the answer is yes,
 it would be possible to jump to `section.innerNodes[0]` instead. Would there still
 be a need for a `startingElement` property? Yes, because the `innerNodes` list can
 be ignored if your only goal is to produce a table of contents.
+
+**TODO** - Associate other nodes when exiting ...
 
 The `parentOutline` property will be set if a section is added to an outline. It
 must hold a null reference if a section is not a top-level section of an outline.
@@ -102,8 +105,8 @@ is a top-level section of a root sectioning element. This element can be the
 starting sectioning element, or an inner sectioning root element. In order to
 traverse into the parent (outer) outline, the expression
 `currentSection.parentOutline.outlineOwner.parentSection` can be used. If, in that
-expression, the `parentSection` property holds a null reference, then `outlineOwner`
-is the starting sectioning element.
+expression, the `parentSection` property holds a null reference, then the
+`outlineOwner` is the starting sectioning element.
 
 The `heading` property holds a reference of the heading content element that
 represents the section's heading. This heading element is considered to be an
@@ -134,9 +137,9 @@ and can be used to provide a "current path" (e.g. breadcrumbs) depending on whic
 nodes are visible inside a browser's window.
 
 Note that starting sectioning element can not be associated with a parent section
-because such a section would need a `startingElement` located outside of the current
-subtree. Hence, the starting element will be the only node in the current subtree
-whose `parentSection` property will hold a null reference.
+because such a section would need a `startingElement` located outside of the
+current subtree. Hence, the starting element will be the only node in the current
+subtree whose `parentSection` property will hold a null reference.
 
 Note that DOM's `Node` type, not the `Element` type, needs a `parentSection`
 property because sectioning elements themselves are considered to be inner nodes
