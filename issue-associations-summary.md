@@ -32,7 +32,7 @@ following issues:
 
 At that point, `currentOutlineOwner` is the element being entered and
 `currentSection` represents its first inner section. The algorithm therefore
-**associates sectioning content elements with their first inner sections
+**associates each sectioning content element with its first inner section
 (inwards)**.
 
 Note that the actual meaning of the `parentSection` property can only be understood
@@ -43,9 +43,8 @@ be associated with a section that is located outside of it - i.e. **outwards**,
 in the direction of the `<body>` element.
 
 The side effect of this step is that the `Node.parentSection` property has,
-depending on the property's node, two different meanings associated with it
-(i.e. inwards vs. outwards). The result is, that there currently is **no clear
-definition for this property**.
+depending on the property's node, two different meanings (i.e. inwards or
+outwards). The result is, that **this property can not be clearly defined**.
 
 But, as it turns out, this step is required as is ... see below
 
@@ -149,14 +148,14 @@ The actual intention behind the first paragraph is to try to explain what the
 algorithm will do when entering a **sectioning element**. Note that the sentence
 is not entirely accurate because this also applies to sectioning root elements.
 
-The first heading element within such a sectioning element will be used as heading
-for the first inner **section object**. Subsequent headings will cause the
-algorithm to create new implied **sections**. Note that such a new section will
-be added to the sectioning element's outline as a top-level section and not as
-a sub-section, if a subsequent heading has a higher, or even highest rank.
+The first heading element within such a sectioning element will be used as
+heading for the first inner **section object**. Subsequent headings will cause
+the algorithm to create new implied section objects. Note that such a new section
+will be added to the sectioning element's outline as a top-level section (and not
+as a sub-section), if a subsequent heading has a higher, or even highest rank.
 
-With that in mind, the **first sentence is not a definition of a heading for a
-sectioning content element**.
+With that in mind: **The first sentence must not be misunderstood to define what
+the heading of a sectioning content *element* is**. (I misunderstood that myself!)
 
 ### (6) Definition of "sectioning content"
 
@@ -165,6 +164,10 @@ sectioning content element**.
 It took me a lot of guesswork before I realized that the actual reason for the
 issues mentioned in (1) and (4) is to make the algorithm comply with the
 "potentially has a heading" part.
+
+--
+
+Outline-to-Section, a 1:1 or a 1:N relationship?
 
 
 <br/>
