@@ -1,5 +1,5 @@
 
-A restructured summary of Chapter 4.3.9
+A restructured summary of Chapter 4.3.9.
 
 * [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html)
 * [W3C, HTML 5.2, Working Draft, 9 May 2017](https://www.w3.org/TR/html52)

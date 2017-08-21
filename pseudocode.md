@@ -1,6 +1,6 @@
 
-These are the results when trying to write down the [outliner-steps](./outliner-steps.md)
-using pseudocode as accurately as possible (i.e. almost word-by-word).
+These are the results when trying to write down the [algorithm's steps](./outliner-steps.md)
+using pseudocode as closely as possible (i.e. almost word-by-word).
 
 * `outliner-steps > pseudocode`
 * The algorithm's main entry point is the [createOutline()](#create-outline-func) function.

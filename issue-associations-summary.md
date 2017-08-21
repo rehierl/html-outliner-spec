@@ -1,11 +1,16 @@
 
-After a lot of guesswork, I have compiled my point of view with regards to
-associations into [this overview]().
+This document provides a summary of the issues mentioned in:
 
-I initially intended to propose to add such an overview because a clear definition
-of the algorithm's result is needed in order to reduce the amount of guesswork
-one has to do when trying to implement the algorithm. Unfortunately, the overview
-still has some open TODOs and is in conflict with the current algorithm.
+* [Association notes](./issue-associations-notes.md)
+
+I have tried to condense my point of view with regards to associations into
+[this overview]().
+
+Initially I intended to propose to add such an overview because a clear definition
+of the algorithm's result is much needed. It would help to reduce the amount of
+guesswork one has to do when trying to implement the algorithm. Unfortunately,
+the overview still has some open TODOs and, most importantly, is in conflict with
+the current algorithm.
 
 The conflicting part is that I consider any node (no exceptions) to be an inner
 node of some outer parent section. This point of view disallows to associate any
@@ -20,8 +25,8 @@ Node[]  Section.innerNodes
 ```
 
 The `parentSection` property can be used to display a node's "current location"
-(e.g. breadcrumbs) and the `innerNodes` property could be used to (e.g.) add
-missing `<section>` elements for normalization purposes.
+(e.g. breadcrumbs) and the `innerNodes` property could be used to add missing
+`<section>` elements (e.g. for normalization purposes).
 
 With that point of view in mind, it should be possible to understand the
 following issues:
@@ -58,8 +63,8 @@ Note that, as this paragraph uses the description "a node", it can be seen to be
 applicable to any node. Because of (3), it should be made clear that this step
 applies to **any node (element and non-element nodes alike)**.
 
-Note also that there are no explicit "associate" statements when entering heading
-elements. Hence, this step must also be understood to associate heading elements.
+Note that there are no explicit "associate" statements when entering heading
+elements. This step must therefore also be used to associate these elements.
 
 If the relationship merely consists of a `Node.parentSection` property, then it
 does not matter if nodes are associated with sections **when exiting** them. If
@@ -78,24 +83,23 @@ characteristic with regards to its section.
 
 As a result, the first node's `nextSibling` property can not be used to get to
 the section's next inner top-level node (understand "top-level" to express "has
-no parent node within the same section"). Note that the use of a list of top-level
-nodes could be to add `<section>` elements if those are missing. If the
-`nextSibling` property could be used, then the `innerNodes` list could even be
-reduced to a single `Node Section.firstInnerNode` property.
+no parent node within the same section"). If the `nextSibling` property could be
+used, then the `innerNodes` list could even be reduced to a single
+`Node Section.firstInnerNode` property and thus could be used to reduce the
+result's memory usage.
 
 In addition to that, and if browsers would support jumping to a non-element node,
 that same property could be used to forward a user to the beginning of a section.
 
-Currently, only the very last node associated with a section (`innerNodes[N-1]`)
-is guaranteed to be a top-level node. This forces one to traverse those kind of
-nodes in reversed order (`previousSibling`), which adds unnecessary requirements
-to an implementation (i.e. the list type used must support to add nodes to its
-beginning).
+Currently, the very last node associated with a section (`innerNodes[N-1]`) is
+guaranteed to be a top-level node. This forces one to traverse those kind of nodes
+in reversed order (`previousSibling`), which adds unnecessary requirements to an
+implementation (i.e. the list type used must support to add nodes to its beginning).
 
 If there is no good reason to associate the remaining nodes when exiting them,
-then the algorithm should associate those **when entering** them. This change
-will of course make it necessary to add explicit "associate" statements to the
-"when entering a heading content element" section.
+then the algorithm should associate those **when entering** them. As a matter of
+clarity, explicit "associate" statements should be added to the algorithm's "when
+entering a heading content element" section.
 
 ### (3) Step 5
 
@@ -104,7 +108,7 @@ being created with the section with which their parent element is associated.""
 
 ```
 <body>
-  "Hello world!"
+  Hello world!
 <body>
 ```
 
@@ -114,8 +118,9 @@ element of a document and, as such, can itself never be associated with any oute
 parent section. And because of that, this step will never associate this text node
 with the body's first inner section, which it is actually supposed to do.
 
-This is clearly bugged and I don't see any way to "fix" it. Note that the paragraph
-referenced in (2) also applies to non-element nodes. So **this step must be removed**.
+This is clearly bugged and I don't see any way to "fix" it. **This step must be
+removed**. Note that the paragraph referenced in (2) also applies to non-element
+nodes. 
 
 ### (4) Step 6
 
@@ -145,17 +150,23 @@ clearly defined.
 represents the heading for that explicit section ...""
 
 The actual intention behind the first paragraph is to try to explain what the
-algorithm will do when entering a **sectioning element**. Note that the sentence
-is not entirely accurate because this also applies to sectioning root elements.
+algorithm will do when entering a **sectioning element**.
+
+Note that the sentence is not entirely accurate because it must also apply to
+sectioning root elements.
 
 The first heading element within such a sectioning element will be used as
 heading for the first inner **section object**. Subsequent headings will cause
-the algorithm to create new implied section objects. Note that such a new section
-will be added to the sectioning element's outline as a top-level section (and not
-as a sub-section), if a subsequent heading has a higher, or even highest rank.
+the algorithm to create new implied section objects.
+
+Note that such a new section will be added to the sectioning element's outline as
+a top-level section (and **not as a sub-section**), if a subsequent heading has a
+rank that is greater or equal than the rank of the last top-level section.
 
 With that in mind: **The first sentence must not be misunderstood to define what
-the heading of a sectioning content *element* is**. (I misunderstood that myself!)
+the heading of a sectioning content *element* is**. (I misunderstood that myself!).
+So we are back at square one: There is no definition for the heading of a sectioning
+content *element* other than the one mentioned in (6).
 
 ### (6) Definition of "sectioning content"
 

@@ -2,38 +2,47 @@
 html-outliner-spec
 ===============
 
-The goal of this repository is to help in reaching a clear understanding of
-HTML's outline algorithm.
+```
+html-specification > outliner-steps > pseudocode > implementation
+```
+
+It might seem to be an easy task to take the HTML specification, extract the
+outline algorithm's definition, translate it into pseudocode and then just
+implement the algorithm. In retrospect, getting a clear understanding of the
+algorithm turned out to be quite time consuming.
 
 ## Overview
 
-```
-html-specification > outliner-steps > pseudocode > implementation
-implementation > pseudocode-mod > outliner-steps-mod
-```
+basic documents:
 
-1. [html-notes](./html-notes.md) -
-   contains notes on different aspects of HTML that are related to the outline
-   algorithm; i.e. notes on HTML elements and boolean attributes.
-1. [outliner-chapter](./outliner-chapter.md) -
-   contains notes on chapter [4.3.9. Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections).
-1. [outliner-steps](./outliner-steps.md) -
-   contains the outline algorithm's steps as defined in [4.3.9.1. Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline).
-1. [pseudocode](./pseudocode.md) -
-   contains the result of trying to write down the outline algorithm's steps using
-   pseudocode.
-1. [implementations](./implementations.md) (TODO) -
-   contains a short list of available open source implementations.
-1. [pseudocode-mod](./pseudocode-mod.md) (TODO) -
-   is the result of writing down an implementation using pseudocode.
-1. [outliner-steps-mod](./outliner-steps-mod.md) (TODO) -
-   is the result of transforming the new pseudocode into English language.
+* [chapter 4.3.9](./outliner-4.3.9.md) - The unmodified content of chapter
+  [4.3.9. Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
+* [notes on chapter 4.3.9.](./outliner-notes.md) - A restructured summary of
+  chapter 4.3.9. - not including the outline algorithm's steps.
+* [outline algorithm](./outliner-steps.md) - The outline algorithm (as is) split
+  up into separate expressions which allows to reference each one of them.
+* [notes on html](./html-notes.md) - Notes on different aspects of HTML related
+  to the outline algorithm - i.e. notes on elements and boolean attributes.
 
---
+associations:
 
-- [issue-inner-sce](./issue-inner-sce)
-- [spec-fixes](./spec-fixes.md) (TODO) -
-  fixes for the main spec to suggest as pull request.
+* [notes](./issue-associations-notes.md) - These are the notes I took when I
+  tried to understand what result the algorithm supposed to produce.
+* [overview](./implementation-overview.md) - My take on a detailed description
+  of what result the algorithm is supposed to produce.
+* [summary](./issue-associations-summary.md) - A summary of the issues and bugs
+  mentioned in the notes - including hints on how to fix these.
+
+TODOs:
+
+* [issue-headings](./issue-headings.md)
+* [issue-inner-sce](./issue-inner-sce.md)
+
+implementations:
+
+* [pseudocode](./pseudocode.md) - the algorithm's steps translated into pseudocode.
+* [implementations](./implementations.md) - contains a short list of available
+  open source implementations. (TODO - add link to nu-checker source)
 
 ## Related Links
 

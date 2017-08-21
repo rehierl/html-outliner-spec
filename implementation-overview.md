@@ -1,6 +1,8 @@
 
-- Related to W3C`s HTML outline algorithm
-- A much needed overview
+This document provides an overview of the objects the algorithm creates and the
+object properties it will use.
+
+* [Association notes](./issue-associations-notes.md)
 
 In general, the algorithm creates outline and section objects, connects them
 with each other and attaches those to the DOM subtree for which the algorithm
@@ -45,13 +47,13 @@ never hold a null reference. This property is needed in order to allow to jump
 to the beginning of a section if its corresponding table of contents entry is
 selected.
 
-Note that a sectioning element is not considered to be an inner node of one of
-its inner sections. In contrary to that, an element of heading content is always
-considered to be an inner node of the section to which it is assigned as heading.
-
 The property's name is not entirely accurate because a section does not have to
 begin with its `startingElement`. This property should be understood to state that
 the section starts with, or immediately after the referenced element's starting tag.
+
+Note that a sectioning element is not considered to be an inner node of one of
+its inner sections. In contrary to that, an element of heading content is always
+considered to be an inner node of the section to which it is assigned as heading.
 
 **TODO** - The first node within a section may be a non-element node, a text node
 for example. Is it possible to jump to a non-element node? If the answer is yes,
@@ -69,11 +71,12 @@ sections of an outline.
 
 A section is considered to be a **top-level section of an outline** if it has no
 parent section, or if its parent section is an inner section of a different
-outline. Note that an outline may have multiple top-level sections.
+outline. As an outline may have more than one top-level section, it can't have
+a single root section.
 
 A section is considered to be an **inner section of an outline** if it is a
-top-level section, or if it is a descendant of such a section (with no top-level
-section of another outline in between).
+top-level section, or if it is a descendant of such a section - with no top-level
+section of another outline in between.
 
 The `parentSection` property will be set if a section is added as subsection to
 another section. It must hold a null reference if a section is not a subsection
@@ -81,11 +84,6 @@ of another section. The `parentSection` property corresponds with the `subSectio
 property such that the expression `section.subSections[anyIndex].parentSection`
 yields the same section reference. These lists are therefore limited to direct
 subsections only.
-
-**TODO** - Consider subsections to be inner sections (a parent section contains
-all its subsections), or do sections have to be considered to be separate entities
-(comes after) that have some definition of "order"? Could a parent section
-"continue" after all of its subsections? (wood stack game - Tower of Hanoi)
 
 When traversing a structure created by the algorithm, it must be possible to
 determine if continuing to traverse it in the direction of the body element would
@@ -112,11 +110,16 @@ traverse into the parent (outer) outline, the expression
 expression, the `parentSection` property holds a null reference, then the
 `outlineOwner` is the starting sectioning element.
 
+**TODO** - Consider subsections to be inner sections (a parent section contains
+all its subsections), or do sections have to be considered to be separate entities
+(comes after) that have some definition of "order"? Could a parent section
+"continue" after one of its subsections (Tower of Hanoi, a wood stack game)?
+
 The `heading` property holds a reference of the heading element that represents
-the section's heading. This property may hold a null reference, which will be the
-case when a sectioning element does not contain a single heading element (headings
-within inner sectioning elements excluded). The `heading` property corresponds
-with `Node.parentSection` property such that the expression
+the section's heading. It may hold a null reference, which will be the case when
+a sectioning element does not contain a single heading element (headings within
+inner sectioning elements excluded). The `heading` property corresponds with
+`Node.parentSection` property such that the expression
 `section.heading.parentSection` yields the same section reference.
 
 Note that the algorithm needs to distinguish the following three states:
@@ -136,19 +139,20 @@ Begin Class Node
 End Class Node
 ```
 
-The `parentSection` property connects a DOM node with its parent section. If it
-holds a non-null value, the node is considered to be an inner node of that section.
-This property must be set whenever the algorithm associates a node with a section
-and can be used to provide a "current path" (e.g. breadcrumbs) depending on which
-nodes are visible inside a browser's window.
+The `parentSection` property connects a DOM node with its parent section. It must
+be set whenever the algorithm associates a node with a section and can be used to
+provide a "current path" (e.g. breadcrumbs) depending on which nodes are visible
+inside a browser's window.
 
-Note that the starting sectioning element can not be associated with a parent
-section because such a section would require a `startingElement` that is located
-outside of the current subtree. Hence, the starting element and any node outside
-of the current subtree will be the only nodes whose `parentSection` property will
-hold a null reference.
+Whenever this property is set, the node is considered to be an inner node of the
+referenced section. Note also, that the starting sectioning element can not be
+associated with a parent section because such a section would require a
+`startingElement` that is located outside of the current subtree. Hence, the
+starting element and any node outside of the current subtree will be the only
+nodes whose `parentSection` property will hold a null reference. Because of that,
+these nodes can not be considered to be inner nodes of any section.
 
-Note that DOM's `Node` type, not the `Element` type, needs a `parentSection`
+Note that DOM's `Node` type, and not the `Element` type, needs a `parentSection`
 property because sectioning elements themselves are considered to be inner nodes
 of an outer parent section. If a text node is a direct child of a sectioning
 element, and if only DOM's `Element` type had a `parentSection` property, then
@@ -163,8 +167,8 @@ same section reference. This property could be used to automatically inject
 normalization purposes).
 
 Note that the `innerNodes` property itself does not require that it contains all
-the nodes associated with a section. This list can be limited to the top-level
-nodes of a section.
+the nodes associated with a section. This list can therefore be limited to the
+top-level nodes of a section.
 
 A node is considered to be a **top-level node of a section** if it has no parent
 node within the same section. Note that the starting sectioning element (including
@@ -183,12 +187,12 @@ added - e.g. add a node to the list if, and only if, the `node.parentNode`
 property matches the `currentOutlineOwner` reference, which would essentially
 limit the list to the top-level nodes of a section. This, on the other hand,
 would not add inner sectioning elements if they are hidden inside some other
-element (a `div` container for example).
+element - e.g. a `div` container.
 
-The `heading` property can be seen as an optional shortcut for
-`node.parentSection.heading`, which must yield the same element reference. Note
-that, if a section has a heading, then `heading.parentSection.heading` will yield
-the same heading reference.
+The `heading` property (`node.heading`) can be seen as an optional shortcut for
+`node.parentSection.heading`, which must yield the same heading reference. Note
+that the `heading` property will be a self-reference if `node` is a reference to
+a heading element - i.e. `(node.heading == node)`.
 
 ```
 Begin Class SectioningElement
@@ -196,8 +200,8 @@ Begin Class SectioningElement
 End Class SectioningElement
 ```
 
-The `SectioningElement` class can be seen to inherit DOM's `Element` type. It
-extends the `Element` type by the `innerOutline` property and could be used to
+The `SectioningElement` object type can be seen to inherit DOM's `Element` type.
+It extends the `Element` type by the `innerOutline` property and could be used to
 implement the algorithm itself. This allows to not associate invalid references
 with element nodes for which there is no definition for an inner outline. As
 long as there is no such DOM `SectioningElement` type, the existing `Element`
