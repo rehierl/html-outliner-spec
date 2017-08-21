@@ -17,7 +17,7 @@ node of some outer parent section. This point of view disallows to associate any
 sectioning element with one of its inner sections.
 
 With that in mind, I understand the algorithm's statement "associate node X with
-section Y" to define and update the following two properties:
+section Y" to define the following two properties:
 
 ```
 Section Node.parentSection
@@ -43,13 +43,13 @@ At that point, `currentOutlineOwner` is the element being entered and
 Note that the actual meaning of the `parentSection` property can only be understood
 to express that the associated node is located inside the corresponding section.
 
-In contrary to this step, any other node (sectioning root elements included) will
-be associated with a section that is located outside of it - i.e. **outwards**,
-in the direction of the `<body>` element.
+In contrary to this step, **any other node** (sectioning root elements included)
+will be associated with a section that is located outside of it (i.e. **outwards**).
 
 The side effect of this step is that the `Node.parentSection` property has,
-depending on the property's node, two different meanings (i.e. inwards or
-outwards). The result is, that **this property can not be clearly defined**.
+depending on the property's object instance (node), two different meanings
+(i.e. inwards or outwards). The result is, that
+**this property can not be clearly defined**.
 
 But, as it turns out, this step is required as is ... see below
 
@@ -64,29 +64,29 @@ applicable to any node. Because of (3), it should be made clear that this step
 applies to **any node (element and non-element nodes alike)**.
 
 Note that there are no explicit "associate" statements when entering heading
-elements. This step must therefore also be used to associate these elements.
+elements. This step must therefore also be used to associate heading elements.
 
 If the relationship merely consists of a `Node.parentSection` property, then it
 does not matter if nodes are associated with sections **when exiting** them. If
 however, a `Node.innerNodes` list property is defined, things turn out to become
 unnecessarily complicated ...
 
-One aspect is that this adds inconsistency to the algorithm as some nodes
-(sectioning elements) are associated when entering them and others (any other
-node) when exiting them.
+One aspect is that it raises the question why some nodes (sectioning elements)
+are associated when entering them and others (any other node) when exiting them.
+So far, I don't see a reason why it would be necessary. **TODO**
 
-Note also, that child nodes will be exited before their parent nodes are exited.
-If, for example, a heading element is the first node of a section, then its
-inner text node will be the first node in the section's `innerNodes` list. In
-short, the very first node associated with a section has no guaranteed
-characteristic with regards to its section.
+Note that child nodes will be exited before their parent nodes are. If, for
+example, a heading element is the first node of a section, then its inner text
+node will be the first node in the section's `innerNodes` list. In short: The
+very first node associated with a section has no guaranteed characteristic with
+regards to its section.
 
 As a result, the first node's `nextSibling` property can not be used to get to
 the section's next inner top-level node (understand "top-level" to express "has
 no parent node within the same section"). If the `nextSibling` property could be
 used, then the `innerNodes` list could even be reduced to a single
 `Node Section.firstInnerNode` property and thus could be used to reduce the
-result's memory usage.
+memory use of the algorithm's result.
 
 In addition to that, and if browsers would support jumping to a non-element node,
 that same property could be used to forward a user to the beginning of a section.
@@ -112,7 +112,7 @@ being created with the section with which their parent element is associated.""
 <body>
 ```
 
-In this example, the non-element text node `Hello world!` has the body element
+In this example, the non-element text node `'Hello world!'` has the body element
 as its parent element. This sectioning root element will always be the top-most
 element of a document and, as such, can itself never be associated with any outer
 parent section. And because of that, this step will never associate this text node
@@ -129,7 +129,7 @@ they are associated, if any.""
 
 This step can be understood to define an `Element Node.heading` property. In
 addition to that, the algorithm will associate a heading (when entered) with the
-current section and therefore defines a `Element Section.heading` property. Note
+current section and therefore defines an `Element Section.heading` property. Note
 that (2) also applies to heading elements (i.e. `Node.parentSection`).
 
 I therefore consider this step to be an optional one which **could be removed**
@@ -150,10 +150,8 @@ clearly defined.
 represents the heading for that explicit section ...""
 
 The actual intention behind the first paragraph is to try to explain what the
-algorithm will do when entering a **sectioning element**.
-
-Note that the sentence is not entirely accurate because it must also apply to
-sectioning root elements.
+algorithm will do when entering a **sectioning element**. (Note that the sentence
+is not entirely accurate because it must also apply to sectioning root elements).
 
 The first heading element within such a sectioning element will be used as
 heading for the first inner **section object**. Subsequent headings will cause

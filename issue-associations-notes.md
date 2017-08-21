@@ -373,8 +373,8 @@ not change.
 
 Because `parentSection` represents only a single reference, this step could be
 executed either when entering, or when exiting a node. With regards to `innerNodes`,
-this step turns out to be **problematic**, if the association is established when
-exiting the remaining nodes (in reversed order).
+this step turns out to be **problematic**, if the association is established
+(in reversed order) when exiting the remaining nodes.
 
 Example: An inner #text node of a heading element will be added to the
 `innerNodes` list before the heading element itself is.
@@ -399,21 +399,19 @@ variable are:
 <!-- ----------------------------------------------------------------------- -->
 <h4 id="type-4-current-section-sc">enter/exit sectioning content</h4>
 
-When entering a SC element, [step 4.4.3](./outliner-steps.md/#4-4-3) changes
-the `currentSection` variable to reference the first inner section of the SC
-element.
+When entering a SC element, the `currentSection` variable will be changed to
+reference the first inner section of the SC element.
 
-When exiting a SC element, [step 4.5.3](./outliner-steps.md/#4-5-3) changes
-the `currentSection` variable to reference the last section in the outline of
-the `currentOutlineOwner`. In that specific case, `currentSection` represents the
-section to which the top-level inner sections of the SC element being exited will
-be added.
+When exiting a SC element, the `currentSection` variable will be changed to
+reference the last section in the outline of the `currentOutlineOwner`. In that
+specific case, `currentSection` represents the section to which the top-level
+inner sections of the SC element being exited will be added.
 
 NOTE - With regards to the current step, both cases seem to work as intended.
 
 **TODO** - What is the meaning of `currentSection` after exiting a SC? -
-Why add the inner top-level sections to that outer section and not to another
-one?
+Why add the inner top-level sections to that outer section and not to a
+different one?
 
 <!-- ----------------------------------------------------------------------- -->
 <h4 id="type-4-current-section-sr">enter/exit sectioning root</h4>
@@ -449,9 +447,8 @@ When exiting a heading element, the `currentSection` variable will remain
 unchanged - i.e. it will keep referencing the section of the heading element
 that was exited.
 
-NOTE - With regards to the current step, these cases seem to work as intended.
-That is, other nodes will be associated with the section of the last heading
-element.
+NOTE - With regards to the current step, these cases work as intended. That is,
+other nodes will be associated with the section of the last heading element.
 
 <!-- ----------------------------------------------------------------------- -->
 <h4 id="type-4-when-entering">"when entering" is more useful</h4>

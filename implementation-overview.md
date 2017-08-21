@@ -57,10 +57,10 @@ considered to be an inner node of the section to which it is assigned as heading
 
 **TODO** - The first node within a section may be a non-element node, a text node
 for example. Is it possible to jump to a non-element node? If the answer is yes,
-it would be possible to jump to `section.innerNodes[0]` instead - **issue** -
-associate nodes when exiting. Would there still be a need for a `startingElement`
-property? Yes, because the `innerNodes` list can be ignored if your only goal is
-to produce a table of contents.
+it would be possible to jump to `section.innerNodes[0]` instead (issue: associate
+nodes when exiting). Would there still be a need for a `startingElement` property?
+Yes, because the `innerNodes` list can be ignored if your only goal is to produce
+a table of contents.
 
 The `parentOutline` property will be set if a section is added to an outline. It
 must hold a null reference if a section is not a top-level section of an outline.
@@ -75,8 +75,8 @@ outline. As an outline may have more than one top-level section, it can't have
 a single root section.
 
 A section is considered to be an **inner section of an outline** if it is a
-top-level section, or if it is a descendant of such a section - with no top-level
-section of another outline in between.
+top-level section, or if it is a descendant of such a section (with no top-level
+section of a different outline in between).
 
 The `parentSection` property will be set if a section is added as subsection to
 another section. It must hold a null reference if a section is not a subsection
@@ -118,7 +118,7 @@ all its subsections), or do sections have to be considered to be separate entiti
 The `heading` property holds a reference of the heading element that represents
 the section's heading. It may hold a null reference, which will be the case when
 a sectioning element does not contain a single heading element (headings within
-inner sectioning elements excluded). The `heading` property corresponds with
+inner sectioning elements excluded). The `heading` property corresponds with the
 `Node.parentSection` property such that the expression
 `section.heading.parentSection` yields the same section reference.
 
@@ -148,7 +148,7 @@ Whenever this property is set, the node is considered to be an inner node of the
 referenced section. Note also, that the starting sectioning element can not be
 associated with a parent section because such a section would require a
 `startingElement` that is located outside of the current subtree. Hence, the
-starting element and any node outside of the current subtree will be the only
+starting element, and any node outside of the current subtree, will be the only
 nodes whose `parentSection` property will hold a null reference. Because of that,
 these nodes can not be considered to be inner nodes of any section.
 
@@ -175,9 +175,9 @@ node within the same section. Note that the starting sectioning element (includi
 the `<body>` element) can not be associated with a section.
 
 A node is considered to be an **inner node of a section** if it is a top-level
-node, or if it is a descendant of such a node (with no top-level node of another
-section in between). Note that this does not include any of the inner nodes of
-the related section`s subsections.
+node, or if it is a descendant of such a node (with no top-level node of a
+different section in between). Note that this does not include any of the nodes
+of the related section`s subsections.
 
 **TODO** - Note that defining a method to meaningfully fill this list is still
 an open issue: It has little use to add all the nodes (element and non-element
@@ -189,10 +189,10 @@ limit the list to the top-level nodes of a section. This, on the other hand,
 would not add inner sectioning elements if they are hidden inside some other
 element - e.g. a `div` container.
 
-The `heading` property (`node.heading`) can be seen as an optional shortcut for
+The `heading` property (`Node.heading`) can be seen as an optional shortcut for
 `node.parentSection.heading`, which must yield the same heading reference. Note
 that the `heading` property will be a self-reference if `node` is a reference to
-a heading element - i.e. `(node.heading == node)`.
+a heading element - i.e. `node.heading == node`.
 
 ```
 Begin Class SectioningElement
@@ -205,7 +205,7 @@ It extends the `Element` type by the `innerOutline` property and could be used t
 implement the algorithm itself. This allows to not associate invalid references
 with element nodes for which there is no definition for an inner outline. As
 long as there is no such DOM `SectioningElement` type, the existing `Element`
-type must be used.
+type must be extended.
 
 The `innerOutline` property corresponds with the `Outline.outlineOwner` property
 such that the expression `sectioningElement.innerOutline.outlineOwner` yields
