@@ -19,7 +19,7 @@ it is possible to cross the boundaries -
 `section.parentOutline.outlineOwner.parentSection`
 
 <!-- ####################################################################### -->
-<h2 id="abstract">introduction</h2>
+<h2 id="abstract">abstract</h2>
 
 One of the problems the outline algorithm currently has is that it does not
 clearly define what you will get as a result. The general idea should be that it
@@ -32,6 +32,42 @@ and sections are vague and contradictory.
 
 The goal of this document is to identify which relationships the algorithm
 establishes and to clearly define those.
+
+<!-- ####################################################################### -->
+<h2 id="definitions">definitions</h2>
+
+[chapter 4.3.9.1](./outliner-steps.md) states:
+A **section** is a container that corresponds to some nodes in the original DOM
+tree. Each section can have one heading associated with it, and can contain any
+number of further nested subsections. The algorithm for the outline also associates
+each node in the DOM tree with a particular section and potentially a heading.
+(The sections in the outline aren’t section elements, though some may correspond
+to such elements — they are merely conceptual sections.)
+
+* `section.nodes`, `node.section`
+* `section.heading` - may have no heading
+* `section.subsections[]` - may have no nested subsections
+* `node.section`, `node.heading` - may have no heading
+* `sectionObject != sectionElement`
+
+[chapter 4.3.9.1](./outliner-steps.md) states:
+The **outline** for a sectioning content element or a sectioning root element
+consists of a list of one or more potentially nested sections. The element for
+which an outline is created is said to be the outline’s owner.
+
+* `outline.sections[]` - will always have at least one inner section
+* `outline.outlineOwner` - will always have an owner
+
+I do not read "consists of a list of one of more" to state that an outline must
+(by definition) always have at least one inner section.
+
+By looking at this HTML fragment ... `<body></body>` ... you can easily tell that
+an outline can be "empty" (i.e. one that has no actual inner section). Note that
+the current algorithm will create an outline for such a fragment, that will have
+an "empty" inner section (i.e. one that has no nodes asociated with it).
+
+**TODO** - It would be easier to determine if an outline is empty, if (in such
+a case) the outline's `sections[]` list would be empty.
 
 <!-- ####################################################################### -->
 <h2 id="node-outline">node.innerOutline -
@@ -99,17 +135,18 @@ The `startingElement` property will always hold a reference to a sectioning elem
 or an element of heading content because new section objects will only be created
 when entering such an element.
 
-I do not read this property to state that `startingElement` must always be an
-inner element of the created section object. The referenced element can be an
-inner element, but it does not always have to be one - i.e. the name
-`startingElement` is not entirely accurate as it implies that the given element
-is the first inner node of that section.
+I do not read this property to state that `startingElement` must be an inner
+element of the section object created. The referenced element can be an inner
+element, but it does not have to be one - i.e. the name `startingElement` is not
+entirely accurate as it implies that the given element is the first inner node of
+that section.
 
 In addition to that, I assume that a sectioning element is never considered to
 be an inner element of any of its inner sections. The specification does not have
 a clear statement that supports this point of view, but a `'parent section'`
-property (see below), as it is mentioned when entering a sectioning root element,
-implies that these elements are inner elements of their parent section.
+property (`Node.parentSection` - see below), as it is mentioned when entering a
+sectioning root element, implies that these elements are inner elements of their
+parent section.
 
 **TODO** - There needs to be a clear statement.
 
@@ -126,7 +163,7 @@ element towards a section object) which refers to the same relationship.
 To understand why this property has its use, recall the paragraph related to
 interactive tables of contents (TOCs). In order to support those, it must be
 possible to scroll a page to the beginning of a section, if the corresponding
-entry was selected - e.g. `heading.section.startingElement.scrollIntoView()`.
+entry is selected - e.g. `heading.section.startingElement.scrollIntoView()`.
 
 NOTE - This property is necessary because the first inner node of a section could
 be a non-element text node. Firefox does define a `Element.scrollIntoView()`
@@ -186,7 +223,13 @@ have for sections that are not added to an outline's `innerSections` list. I
 prefer to leave `parentOutline` initialized to a `null` reference as this allows
 to determine if a section object represents a top-level section of an outline.
 With that in mind, the `innerSections` list of an outline will only contain the
-top-level sections of that outline object.
+top-level sections of an outline object.
+
+A section is said to be **a top-level section of an outline**, if it has no parent
+section within that outline. A section is said to be **an inner section of an
+outline (or a sectioning element)**, if it is a top-level section of that outline,
+or if it is a descendant of such a section (with no top-level section of another
+outline in between).
 
 A method could be defined which would only return a `null` reference, if a
 section is not an inner section of any outline:
@@ -207,23 +250,9 @@ function Section.getParentOutline() {
 <h2 id="section-parent-section">section.parentSection -
 Associate section X with section Y</h2>
 
-[step 4.5.4.](./outliner-steps.md/#4-5-4) states: Append the outline of the
-sectioning content element being exited to the current section.
-
-Strictly implemented, this statement would throw a `TypeError` exception because
-it is not possible to add an outline object to the `Section.subSections` list.
-This can only be understood to add the top-level sections of said outline as
-subsections to the current section. With that point of view, this step can be
-understood to refer to the same properties as defined below.
-
-NOTE - Just before that step, the `currentSection` variable is set to reference
-the "last section in the outline of the current outline owner element". I can
-only assume that one has to understand "last section" to be the **last top-level
-section object** added to the outline object itself. It could also be understood
-to mean the last "active" section object in that outline, which could even be
-an inner subsection.
-
-**TODO** - This step seriously needs to be rephrased.
+<!-- ======================================================================= -->
+<h3 id="section-parent-section-hce">
+entering a heading content element</h3>
 
 [step 4.9.3.2.1.1](./outliner-steps.md/#4-9-3-2-1-1) states:
 create a new section, and append it to candidate section.
@@ -231,7 +260,7 @@ create a new section, and append it to candidate section.
 This can be translated into the following pseudocode:
 
 - `section = new Section(node)`
-- `parent.addSubSection(section)`
+- `candidateSection.addSubSection(section)`
 
 The last expression can be understood to define the following two properties:
 
@@ -239,28 +268,86 @@ The last expression can be understood to define the following two properties:
 - `Section[] Section.subSections`
 - `(section.subSections[anyIndex].parentSection == section)`
 
-A section is said to be **a top-level section of an outline**, if it has no parent
-section within that outline. A section is said to be **an inner section of an
-outline (or a sectioning element)**, if it is a top-level section of that outline,
-or if it is a descendant of such a section (with no top-level section of another
-outline in between).
-
 The `parentSection` property will remain initialized to a `null` reference for
 section objects that are added as inner sections of an outline. The only exception
 to that statement is (in step 4.5.4) when the top-level sections of an outline
 are connected with the outline of an ancestor sectioning element.
 
-The outline of a sectioning content element (SC) will, if one exists, contribute
+<!-- ======================================================================= -->
+<h3 id="section-parent-section-sre">
+exiting an inner sectioning root element</h3>
+
+The outline of a sectioning root (SR) element must not contribute to the outline
+an ancestor sectioning element:
+
+- `(sr.innerOutline.innerSections[anyIndex].parentOutline == sr)`
+- `(sr.innerOutline.innerSections[anyIndex].parentSection == null)`
+
+The `parentSection` property of all top-level sections of an outline of a
+sectioning root element must not be connected (null reference) with an inner
+section of any ancestor sectioning element.
+
+<!-- ======================================================================= -->
+<h3 id="section-parent-section-sce">
+exiting an inner sectioning content element</h3>
+
+[step 4.5.3](./outliner-steps.md/#4-5-3) states: Let current section be the last
+section in the outline of the current outline owner element.
+
+I can only assume that one has to understand "last section" to be the *last
+top-level section* added to the outline's `innerSections` list. If it weren't
+for the "in the outline" part, one could also understand this to refer the
+*last active section* in that outline, which could even be an inner subsection.
+
+**TODO** - This step needs to be clarified.
+
+**TODO** - Why "last top-level" and not "last active" section? -
+A matter of definition?
+
+[step 4.5.4.](./outliner-steps.md/#4-5-4) states: Append the outline of the
+sectioning content element being exited to the current section.
+
+Strictly implemented, this statement will throw a `TypeError` because it is not
+possible to add an outline object to the `Section.subSections` list. This can only
+be understood to add the top-level sections of said outline as subsections to the
+current section. With that point of view, this step can be understood to refer to
+the same properties as defined above.
+
+**TODO** - This step needs to be rephrased.
+
+[chapter 4.3.9](./outliner-4.3.9.md) states: Sectioning content elements are always
+considered subsections of their nearest ancestor sectioning root or their nearest
+ancestor element of sectioning content, whichever is nearest, regardless of what
+implied sections other headings may have created.
+
+* A sectioning content element is not a section object and, as such, can not be
+  a subsection - i.e. a `TypeError`.
+* An ancestor sectioning element is not a section object and, as such, can itself
+  not have any subsections - i.e. another `TypeError`.
+* This paragraph does *not* refer to any section inside the ancestor sectioning
+  element, it refers to the element itself - i.e. add element 1 to element 2.
+
+**TODO** - This paragraph needs to be rephrased.
+
+**TODO** - Why "last top-level" and not "add the inner top-level sections to the
+outline" itself? - Issue: A section object can only have a single `parentOutline`
+object associated with it.
+
+**Cancelled** - How (and why) exactly the outline of an inner sectioning content
+element is "merged into" its first outer sectioning element needs to be revisited
+at as some later time (see also [issue - inner sce](./issue-inner-sce.md)). Just
+assume for the moment that some section exists to which the top-level sections
+of an inner sectioning content element are added ...
+
+The outline of a sectioning content (SC) element must (by definition) contribute
 to the outline of an ancestor sectioning element:
 
 - `(sc.innerOutline.innerSections[anyIndex].parentOutline == sc)`
 - `(sc.innerOutline.innerSections[anyIndex].parentSection != null)`
 
-The outline of a sectioning root element (SR) must not contribute to the outline
-an ancestor sectioning element:
-
-- `(sr.innerOutline.innerSections[anyIndex].parentOutline == sr)`
-- `(sr.innerOutline.innerSections[anyIndex].parentSection == null)`
+The `parentSection` property of all top-level sections of an outline of a
+sectioning content element must be connected (non-null reference) with an inner
+section of its first outer sectioning element.
 
 <!-- ####################################################################### -->
 <h2 id="node-parent-section">node.parentSection -
