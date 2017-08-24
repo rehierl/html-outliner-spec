@@ -18,18 +18,18 @@ basic documents:
 * [chapter 4.3.9](./outliner-4.3.9.md) - The unmodified content of chapter
   [4.3.9. Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
 * [notes on chapter 4.3.9.](./outliner-notes.md) - A restructured summary of
-  chapter 4.3.9. - not including the outline algorithm's steps.
+  chapter 4.3.9.
 * [outline algorithm](./outliner-steps.md) - The outline algorithm (as is) split
   up into separate expressions which allows to reference each one of them.
 * [notes on html](./html-notes.md) - Notes on different aspects of HTML related
-  to the outline algorithm - i.e. notes on elements and boolean attributes.
+  to the outline algorithm - i.e. notes on certain elements and boolean attributes.
 
 associations:
 
-* [notes](./issue-associations-notes.md) - These are the notes I took when I
-  tried to understand what result the algorithm supposed to produce.
+* [notes](./issue-associations-notes.md) - The notes I took when I tried to
+  understand what the algorithm's result is supposed to be.
 * [overview](./implementation-overview.md) - My take on a detailed description
-  of what result the algorithm is supposed to produce.
+  of the algorithm's result.
 * [summary](./issue-associations-summary.md) - A summary of the issues and bugs
   mentioned in the notes - including hints on how to fix these.
 

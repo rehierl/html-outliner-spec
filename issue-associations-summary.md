@@ -64,7 +64,7 @@ applicable to any node. Because of (3), it should be made clear that this step
 applies to **any node (element and non-element nodes alike)**.
 
 Note that there are no explicit "associate" statements when entering heading
-elements. This step must therefore also be used to associate heading elements.
+elements. Therefore, this step **must also be used to associate heading elements**.
 
 If the relationship merely consists of a `Node.parentSection` property, then it
 does not matter if nodes are associated with sections **when exiting** them. If
@@ -73,33 +73,22 @@ unnecessarily complicated ...
 
 One aspect is that it raises the question why some nodes (sectioning elements)
 are associated when entering them and others (any other node) when exiting them.
-So far, I don't see a reason why it would be necessary. **TODO**
 
 Note that child nodes will be exited before their parent nodes are. If, for
 example, a heading element is the first node of a section, then its inner text
-node will be the first node in the section's `innerNodes` list. In short: The
-very first node associated with a section has no guaranteed characteristic with
-regards to its section.
+node will be the first node associated with that section and, as such, the first
+node within an `innerNodes` list. In short, the first node associated with a
+section is not necessarily a top-level node of that section (understand "top-level"
+to express "has no parent node within the same section").
 
-As a result, the first node's `nextSibling` property can not be used to get to
-the section's next inner top-level node (understand "top-level" to express "has
-no parent node within the same section"). If the `nextSibling` property could be
-used, then the `innerNodes` list could even be reduced to a single
-`Node Section.firstInnerNode` property and thus could be used to reduce the
-memory use of the algorithm's result.
-
-In addition to that, and if browsers would support jumping to a non-element node,
-that same property could be used to forward a user to the beginning of a section.
-
-Currently, the very last node associated with a section (`innerNodes[N-1]`) is
-guaranteed to be a top-level node. This forces one to traverse those kind of nodes
-in reversed order (`previousSibling`), which adds unnecessary requirements to an
-implementation (i.e. the list type used must support to add nodes to its beginning).
+In addition to that, if browsers would support jumping to a non-element node,
+that same property (if set "when entering") could be used to forward a user to
+the beginning of a section.
 
 If there is no good reason to associate the remaining nodes when exiting them,
-then the algorithm should associate those **when entering** them. As a matter of
-clarity, explicit "associate" statements should be added to the algorithm's "when
-entering a heading content element" section.
+the algorithm should associate those **when entering** them. As a matter of
+clarity, **explicit "associate" statements** should then be added to the
+algorithm's "when entering a heading content element" section.
 
 ### (3) Step 5
 
