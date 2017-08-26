@@ -17,6 +17,8 @@ Note that the intention of array types like `Section[]` is to represent lists of
 certain objects. These kind of properties could also be implemented as linked
 lists instead of using actual array types.
 
+## Outline class
+
 ```
 Begin Class Outline
   SectioningElement outlineOwner
@@ -29,6 +31,8 @@ a **sectioning element**, which is either an element of sectioning content or a
 sectioning root element. It will never hold a null reference.
 
 **TODO** - Define `Outline.parentOutline` and `Outline.innerOutlines` properties?
+
+## Section class
 
 ```
 Begin Class Section
@@ -132,6 +136,8 @@ section that has no heading. Once the algorithm has finished, each `heading`
 property will either hold a valid element reference, or it will represent an
 implied heading.
 
+## Node class
+
 ```
 Begin Class Node
   Section parentSection
@@ -193,6 +199,8 @@ The `heading` property (`Node.heading`) can be seen as an optional shortcut for
 `node.parentSection.heading`, which must yield the same heading reference. Note
 that the `heading` property will be a self-reference if `node` is a reference to
 a heading element - i.e. `node.heading == node`.
+
+## SectioningElement class
 
 ```
 Begin Class SectioningElement

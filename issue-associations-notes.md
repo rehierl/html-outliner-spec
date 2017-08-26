@@ -19,6 +19,10 @@ it is possible to cross the boundaries -
 `section.parentOutline.outlineOwner.parentSection`
 
 <!-- ####################################################################### -->
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
 <h2 id="abstract">abstract</h2>
 
 One of the problems the outline algorithm currently has is that it does not
@@ -34,6 +38,10 @@ The goal of this document is to identify which relationships the algorithm
 establishes and to clearly define those.
 
 <!-- ####################################################################### -->
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
 <h2 id="definitions">definitions</h2>
 
 [chapter 4.3.9.1](./outliner-steps.md) states:
@@ -58,20 +66,28 @@ which an outline is created is said to be the outline’s owner.
 * `outline.sections[]` - will always have at least one inner section
 * `outline.outlineOwner` - will always have an owner
 
-I do not read "consists of a list of one of more" to state that an outline must
-(by definition) always have at least one inner section.
-
 By looking at this HTML fragment ... `<body></body>` ... you can easily tell that
-an outline can be "empty" (i.e. one that has no actual inner section). Note that
-the current algorithm will create an outline for such a fragment, that will have
-an "empty" inner section (i.e. one that has no nodes asociated with it).
+an outline can be "empty" (i.e. has no actual inner section). The current algorithm
+will, in such a case, create an outline that contains a single "empty" inner
+section (i.e. has no nodes associated with it).
 
-**TODO** - It would be easier to determine if an outline is empty, if (in such
-a case) the outline's `sections[]` list would be empty.
+It would be easier to determine if an outline is empty, if (in such a case) its
+`sections[]` list would not contain a single section object (i.e. an empty list).
+I therefore do *not* read "consists of a list of one or more" to define that an
+outline must (by its definition) always have at least one inner section.
+
+**TODO** - The spec should state that an outline could have no section object
+associated with it. It should also state that the algorithm will (currently)
+always add a section object which itself could end up having no node associated
+with it.
 
 <!-- ####################################################################### -->
-<h2 id="node-outline">node.innerOutline -
-Associate node X with outline Y</h2>
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
+<h2 id="node-outline">node.innerOutline</h2>
+"Associate node X with outline Y"
 
 [step 4.4.5.](./outliner-steps.md/#4-4-5) states: Let there be a new outline for
 the new current outline owner, ...
@@ -110,8 +126,12 @@ The difference is that only those nodes, for which a definition of an inner
 outline exists, have an `innerOutline` property.
 
 <!-- ####################################################################### -->
-<h2 id="section-starting-node">section.startingElement -
-Create section X for node Y</h2>
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
+<h2 id="section-starting-node">section.startingElement</h2>
+"Create section X for node Y"
 
 <!-- ======================================================================= -->
 <h3 id="create-section-for">"create a new section for"</h3>
@@ -190,14 +210,15 @@ NOTE - The same applies when executing
 Heading elements are considered to be inner nodes of the implied sections they
 create, or of the first inner section within a sectioning element.
 
-**TODO** - Why not start a new section with each heading element (no exception)? -
-How to avoid auto-creating a new section when entering a sectioning element? -
-The current way to implement the algorithm allows for section objects to be
-completely empty (have no nodes)!
+(see also - [section.heading](#section-heading))
 
 <!-- ####################################################################### -->
-<h2 id="section-parent-outline">section.parentOutline -
-Associate outline X with section Y</h2>
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
+<h2 id="section-parent-outline">section.parentOutline</h2>
+"Associate outline X with section Y"
 
 [step 4.4.5.](./outliner-steps.md/#4-4-5) states: Let there be a new outline for
 the new current outline owner, initialized with just the new current section as
@@ -247,8 +268,12 @@ function Section.getParentOutline() {
 ```
 
 <!-- ####################################################################### -->
-<h2 id="section-parent-section">section.parentSection -
-Associate section X with section Y</h2>
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
+<h2 id="section-parent-section">section.parentSection</h2>
+"Associate section X with section Y"
 
 <!-- ======================================================================= -->
 <h3 id="section-parent-section-hce">
@@ -335,9 +360,9 @@ object associated with it.
 
 **Cancelled** - How (and why) exactly the outline of an inner sectioning content
 element is "merged into" its first outer sectioning element needs to be revisited
-at as some later time (see also [issue - inner sce](./issue-inner-sce.md)). Just
-assume for the moment that some section exists to which the top-level sections
-of an inner sectioning content element are added ...
+at some later time (see also [inner sce](./issue-inner-sce.md)). Just assume for
+the moment that some section exists to which the top-level sections of an inner
+sectioning content element are added ...
 
 The outline of a sectioning content (SC) element must (by definition) contribute
 to the outline of an ancestor sectioning element:
@@ -350,8 +375,12 @@ sectioning content element must be connected (non-null reference) with an inner
 section of its first outer sectioning element.
 
 <!-- ####################################################################### -->
-<h2 id="node-parent-section">node.parentSection -
-Associate node X with section Y</h2>
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
+<h2 id="node-parent-section">node.parentSection</h2>
+"Associate node X with section Y"
 
 <!-- ======================================================================= -->
 <h3 id="type-1">Type 1 - When entering a sectioning content element</h3>
@@ -374,8 +403,10 @@ is meant to be the same as in [type-2](#type-2). If that is the case, then this
 statement is **bugged** as it points into the **wrong direction**.
 
 NOTE - I consider this to be the "wrong direction" because the name `parentSection`
-implies that the section object, with regards to the sectioning content element,
-is a superordinate entity. Obviously, that is not the case.
+implies that the section object is a superordinate and the sectioning content
+element a subordinate entity. Obviously, that is not the case.
+
+From the [definition of sectioning content](https://w3c.github.io/html/dom.html#sectioning-content-2): Each sectioning content element potentially has a heading and an outline.
 
 **TODO** - The only reason I can think of, why the algorithm is supposed to establish
 that kind of connection, is to comply with the "the heading of a sectioning content
@@ -646,8 +677,12 @@ its parent - that is as far as the `Node.parentElement` property is used instead
 of `Node.parentNode` to implement the "parent element" part of this step.
 
 <!-- ####################################################################### -->
-<h2 id="section-heading">section.heading -
-Associate section X with heading Y</h2>
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
+<h2 id="section-heading">section.heading</h2>
+"Associate section X with heading Y"
 
 When entering a heading content element,
 [step 4.9.1](./outliner-steps.md/#4-9-1) states:
@@ -680,6 +715,11 @@ NOTE - A section may end up with no heading associated with it. This will be the
 case if a sectioning element contains not even a single heading element -
 although it might still contain heading elements inside inner sectioning elements.
 
+**TODO** - Why not start a new section with each heading element (no exception)? -
+How to avoid auto-creating a new section when entering a sectioning element? -
+The current way to implement the algorithm allows for section objects to be
+completely empty (have no nodes)!
+
 **TODO** -
 Why not treat heading elements as another category of sectioning elements? -
 This would make it necessary to start a new section with each heading -
@@ -694,8 +734,12 @@ Note that `<div>` and `'A'` will be associated with `<h1>` and `'B'` with `<h2>`
 This will tear the `<div>` container apart!
 
 <!-- ####################################################################### -->
-<h2 id="node-heading">node.heading -
-Associate node X with heading Y</h2>
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
+
+<hr />
+<h2 id="node-heading">node.heading</h2>
+"Associate node X with heading Y"
 
 [step 6.](./outliner-steps.md/#6) states: Associate all nodes in the subtree
 with the heading of the section with which they are associated, if any.
@@ -719,7 +763,7 @@ then how can you assign a heading to a node? By having a `currentHeading` variab
 into a mandatory one, unless it is explicitly declared to be optional. It should
 be marked to be optional.
 
-This property is **in conflict with the definition of a heading for an element
+**This property is in conflict with the definition of a heading for an element
 of sectioning content**. In essence, there are two definitions for a `heading`
 property that have a different meaning: `Node.heading` refers to an outer/parent
 heading element (superordinate) and `SectioningContentElement.heading` (from the
