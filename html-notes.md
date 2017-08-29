@@ -1,11 +1,17 @@
 
-These are notes on different aspects of HTML that are related to the outline algorithm.
+These are notes on different aspects of HTML related to the outline algorithm.
 
 * `html-specification`
-* [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html), and
-  [HTML's Elements, a tabular overview](https://w3c.github.io/elements-of-html/)
+* [HTML's Elements, a tabular overview](https://w3c.github.io/elements-of-html/)
+* [W3C, HTML 5.2, Editor's Draft, 3 May 2017](https://w3c.github.io/html)
 * [W3C, HTML 5.2, Working Draft, 9 May 2017](https://www.w3.org/TR/html52/)
 
+**TODO** - there does not seem to be any limitation of where a heading content
+element (with regards to an ancestor sectioning element) can be used - add a
+usage restriction to the heading content model?
+
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
 
 [**Categories**](https://w3c.github.io/html/dom.html#categories)
@@ -18,7 +24,7 @@ These are notes on different aspects of HTML that are related to the outline alg
 
 * i.e. the 'content model' property of an element's definition
 * a normative description of what content must be included as children and
-  descendants of an element.
+  descendants of an element
 
 [**hgroup**]()
 
@@ -30,30 +36,43 @@ These are notes on different aspects of HTML that are related to the outline alg
 * [Steve Faulkner's request for feedback to drop](https://lists.w3.org/Archives/Public/public-html/2013Mar/0026.html), 2013-03-06
 * it promotes an anti-pattern, is a mere styling hook, etc.
 * [W3C's decision on request to drop hgroup](https://lists.w3.org/Archives/Public/public-html-admin/2013Apr/0003.html), 2013-04-02
-* Plan 2014: request to be dropped due to missing complete implementations of the semantics
-* got removed on 2013-04-16
+* removed on 2013-04-16
 
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [2.4. Common microsyntaxes](https://w3c.github.io/html/infrastructure.html#common-microsyntaxes)
 
-[2.4.2. **Boolean attributes**](https://w3c.github.io/html/infrastructure.html#sec-boolean-attributes)
+<a href="boolean-attributes">
+[2.4.2. **Boolean attributes**](https://w3c.github.io/html/infrastructure.html#sec-boolean-attributes)</a>
 
 * the presence of a boolean attribute on an element represents the true value,
   and the absence of the attribute represents the false value
 * value must either be the empty string, or a value that is an ascii case-insensitive
-  match for the attribute's canonical name with no leaing or trailing white space.
-* note: checked seems to be allowed and equivalent to checked=""
-* note: "true" and "false" as values are not allowed
-* to represent a false value, the attribute has to be omitted altogether!
-* e.g. &lt;input checked disabled=""&gt; - mixed styles are allowed
-* e.g. checked, checked="", checked=checked, checked=CHECKED, ...
+  match for the attribute's canonical name with no leaing or trailing white space
+* note - `true` and `false` as values are not allowed
+* note - `checked`, `checked=""`, `checked="checked"` all represent the true value
+* as soon as a boolean attribute is specified, it represents the true value -
+  the actual value of the attribute is of no interest -
+  to represent a false value, the attribute has to be omitted altogether
+* as a consequence, each element always has an unlimited number of boolean
+  attributes that have the false value - there is no undefined boolean attribute
+* e.g. `<input checked disabled="">` - mixed styles are allowed
 
+*notes*
+
+* see [hidden attribute](#hidden-attribute)
+
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [3.2.4. Content models](https://w3c.github.io/html/dom.html#content-models)
 
 [3.2.4.2.2. **Flow content** (FC)](https://w3c.github.io/html/dom.html#flow-content)
 
-* elements - **dialog, h1-6, section, text, ...**
+* elements - **dialog, h1-6, section, div, text, ...**
 
 ```
 a, abbr, address, area (if descendant of map), article, aside
@@ -61,7 +80,7 @@ audio, b, bdi, bdo, blockquote, br, button, canvas, cite, code, data
 datalist, del, details, dfn, dialog, div, dl, em, embed, fieldset, figure
 footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img
 input, ins, kbd, label, link (if allowed inside body), main, map, mark
-MathML, math, menu, meter, nav, noscript, object, ol, output, p, picutre
+MathML, math, menu, meter, nav, noscript, object, ol, output, p, picture
 pre, progress, q, ruby, s, samp, script, section, select, small, span
 strong, style, sub, sup, svg, table, template, textarea, time, u, ul
 var, video, wbr, text
@@ -70,18 +89,39 @@ var, video, wbr, text
 *notes*
 
 * a mere listing of elements to classify them as 'flow content'
-* won't say what the actual meaning of flow content is
+* won't state what the actual meaning of flow content is
+
+*notes*
+
+* contains all HCEs, SCEs, SREs (`body` and `td` not included)
+* **FCEs, but no PCEs** - address, article, aside, blockquote, details, dialog,
+  div, dl, fieldset, figure, footer, form, h1-6, header, hr, main, menu, nav, ol,
+  p, pre, section, style, table, ul - **especially** - HCEs, SCEs, and SREs
+* **FCEs, but no PalpCEs** - area, br, datalist, del, dialog, hr, link, menu,
+  noscript, picture, script, style, template, wbr
 
 [3.2.4.2.3. **Sectioning content** (SC)](https://w3c.github.io/html/dom.html#sectioning-content)
 
 * elements - **article, aside, nav, section**
 * content that defines the scope of headings (3.2.4.2.4) and footers (4.3.8)
-* each SC element **can have a heading and an outline**
+* each SC element **potentially has a heading and an outline**
 * a sectioning root can also have an outline
 
 *notes*
 
 * content models - **FC** - nav and aside must not contain a main element
+
+[4.3.9. **Sectioning roots** (SR)](https://w3c.github.io/html/sections.html#sectioning-roots)
+
+* elements - **blockquote, body, details, dialog, fieldset, figure, td**
+* inner sections and headings do not contribute to the outlines of their ancestors
+* can have their own outlines
+
+*notes*
+
+* does not state, similar to SCEs, that they can have a heading
+* content models - **FC** - additional requirements for details, fieldset and
+  figure elements
 
 [3.2.4.2.4. **Heading content** (HC)](https://w3c.github.io/html/dom.html#heading-content)
 
@@ -91,7 +131,8 @@ var, video, wbr, text
 
 *notes*
 
-* distinction between HC and HE? concept vs. element?
+* distinction between HC and HE? - HC is the content model (class) and HEs are
+  the elements (instances of that class)
 
 [3.2.4.2.5. **Phrasing content** (PC)](https://w3c.github.io/html/dom.html#phrasing-content-2)
 
@@ -99,28 +140,27 @@ var, video, wbr, text
 
 ```
 a, abbr, area (if descendant of map), audio, b, bdi, bdo,
-br, button, canvas, cite, code, data, datalist, del, dfn, em embed, i,
+br, button, canvas, cite, code, data, datalist, del, dfn, em, embed, i,
 iframe, img, input, ins, kbd, label, link (if allowed in body), map,
-mark, math, meter, noscript, object, output, picuture, progress, q,
-ruby, s, samp, script, select, small, span, strong, sub, sup, svg,
+mark, MathML, math, meter, noscript, object, output, picture, progress,
+q, ruby, s, samp, script, select, small, span, strong, sub, sup, svg,
 template, textarea, time, u, var, video, wbr, text
 ```
 
-* phrasing content is the text (i.e. text nodes or nothing) of the document
+* phrasing content is the text (i.e. text nodes or nothing) of a document
 * including the elements that mark up that text at the intra-paragraph level
 * may contain other PCE, but no FCE
 
 *notes*
 
-* **FCEs that are no PCEs** - address, article, aside, blockquote, details, dialog,
-  div, dl, fieldset, figure, footer, form, h1-6, header, hr, main, menu, nav, ol,
-  p, pre, section, style, table, ul
-* **FCEs that are no PCEs** - HCEs, SCEs, SREs
-  (body is no FC/PC; td excluded via table)
+* contains **no** HCEs, SCEs or SREs
+* **PCEs, but no FCEs** - all PCEs are also FCEs, but `(#FC > #PC)`
+* **PCEs, but no PalpCEs** - area, br, datalist, del, link, noscript, picture,
+  script, template, wbr
 
 [3.2.4.2.8. **Palpable content** (PalpC)](https://w3c.github.io/html/dom.html#palpable-content-2)
 
-* elements - **h1-6, i, s, section, strong, text, ...**
+* elements - **h1-6, i, s, section, strong, div, text, ...**
 
 ```
 a, abbr, address, article, aside, audio (if controls present), b,
@@ -128,7 +168,7 @@ bdi, bdo, blockquote, button, canvas, cite, code, data, details, dfn, div,
 dl (if children include one/more name-value group), em, embed,
 fieldset, figure, footer, form, h1, h2, h3, h4, h5, h6, header, i,
 iframe, img, input (if type-attrib not hidden), ins, kbd, label,
-main, map, mark, math, meter, nav, object, ol (if children include one/more li),
+main, map, mark, MathML, math, meter, nav, object, ol (if children include one/more li),
 output, p, pre, progress, q, ruby, s, samp,
 section, select, small, span, strong, sub, sup, svg, table, textarea,
 time, u, ul (if chilren include one/more li), var, video,
@@ -139,21 +179,21 @@ text (that is not inter-element white space)
   least one node in its contents that is palpable content and that does not have
   the hidden attribute specified.
 * makes an element non-empty (i.e. text, audio, video, image, controls, canvas)
-* not a hard requirement, e.g. may be temporarily empty
-
-[4.3.9. **sectioning roots** (SR)](https://w3c.github.io/html/sections.html#sectioning-roots)
-
-* elements **blockquote, body, details, dialog, fieldset, figure, td**
-* inner sections and headings do not contribute to the outlines of their ancestors
-* can have their own outlines
+* not a hard requirement, i.e. may be temporarily empty
 
 *notes*
 
-* does not say, like for SCEs that they also can have a heading
-* content models - **FC** - additional requirements for details, fieldset and
-  figure elements
+* palpable - (DE) fühlbar, greifbar, konkret, ...
+* contains all HCEs, SCEs, SREs (`body`, `dialog` and `td` not included)
+* **PalpCEs, but no FCEs** - details (as the only element)
+* **PalpCEs, but no PCEs** - address, article, aside, b, blockquote, details,
+  div, dl, fieldset, figure, footer, form, h1-h6, header, main, nav, ol, p, pre,
+  section, table, ul - **especially** - HCEs, SCEs, SREs
 
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [4.3. Sections](https://w3c.github.io/html/sections.html#sections)
 
 [4.3.1. The **body** element](https://w3c.github.io/html/sections.html#the-body-element)
@@ -218,7 +258,10 @@ text (that is not inter-element white space)
 * contains information about its section - e.g. links to related documents
 * doesn't have to appear at the end of a section
 
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [4.4. Grouping content](https://w3c.github.io/html/grouping-content.html#grouping-content)
 
 [4.4.2. The **address** element](https://w3c.github.io/html/grouping-content.html#the-address-element)
@@ -252,7 +295,10 @@ text (that is not inter-element white space)
 * there must not be more than one visible main element in a document
 * must not be used as a descendant of article, aside, footer, header, nav
 
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [4.9. Tabular data](https://w3c.github.io/html/tabular-data.html#tabular-data)
 
 [4.9.9. The **td** element](https://w3c.github.io/html/tabular-data.html#the-td-element)
@@ -262,7 +308,10 @@ text (that is not inter-element white space)
 * with its 'colspan, rowspan, headers' attributes takes part in the
   [table model](https://w3c.github.io/html/tabular-data.html#tabular-data-processing-model)
 
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [4.10. Forms](https://w3c.github.io/html/sec-forms.html#sec-forms)
 
 [4.10.15. The **fieldset** element](https://w3c.github.io/html/sec-forms.html#the-fieldset-element)
@@ -273,7 +322,10 @@ text (that is not inter-element white space)
 * the disabled attribute allows to disable all controls, except for those
   inside the first legend child element
 
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [4.11. Interactive elements](https://w3c.github.io/html/interactive-elements.html#interactive-elements)
 
 [4.11.1. The **details** element](https://w3c.github.io/html/interactive-elements.html#the-details-element)
@@ -294,16 +346,20 @@ text (that is not inter-element white space)
 * represents a part of an application the user interacts with; e.g. dialog box
 * the open attribute, if specified, indicates that the dialog element is active
 
+<!-- ####################################################################### -->
+<!-- ####################################################################### -->
 <hr/>
+
 ### [5. User interaction](https://w3c.github.io/html/editing.html#editing)
 
-[5.1. The **hidden** attribute](https://w3c.github.io/html/editing.html#the-hidden-attribute)
+<a href="hidden-attribute">
+[5.1. The **hidden** attribute](https://w3c.github.io/html/editing.html#the-hidden-attribute)</a>
 
 * all html elements may have the hidden content attribute set
-* it is a boolean attribute (see 2.4.2)
+* it is a [boolean attribute](#boolean-attributes) (see 2.4.2)
 * specifies, that an element is not yet, or no longer directly relevant to the
   page's current state, or it is used to declare content to be reused by other
-  parts of the page; as opposed to being directly accessed by the user
+  parts of the page - as opposed to being directly accessed by the user
 * user agents should not render such elements
 * typically implemented using style sheets (CSS)
 * if something is marked hidden, it is hidden from all presentations

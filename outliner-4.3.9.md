@@ -5,14 +5,13 @@ This is the unmodified content of chapter [4.3.9. Headings and sections](https:/
 * [W3C, HTML Editor's Draft, 18 July 2017](https://w3c.github.io/html)
 * [W3C, Working Draft, 18 July 2017](https://www.w3.org/TR/html52)
 
-## [Miscellaneous]()
+## Definitions
 
 Definition of [heading content](https://w3c.github.io/html/dom.html#heading-content-2): Heading content defines the header of a section (whether explicitly marked up using sectioning content elements, or implied by the heading content itself). `=> h1, h2, h3, h4, h5, h6`.
 
-Definition of [sectioning content](https://w3c.github.io/html/dom.html#sectioning-content-2): Sectioning content is content that defines the scope of headings and footers. Each sectioning content element potentially has a heading and an outline. See the section on headings and sections for further details. `=> article, aside, nav, section`.
-
 Definition of [rank](https://w3c.github.io/html/sections.html#rank): These elements have a rank given by the number in their name. The h1 element has the highest rank, the h6 element has the lowest rank, and two elements with the same name have equal rank.
 
+Definition of [sectioning content](https://w3c.github.io/html/dom.html#sectioning-content-2): Sectioning content is content that defines the scope of headings and footers. Each sectioning content element potentially has a heading and an outline. See the section on headings and sections for further details. `=> article, aside, nav, section`.
 ## [4.3.9. Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
 
 The h1–h6 elements are headings.
