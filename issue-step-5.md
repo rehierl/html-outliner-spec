@@ -56,8 +56,8 @@ NOTE - The `Node` type, and not the `Element` type, needs to define the
 `Element.parentSection` property would exist, then a non-element node would have
 to access the `parentSection` property of its parent element (e.g.
 `text.parentElement.parentSection`). If the `parentElement` is a sectioning root
-element, or even a sectioning content element, then this property will (most
-likely) not return the proper section.
+element, or even a sectioning content element, then this property will, given the
+same circumstances, not return the proper section.
 
 NOTE - One of the reasons I see, why sectioning content elements are associated
 with their first inner section (i.e. associate with a subordinate entity, i.e.
@@ -65,8 +65,7 @@ violate the definition of a `parent` property in general), is to comply with the
 definition of a "heading of a sectioning content element" (see in combination
 with step 6). But because the direction (inwards vs. outwards) of the
 `parentSection` property depends on the referencing object, `Node.parentSection`
-(or even `Node.heading`) can not be clearly defined. Another reason could be the
-similarity with the `h1-6` heading elements.
+(and even `Node.heading`) can not be clearly defined.
 
 The last paragraph of the algorithm's tree traversal step 4, just before step 5,
 provides **a possible fix**:
@@ -75,10 +74,11 @@ provides **a possible fix**:
 the node is not associated with a section yet, associate the node with the
 section current section.""
 
-This step/statement does not distinguish between element and non-element nodes.
-The main difference is, that this step will also associate any of the
-remaining/unassociated element nodes (which currently also includes any heading
-element) while the algorithm is still traversing the subtree.
+Because an element is also a node, this step/statement does not distinguish
+between element and non-element nodes. Unlike step 5, this step will therefore
+also associate the remaining/unassociated element nodes (which includes any
+heading element). In addition to that, it also associates those nodes while
+the algorithm is still traversing the subtree.
 
 Unfortunately, this step seems to have issues of its own:
 

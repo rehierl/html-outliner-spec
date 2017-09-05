@@ -6,6 +6,10 @@ is supposed to produce.
 * [Outliner steps](./outliner-steps.md)
 * [Outliner pseudocode](./pseudocode.md)
 
+Warning - These notes were taken from an inconsistent and even bugged spec. As
+such, these notes can not solve the issues the spec has, they can merely make
+these issues more apparent.
+
 *acronyms*
 
 - heading content element (HC)
@@ -23,7 +27,7 @@ it is possible to cross the boundaries -
 <!-- ####################################################################### -->
 
 <hr />
-<h2 id="abstract">abstract</h2>
+<h2 id="overview">overview</h2>
 
 One of the problems the outline algorithm currently has is that it does not
 clearly define what you will get as a result. The general idea should be that it
@@ -34,8 +38,8 @@ With regards to attaching outline objects to nodes, the algorithm is rather
 straight forward. Unfortunately, the relationships established between nodes
 and sections are vague and contradictory.
 
-The goal of this document is to identify which relationships the algorithm
-establishes and to clearly define those.
+The goal of this document is to allow to identify which relationships the
+algorithm establishes and to clearly define those.
 
 <!-- ####################################################################### -->
 <!-- ####################################################################### -->
@@ -63,13 +67,17 @@ The **outline** for a sectioning content element or a sectioning root element
 consists of a list of one or more potentially nested sections. The element for
 which an outline is created is said to be the outline’s owner.
 
-* `outline.sections[]` - will always have at least one inner section
+* `outline.sections[]` - one or more inner sections
 * `outline.outlineOwner` - will always have an owner
 
 By looking at this HTML fragment ... `<body></body>` ... you can easily tell that
 an outline can be "empty" (i.e. has no actual inner section). The current algorithm
 will, in such a case, create an outline that contains a single "empty" inner
 section (i.e. has no nodes associated with it).
+
+In addition to that, taking this HTML fragment ... `<body> </body>` ... will make
+the algorithm create a an outline that contains a single inner section, which
+itself holds a single non-element text node that represents the inner whitespace.
 
 It would be easier to determine if an outline is empty, if (in such a case) its
 `sections[]` list would not contain a single section object (i.e. an empty list).
@@ -324,10 +332,8 @@ top-level section* added to the outline's `innerSections` list. If it weren't
 for the "in the outline" part, one could also understand this to refer the
 *last active section* in that outline, which could even be an inner subsection.
 
-**TODO** - This step needs to be clarified.
-
 **TODO** - Why "last top-level" and not "last active" section? -
-A matter of definition?
+A matter of definition? - This needs to be clearly stated.
 
 [step 4.5.4.](./outliner-steps.md/#4-5-4) states: Append the outline of the
 sectioning content element being exited to the current section.
@@ -355,8 +361,8 @@ implied sections other headings may have created.
 **TODO** - This paragraph needs to be rephrased.
 
 **TODO** - Why "last top-level" and not "add the inner top-level sections to the
-outline" itself? - Issue: A section object can only have a single `parentOutline`
-object associated with it.
+outline object" itself? - Issue: A section object can only have a single
+`parentOutline` object associated with it.
 
 **Cancelled** - How (and why) exactly the outline of an inner sectioning content
 element is "merged into" its first outer sectioning element needs to be revisited
@@ -383,7 +389,7 @@ section of its first outer sectioning element.
 "Associate node X with section Y"
 
 <!-- ======================================================================= -->
-<h3 id="type-1">Type 1 - When entering a sectioning content element</h3>
+<h3 id="type1">Type 1 - When entering a sectioning content element</h3>
 
 [step 4.4.4.](./outliner-steps.md/#4-4-4) states: Associate current outline owner
 with current section.
@@ -399,7 +405,7 @@ sectioning content element to be an inner node of that section.
 The algorithm's definition does not state the purpose of this type of association.
 It is therefore unclear if this step is meant to represent the counter part of
 "create a section for" or not. I can only assume that the intended association
-is meant to be the same as in [type-2](#type-2). If that is the case, then this
+is meant to be the same as in [type-2](#type2). If that is the case, then this
 statement is **bugged** as it points into the **wrong direction**.
 
 NOTE - I consider this to be the "wrong direction" because the name `parentSection`
@@ -416,7 +422,7 @@ sectioning content element will be connected with the sections of the element's
 parent outline. - *explain why*
 
 <!-- ======================================================================= -->
-<h3 id="type-2">Type 2 - When entering a sectioning root element</h3>
+<h3 id="type2">Type 2 - When entering a sectioning root element</h3>
 
 [step 4.6.3.](./outliner-steps.md/#4-6-3) states:
 Let current outline owner's parent section be current section.
@@ -428,7 +434,7 @@ does *not* refer to the sectioning root's first inner section.
 
 This connection **points outwards** from the sectioning root element being entered
 towards one of the inner sections of the element's first ancestor sectioning
-element. Unless [type-1](#type-1) is not bugged, this direction clearly
+element. Unless [type-1](#type1) is not bugged, this direction clearly
 distinguishes it from a type-1 connection.
 
 NOTE - After creating a new section, i.e. the first inner section, the algorithm
@@ -455,7 +461,7 @@ The `parentSection` property must be defined for the `Node` type, and not the
 `Element` type, because the first inner node of a sectioning element could be a
 non-element text node. Therefore, the expression `node.parentElement.parentSection`
 can not be used to get a reference of the text node's parent section (In case of
-a parent sectioning element, this would be an outer section).
+a parent sectioning root element, this would be an outer section).
 
 NOTE - The `parentSection` property allows to implement interactive table-of-contents
 (TOCs) - You scroll down within a large document and parts of the document's TOC get
@@ -487,17 +493,17 @@ including the `currentSection` variable when saving the algorithm's current
 context (i.e. stack operations).
 
 <!-- ======================================================================= -->
-<h3 id="type-3">Type 3 - When entering a heading content element</h3>
+<h3 id="type3">Type 3 - When entering a heading content element</h3>
 
 None of the steps inside [section 4.9.](./outliner-steps.md/#4-9) does explicitly
-associate heading elements with sections with regards to [type-2](#type-2). I can
-therefore only assume that [type-4](#type-4) applies.
+associate heading elements with sections with regards to [type-2](#type2). I can
+therefore only assume that [type-4](#type4) applies.
 
 **TODO** - There need to be explicit "associate" statements - The reason is that
-type-4's "when exiting" should be changed into "when entering".
+type-4's "when exiting" should, in the far future, be changed into "when entering".
 
 <!-- ======================================================================= -->
-<h3 id="type-4">Type 4 - Associate node X with 'current section'</h3>
+<h3 id="type4">Type 4 - Associate node X with 'current section'</h3>
 
 [step 4.11.](./outliner-steps.md/#4-11) states: Whenever the walk exits a node,
 if the node is not already associated with a section, associate the node with
@@ -515,18 +521,18 @@ understood to apply to **any node** (element nodes and non-element nodes alike).
 NOTE - It seems that, with regards to heading content elements, the substeps in
 [step 4.9.](./outliner-steps.md/#4-9) need to be executed before executing this
 step. To make things more clear, the specification **should explicitly associate
-headings** ([type-2](#type-2)) with sections because this step must be executed
+headings** ([type-2](#type2)) with sections because this step must be executed
 when *entering* the remaining nodes (see below).
 
 <!-- ----------------------------------------------------------------------- -->
-<h4 id="type-4-current-section">
+<h4 id="type4-current-section">
 What does the 'current section' variable stand for?</h4>
 
 In order to understand this step it is necessary to know what the value of the
 `currentSection` variable will represent in a given context. The relevant parts
 that change this variable are:
 
-(1) <span id="type-4-current-section-sc">
+(1) <span id="type4-current-section-sc">
 enter/exit an element of sectioning content (SC)</span>
 
 When entering a SC element, the `currentSection` variable will be changed to
@@ -539,9 +545,9 @@ will be added (see [step 4.5.4.](./outliner-steps.md/#4-5-4)).
 
 **TODO** - What is the meaning of `currentSection` after exiting a SC? -
 Why add the inner top-level sections to that outer section and not to any other
-section?
+section? (see [section.parentSection](#section-parent-section-sce))
 
-(2) <span id="type-4-current-section-sr">
+(2) <span id="type4-current-section-sr">
 enter/exit an element of sectioning root (SR)</span>
 
 When entering a SR element, the `currentSection` variable will be changed to
@@ -551,17 +557,17 @@ When exiting a SR element, the `currentSection` variable will be reset to the
 same reference that it had just before entering the SR element - i.e. the last
 section that is located in front of the SR element.
 
-(3) <span id="type-4-current-section-hc">
-enter/exit an element of heading content</span>
+(3) <span id="type4-current-section-hc">
+enter/exit an element of heading content (HC)</span>
 
 When entering the first heading element inside some sectioning element, this
 heading will be used as the heading of the sectioning element's first inner
 section. The `currentSection` variable will remain unchanged - i.e. it keeps
 referencing that first inner section.
 
-When entering additional heading elements, new implied sections will be created
-and the `currentSection` variable will be changed to reference these new implied
-sections.
+When entering any additional heading element, a new implied section will be
+created and the `currentSection` variable will be changed to reference this new
+implied section.
 
 NOTE - Both of these cases need to taken into consideration because heading
 elements are themselves container elements that have inner nodes - e.g. they
@@ -573,24 +579,49 @@ unchanged - i.e. it keeps referencing the section of the heading element that
 was exited.
 
 <!-- ----------------------------------------------------------------------- -->
-<h4 id="type-4-when-exiting">"when exiting" is "problematic"</h4>
+<h4 id="type4-enter-or-exit">"when entering", or "when exiting"? -
+warning: extremely messy ...</h4>
 
-NOTE - When entering or exiting any of the remaining nodes, the references to
-`currentSection` and `currentOutlineOwner` stay the same throughout the visit
-(enter and exit) of those remaining nodes - i.e. the algorithm's context does
-not change.
+(1) <span id="type4-eoe-node-parent-section">
+"when exiting" or "when entering" does make a difference</span>
 
-**TODO** - Meh, a div container with an inner sectioning content element ---
-currentSection might change, but currentOutlineOwner will be restored ---
-so "enter or exit" could matter ...
+Example: `<body> <h1/> <div> <h2/> </div> </body>`
 
-Because `parentSection` represents only a single reference, this step could be
-executed either when entering, or when exiting a node. With regards to `innerNodes`,
-this step turns out to be **problematic**, if the association is established
-(in reversed order) when exiting the remaining nodes.
+The goal of "when exiting" seems to be to ensure that the `<div>` container is
+associated with `<h2/>`. The **issue** with that is:
+A seemingly minor modification will make it fail:
 
-Example: An inner #text node of a heading element will be added to the
-`innerNodes` list before the heading element itself is.
+Example: `<body> <h1/> <div> A <h2/> </div> </body>`
+
+If associated "when exiting", the non-element text node `A` will be associated
+with `<h1/>` and the `<div>` container with `<h2/>` - this will tear the `div`
+container aparat.
+
+For that to consistently work, `<h2/>`'s section needs to end when the `<div>`
+container is exited - `<h1/>`'s section would have to be reestablished just
+before, or while, the `<div>` container is being exited. **TODO**
+
+The same applies when the `<h2/>` element is replaced with a `<section>` element
+because exiting such an element will change the `currentSection` variable.
+
+(2) <span id="type4-eoe-section-inner-nodes">
+The 'Node[] Section.innerNodes' property</span>
+
+Ignore for a moment the issues mentioned in (1). What effect does it have when
+nodes are associated "when entering" or "when exiting" them? Assume that each
+time a node is associated with a section, it is added to the `innerNodes` list.
+
+Example: `<body> <h1> A </h1> B </body>`
+
+Text nodes A and B will all be associated with `<body>`'s first and only inner
+section - no issue here. But, you will get the following `innerNodes` list for
+that section:
+
+`Section.innerNodes`: `[A, <h1>, B]`
+
+Note that text node B will be associated before its parent heading element
+(reversed order). This means that there is no guaranteed characterisitc, with
+regards to the section, that the first inner node associated with a section has.
 
 Recall that each node in the DOM tree will be visited in tree order. This means
 that a node's parent element will be entered before the node itself. Likewise,
@@ -598,36 +629,25 @@ parent elements will be exited after their child nodes have been exited. In
 addition to that, preceeding siblings and all their inner child nodes will have
 been (completely) visited before a node is even entered.
 
+The way implied sections are created (only when reaching a new heading element)
+and when they end (when another heading element is reached, or when the ancestor
+sectioning element ends) does not even guarantee that the very last node associated
+with a section has such a characteristic. **TODO**
+
+Example: `<body> <h1/> <div> <h2/> </div> A <h3/> </body>`
+
 With that in mind, it seems as if a `Section.innerNodes` property was not taken
 into consideration at the time the algorithm was written.
 
-<!-- ----------------------------------------------------------------------- -->
-<h4 id="type-4-when-entering">"when entering" is more useful</h4>
+(3) <span id="type4-eoe-when-entering">
+"when entering" could be more useful</span>
 
-**TODO** - `innerNodes` is a flat list -
-limit to the top-level nodes of a section? -
-this will exclude inner sectioning elements and even inner heading elements if
-they are buried inside container elements (e.g. a `div` container).
-
-................ (not quite there yet)
-
-If a heading's inner #text node is associated with the heading's section, then
-that #text node will appear as if it were a sibling node of the heading element.
-So with that in mind, this step is **bugged**. In contrary to the other bugs,
-this can not be fixed easily.
-
-**TODO** - "associate node with section" will result in a flat list of nodes -
-what is the intended use? - would it be better to only associate direct child
-nodes?
-
-when adding a node to the list, check if it is a descendant of the last node that
-was added to the list - can this checking be simplified (tree traversal)?
-
-NOTE - This will only apply for any nodes that are inner child nodes of a heading
-element - i.e. the #text nodes that define the title of a heading element.
+**TODO** - limit `innerNodes` to the top-level nodes of a section - excludes
+elements (could be sectioning element, headings, ...) burried/hidden inside
+inner container elements - add iif (node.parentNode == currentOutlineOwner)?
 
 <!-- ======================================================================= -->
-<h3 id="type-5">Type 5 - Associate non-element node X with parent.section</h3>
+<h3 id="type5">Type 5 - Associate non-element node X with parent.section</h3>
 
 [step 5.](./outliner-steps.md/#5) states: Associate all non-element nodes that
 are in the subtree for which an outline is being created with the section with
@@ -637,39 +657,48 @@ Assuming that all sectioning elements are already associated with an outer
 section, consider the following two cases:
 
 ```
-case-1:                  case-2:
-=======                  =======
-<body>                   <body>
-  "hello world!"           <section>
-<body>                       "hello world!"
-                           </section>
-                         </body>
+case-1:     case-2:        case-3:
+=======     =======        =======
+<body>      <body>         <body>
+  A           <section>      <section>
+<body>          B              C
+              </section>       <h1>D</h1>
+            </body>            E
+                               <h1>F</h1>
+                               G
+                             </section>
+                           </body>
 ```
 
 **case 1** -
 The `<body>` element is the topmost element of a document and, as such, can not
 have an outer section object associated with it. Because of that, this step can
-not associate the non-element `#text` node "hello world!" with any section. This
-is bugged because the text node must be associated with the `<body>`'s first
-inner section.
+not associate the non-element text node 'A' with any section. This is bugged
+because that text node must be associated with `<body>`'s first inner section.
 
 **case 2** -
-The parent element of the `#text` node "hello world!" is the `<section>` element.
-Because of that, this step will associate the `#text` node with the `<section>`
-element's parent section, i.e. a section object that is located outside of the
-`<section>` element. Same issue here: The `#text` node must be associated with
-`<section>`'s first inner section.
+The parent element of the text node 'B' is the `<section>` element. Because of
+that, this step will associate the text node with the `<section>` element's
+parent section, i.e. a section object that is located outside of the `<section>`
+element. Same issue here: Text node 'B' must be associated with `<section>`'s
+first inner section.
+
+**case 3** -
+The parent elements of text nodes 'D' and 'F' are the corresponding heading
+elements - no issue here. However, text nodes 'C', 'E' and 'G' will be associated
+with some outer section because the `<section>` element is their parent element.
 
 NOTE - If all sectioning elements are associated with some outer section object,
-then this step is **bugged** with regards to both cases.
+then this step is **bugged** with regards to all three cases.
 
 NOTE - With the current association of sectioning content elements (inwards) and
-sectioning root elements (outwards), case-1 is bugged and case-2 turns out to be
-working as intended.
+sectioning root elements (outwards), case-1 is bugged and case-2 works as intended.
+However, case-3 is again bugged because text node 'G' will not be associated with
+the implied section defined by text node's 'F' parent heading element.
 
 NOTE - If [step 4.11.](./outliner-steps.md/#4-11) is intended to *not* be limited
 to element nodes only, then a separate step, i.e. this step, is uncalled-for -
-which means that **this step could and must be removed**.
+which means that **this step must be removed**.
 
 NOTE - The DOM `Node` type defines a `Node.parentElement` property which makes
 it unnecessary to clarify if a non-element node can have a non-element node as
@@ -720,6 +749,11 @@ How to avoid auto-creating a new section when entering a sectioning element? -
 The current way to implement the algorithm allows for section objects to be
 completely empty (have no nodes)!
 
+NOTE - The answer for this TODO is the shift away from HTML4 heading elements.
+The first heading element is (for backwards compatibility reasons - and there
+is no new heading element) only to define the heading of a section. It is not
+intended to mark the beginning of a new subsection!
+
 **TODO** -
 Why not treat heading elements as another category of sectioning elements? -
 This would make it necessary to start a new section with each heading -
@@ -728,10 +762,6 @@ This would actually reflect the way they are used -
 Heading elements would then no longer be inner nodes of the sections they create -
 In such a case, how to associate a heading with a section? -
 Heading elements are themselves containers that have inner #text nodes!
-
-**TODO** - `<body> <h1/> <div> A <h2/> B </div> </body>` -
-Note that `<div>` and `'A'` will be associated with `<h1>` and `'B'` with `<h2>` -
-This will tear the `<div>` container apart!
 
 <!-- ####################################################################### -->
 <!-- ####################################################################### -->

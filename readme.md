@@ -6,14 +6,15 @@ html-outliner-spec
 html-specification > outliner-steps > pseudocode > implementation
 ```
 
-It might seem to be an easy task to take the HTML specification, extract the
+It might seem straight forward to take the HTML specification, extract the
 outline algorithm's definition, translate it into pseudocode and then just
-implement the algorithm. In retrospect, getting a clear understanding of the
-algorithm turned out to be quite time consuming.
+implement it.
+
+Unfortunately, there are quite a few details that still need to be clarified ...
 
 ## Overview
 
-basic documents:
+Documents
 
 * [chapter 4.3.9](./outliner-4.3.9.md) - The unmodified content of chapter
   [4.3.9. Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
@@ -24,7 +25,7 @@ basic documents:
 * [notes on html](./html-notes.md) - Notes on different aspects of HTML related
   to the outline algorithm - i.e. notes on certain elements and boolean attributes.
 
-associations:
+Associations
 
 * [notes](./issue-associations-notes.md) - The notes I took when I tried to
   understand what the algorithm's result is supposed to be.
@@ -33,12 +34,12 @@ associations:
 * [summary](./issue-associations-summary.md) - A summary of the issues and bugs
   mentioned in the notes - including hints on how to fix these.
 
-TODOs:
+TODOs
 
 * [issue-headings](./issue-headings.md)
 * [issue-inner-sce](./issue-inner-sce.md)
 
-implementations:
+Implementations
 
 * [pseudocode](./pseudocode.md) - the algorithm's steps translated into pseudocode.
 * [implementations](./implementations.md) - contains a short list of available
