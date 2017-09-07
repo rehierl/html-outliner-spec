@@ -7,8 +7,7 @@ is supposed to produce.
 * [Outliner pseudocode](./pseudocode.md)
 
 Warning - These notes were taken from an inconsistent and even bugged spec. As
-such, these notes can not solve the issues the spec has, they can merely make
-these issues more apparent.
+such, these notes can only make these issues more apparent.
 
 *acronyms*
 
@@ -500,7 +499,8 @@ associate heading elements with sections with regards to [type-2](#type2). I can
 therefore only assume that [type-4](#type4) applies.
 
 **TODO** - There need to be explicit "associate" statements - The reason is that
-type-4's "when exiting" should, in the far future, be changed into "when entering".
+type-4's "when exiting" should, in the far future, be changed into "when entering" -
+you should explain why ...
 
 <!-- ======================================================================= -->
 <h3 id="type4">Type 4 - Associate node X with 'current section'</h3>
@@ -523,6 +523,8 @@ NOTE - It seems that, with regards to heading content elements, the substeps in
 step. To make things more clear, the specification **should explicitly associate
 headings** ([type-2](#type2)) with sections because this step must be executed
 when *entering* the remaining nodes (see below).
+
+**TODO** - you should explain why ... "to make things more clear" is not sufficient
 
 <!-- ----------------------------------------------------------------------- -->
 <h4 id="type4-current-section">
@@ -734,7 +736,9 @@ Heading elements must be considered to be inner nodes of the sections they are
 assigned to as "heading of that section". That is because the first heading
 inside a sectioning element will be used as the heading of the sectioning element's
 first inner section, regardless of any preceeding content (sectioning content
-elements and heading elements excluded).
+elements and heading elements excluded). - The first heading element is only used
+as the heading of the sectioning element's first inner section because there is
+no new heading element dedicated for that specific purpose.
 
 NOTE - I consider this to also apply to heading elements that create new implied
 sections - Either all in, or all out. - Sectioning elements are outer and heading

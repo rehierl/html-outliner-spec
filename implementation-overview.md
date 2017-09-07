@@ -13,11 +13,13 @@ Notes
 * For sectioning content elements (`section` elements in particular), it could
   turn out to make more sense to always have a single root section (i.e. a
   `section` element corresponds with a single section object).
-* If sectioning root elements could also have a single root section, then this
-  distinction is superfluous. Instead of a `Outline Section.parentOutline`
-  property you would get a `SectioningElement Section.outlineOwner` property and
-  thus could get rid of the `Outline class`. The other way would then have to be
-  implemented by an `Section SectioningElement.innerOutline` property.
+* If sectioning root elements could also have a single root section, then a
+  distinction is superfluous.
+* Instead of a `Outline Section.parentOutline` property you would get a
+  `SectioningElement Section.outlineOwner` property and thus could get rid of the
+  `Outline class`.
+* The other way would then have to be implemented by an
+  `Section SectioningElement.innerSection` property.
 * The heading of the body's root section would then become the heading of the
   document (a.k.a. the document's title).
 
