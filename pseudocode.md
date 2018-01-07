@@ -108,7 +108,7 @@ For the sake of simplicity, let 'walk()' recursively traverse the node subtree:
 
 ```
 void walk(Globals vars, Node node) begin
-01: visit(vars, node, true, false)
+01: visit(vars, node, true)
 
 02: child = node.firstChild
 03: while(child != null) begin
@@ -116,7 +116,7 @@ void walk(Globals vars, Node node) begin
 05:   child = child.nextSibling
 06: end while
 
-07: visit(vars, node, false, true)
+07: visit(vars, node, false)
 end
 ```
 
@@ -136,19 +136,20 @@ each element as the walk enters and exits it.
 * *vars parameter* : A Globals object that provides access to shared variables.
 * *node parameter* : The current Node object to visit.
 * *entering parameter* : true if node is being entered, false otherwise.
-* *exiting parameter* : true if the node is being exited, false otherwise.
 
 <h3>pseudocode</h3>
 
 * As *Introduction to (4)* does not state what to do with steps that follow the
   first relevant step, lets assume that these need to be implemented as a
   sequence of *if* clauses.
-* For the sake of readability, almost all of the usually required parentheses,
-  have been dropped; e.g. *tos vs. tos()*
+* The expression 'associate node X with section Y' is assumed to set a
+  `parentSection` property. A different interpretation is unreasonable.
+* Parenthesis are missing for the sake of readability; e.g. *tos* vs. *tos()*.
+* All of the *if* clauses only refer to element nodes; see (5).
 
 ```
-void visit(Globals vars, Node node, bool entering, bool exiting) begin
-00: assert((entering && !exiting) || (!entering && exiting))
+void visit(Globals vars, Node node, bool entering) begin
+00: exiting = !entering
 
 01: if(exiting && (node == vars.stack.tos)) then
 02:   vars.stack.pop()
@@ -165,17 +166,17 @@ void visit(Globals vars, Node node, bool entering, bool exiting) begin
 
 11: if(entering && node.isSectioningContent) then
 12:   if(vars.currentOutlineOwner != null) then
+xx:     //- create-and-set-implied-heading - see line 33
 13:     if(!vars.currentSection.hasHeading) then
 14:       vars.currentSection.setImpliedHeading
 15:     end if
 16:     vars.stack.push(vars.currentOutlineOwner)
 17:   end if
 18:   vars.currentOutlineOwner = node
-xx:   //- currentSection, then currentOutlineOwner.section - see line 36
+xx:   //- currentSection, then currentOutlineOwner.parentSection - see line 36
 19:   vars.currentSection = new Section(vars.currentOutlineOwner)
-xx:   //- associate currentOutlineOwner with currentSection
-xx:   //- 'section' same meaning as 'parentSection'? see line 36
-20:   vars.currentOutlineOwner.section = vars.currentSection
+xx:   //- associate currentOutlineOwner with its inner section - see line 36
+20:   vars.currentOutlineOwner.parentSection = vars.currentSection
 21:   vars.currentOutlineOwner.outline = new Outline(vars.currentSection)
 22: end if
 
@@ -186,18 +187,18 @@ xx:   //- 'section' same meaning as 'parentSection'? see line 36
 27:   vars.currentOutlineOwner = vars.stack.pop()
 xx:   //- does not make the construct of implied headings a necessity
 28:   vars.currentSection = vars.currentOutlineOwner.outline.lastSection
-xx:   //- section.append(outline) - unclear operation
-29:   vars.currentSection.appendOutline(node.outline)
+29:   vars.currentSection.appendOutline(node.outline) //- unclear operation
 30: end if
 
 31: if(entering && node.isSectioningRoot) then
 32:   if(vars.currentOutlineOwner != null) then
-xx:     //- no set-implied-heading here - see line 13
+xx:     //- no create-and-set-implied-heading - see line 13
 33:     vars.stack.push(vars.currentOutlineOwner)
 34:   end if
 35:   vars.currentOutlineOwner = node
 xx:   //- currentOutlineOwner.parentSection, then currentSection - see line 19
-xx:   //- save the current section - see line 44
+xx:   //- associate currentOutlineOwner with an outer section - see line 20
+xx:   //- save the current section (i.e. write access) - see line 44
 36:   vars.currentOutlineOwner.parentSection = vars.currentSection
 37:   vars.currentSection = new Section(vars.currentOutlineOwner)
 38:   vars.currentOutlineOwner.outline = new Outline(vars.currentSection)
@@ -208,7 +209,6 @@ xx:   //- save the current section - see line 44
 42:     vars.currentSection.setImpliedHeading
 43:   end if
 xx:   //- restore the current section - see line 36
-xx:   //- this line is what makes write-access to the dom tree necessary
 44:   vars.currentSection = vars.currentOutlineOwner.parentSection
 45:   vars.currentOutlineOwner = vars.stack.pop()
 46: end if
@@ -238,8 +238,10 @@ xx:   //- this line is what makes write-access to the dom tree necessary
 68:         vars.currentSection.heading = node
 69:         break //- "Abort these substeps"
 70:       end if
+xx:       //- unclear: the section that contains candidateSection
+xx:       //  in the outline of the currentOutlineOwner
 71:       candidateSection = candidateSection.parentSection
-72:     end while
+72:     end while //- return to "Heading loop"
 73:   end if
 74:   vars.stack.push(node)
 75: end if
@@ -296,22 +298,23 @@ not translate into code.
 1. line 20: "Associate ... with" is too unspecific; compare with line 36.
 1. line 29: *Section.appendOutline()*: unclear how to execute this operation -
    see [issue with inner SCEs](./issue-inner-sce.md)
-1. line 38: note that it does not state to associate currentOutlineOwner with
-   the newly created section; compare with line 20.
+1. line 36: there is no explicit "Associate ... with" statement
+1. line 36: associate with an outer (36) vs. an inner (20) section
 1. line 59: it should say "create a new section for the element that is being
    entered", not just "create a new section and".
 1. line 65: possible problem - *rank* is not defined for implied headings; an
    implied heading represents a heading that does not exits.
 1. line 66: same as 59
 1. line 71: 'Let candidateSection be the section that contains candidateSection
-   in the outline of currentOutlineOwner' is quite unclear. should state the
+   in the outline of currentOutlineOwner' is unclear. It should state the
    parent-child relationship between sections established when appending a
    section to another one (line 66).
 1. line 65 after executing 71: implies that a section always has a parent
    section, which is not the case once you reach a SR or SC.
-1. lines 02, 27, 45: push/pop stack operations are rather decoupled from each other.
-1. lines 36, 44: the *Node.parentSection* property is only used to *save and
-   restore* the current section.
+1. lines 02, 27, 45: push/pop stack operations are decoupled from each other.
+1. lines 36, 44: the *Node.parentSection* property is only used to
+   *save and restore* the current section - Assume that "Associate ... with"
+   means setting the *Node.parentSection* property.
 
 <h3 id="faq-like-notes">faq-like notes</h3>
 

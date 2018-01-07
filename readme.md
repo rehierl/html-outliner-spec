@@ -1,4 +1,4 @@
-
+ 
 html-outliner-spec
 ===============
 
@@ -10,7 +10,8 @@ It might seem straight forward to take the HTML specification, extract the
 outline algorithm's definition, translate it into pseudocode and then just
 implement it.
 
-Unfortunately, there are quite a few details that still need to be clarified ...
+The main purpose of this repository is to try to implement the algorithm as is.
+Unfortunately, there are quite a few questions that still need to be answered ...
 
 ## Overview
 
@@ -47,12 +48,12 @@ Implementations
 
 ## Related Links
 
-[W3C, HTML 5.2, Editor's Draft, 2017-05-03](https://w3c.github.io/html/)
+[W3C, HTML 5.3, Editor's Draft, 2017-08-14](https://w3c.github.io/html/)
 
 * [4.3.9. Headings and sections](https://w3c.github.io/html/sections.html#headings-and-sections)
 * [4.3.9.1. Creating an outline](https://w3c.github.io/html/sections.html#creating-an-outline)
 
-[W3C, HTML 5.2, Working Draft, 2017-05-09](https://www.w3.org/TR/html52/)
+[W3C, HTML 5.2, Candidate Recommendation, 2017-08-08](https://www.w3.org/TR/html52/)
 
 * [4.3.9. Headings and sections](https://www.w3.org/TR/html52/sections.html#headings-and-sections)
 * [4.3.9.1. Creating an outline](https://www.w3.org/TR/html52/sections.html#creating-an-outline)
@@ -82,13 +83,8 @@ W3C, World Wide Web Consortium
 HTML Specification
 
 * [W3C, HTML on GitHub](https://github.com/w3c/html)
-* [W3C, HTML Editor's Draft](https://w3c.github.io/html) (2017-05-03)
-* [W3C, HTML Recommendation](https://www.w3.org/TR/html5) (2014-10-28)
-
-Outline Algorithm
-
-* [W3C, HTML Editor's Draft, Outline Algorithm](https://w3c.github.io/html/sections.html#creating-an-outline)
-* [W3C, HTML Recommendation, Outline Algorithm](https://www.w3.org/TR/html5/sections.html#outlines)
+* [W3C, HTML Editor's Draft](https://w3c.github.io/html)
+* [W3C, Standards and Drafts](https://www.w3.org/TR)
 
 ## License
 

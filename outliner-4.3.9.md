@@ -169,6 +169,11 @@ The following markup fragment:
 ****************
 ```
 
+The algorithm, i.e. anything in between Example 27 and Example 28,
+is according to:
+
+* [W3C, HTML Editor's Draft, 29 Dec 2017](https://w3c.github.io/html)
+
 The algorithm that must be followed during a walk of a DOM subtree rooted at a sectioning content element or a sectioning root element to determine that element’s outline is as follows:
 
 <table>

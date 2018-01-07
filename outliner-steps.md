@@ -22,7 +22,7 @@ element's outline is as follows:
 <tr id="3"><td>3.</td><td>Create a stack to hold elements, which is used to handle nesting. Initialize this stack to empty.</td></tr>
 
 <!-- 4. do tree walk -->
-<tr id="4"><td>4.</td><td>Walk over the DOM in tree order, starting with the sectioning element or sectioning root element at the root of the subtree for which an outline is to be created, and trigger the first relevant step below for each element as the walk enters and exits it.</td></tr>
+<tr id="4"><td>4.</td><td>Walk over the DOM in tree order, starting with the sectioning content element or sectioning root element at the root of the subtree for which an outline is to be created, and trigger the first relevant step below for each element as the walk enters and exits it.</td></tr>
 
 <!-- 4.1. exit the tos element -->
 <tr><td>.</td><td>.</td></tr>
@@ -75,7 +75,7 @@ element's outline is as follows:
 <tr id="4-7-2"><td>4.7.2.</td><td>Let <i>current section</i> be <i>current outline owner</i>'s parent section.</td></tr>
 <tr id="4-7-3"><td>4.7.3.</td><td>Pop the top element from the stack, and let the <i>current outline owner</i> be that element.</td></tr>
 
-<!-- 4.8. exit a sectioning element, stack is empty -->
+<!-- 4.8. exit a sectioning content element, stack is empty -->
 <tr><td>.</td><td>.</td></tr>
 <tr id="4-8"><td>4.8.</td><td><b>When exiting a sectioning content element or a sectioning root element (when the stack is empty)</b></td></tr>
 <tr id="4-8-1"><td>4.8.1.</td><td>Note - The <i>current outline owner</i> is the element being exited, and it is the sectioning content element or a sectioning root element at the root of the subtree for which an outline is being generated.</td></tr>

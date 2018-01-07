@@ -20,3 +20,4 @@ List of some of the available open source implementations:
 * A JavaScript implementation of HTML5's outline algorithm.
 * [Algorithm.js](https://github.com/rehierl/html-outliner/blob/master/src/Algorithm.js)
   is the main file that implements the algorithm.
+* A work in progress ...
