@@ -167,6 +167,8 @@ void visit(Globals vars, Node node, bool entering) begin
 11: if(entering && node.isSectioningContent) then
 12:   if(vars.currentOutlineOwner != null) then
 xx:     //- create-and-set-implied-heading - see line 33
+xx:     //- close the first section when the first heading is entered
+xx:     //- this is the only reason for line 57
 13:     if(!vars.currentSection.hasHeading) then
 14:       vars.currentSection.setImpliedHeading
 15:     end if
@@ -187,7 +189,10 @@ xx:   //- associate currentOutlineOwner with its inner section - see line 36
 27:   vars.currentOutlineOwner = vars.stack.pop()
 xx:   //- does not make the construct of implied headings a necessity
 28:   vars.currentSection = vars.currentOutlineOwner.outline.lastSection
-29:   vars.currentSection.appendOutline(node.outline) //- unclear operation
+xx:   //- algorithm's steps: append the root sections of the inner outline
+xx:   //  as subsections to the last root section of the next upper outline
+xx:   //- no hierarchy if appended to the next upper outline itself ...
+29:   vars.currentSection.appendOutline(node.outline)
 30: end if
 
 31: if(entering && node.isSectioningRoot) then
@@ -297,7 +302,8 @@ not translate into code.
    this would be the next tos entry after the one that was popped.
 1. line 20: "Associate ... with" is too unspecific; compare with line 36.
 1. line 29: *Section.appendOutline()*: unclear how to execute this operation -
-   see [issue with inner SCEs](./issue-inner-sce.md)
+   implementation conflicting: "always subsections of the nearest ancestor
+   sectioning root/content element" - [issue inner SCEs](./issue-inner-sce.md)
 1. line 36: there is no explicit "Associate ... with" statement
 1. line 36: associate with an outer (36) vs. an inner (20) section
 1. line 59: it should say "create a new section for the element that is being
