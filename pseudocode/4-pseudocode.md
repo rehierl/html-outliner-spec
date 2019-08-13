@@ -1,5 +1,5 @@
 
-These are the results when trying to write down the [algorithm's steps](./outliner-steps.md)
+These are the results when trying to write down the extracted steps
 using pseudocode as closely as possible (i.e. almost word-by-word).
 
 * `outliner-steps > pseudocode`
@@ -365,7 +365,7 @@ not translate into code.
 begin class SectionList
   //- add the section to the end of this list
   void append(Section section)
-  
+
   //- return the last section of this list
   //- throw an error if empty
   Section lastSection()
@@ -379,7 +379,7 @@ begin class Section
   //- the node that caused the creation
   //  of this section
   Node associatedNode = null
-  
+
   //- the heading associated with this section
   Node heading = null
 
@@ -389,7 +389,7 @@ begin class Section
   //- list of sub-sections contained
   //  within this section
   SectionList subsections = null
-  
+
   //- create a new section and associate it
   //  with the given node
   Section(Node node) begin
@@ -478,7 +478,7 @@ required:
 
   //- has the 'hidden' attribute set?
   bool isHidden()
-  
+
   //- corresponds to a /h[1-6]/ element?
   bool isHeadingContent()
 

@@ -109,7 +109,7 @@ with the body's first inner section, which it is actually supposed to do.
 
 This is clearly bugged and I don't see any way to "fix" it. **This step must be
 removed**. Note that the paragraph referenced in (2) also applies to non-element
-nodes. 
+nodes.
 
 ### (4) Step 6
 
@@ -124,7 +124,7 @@ that (2) also applies to heading elements (i.e. `Node.parentSection`).
 I therefore consider this step to be an optional one which **could be removed**
 if there is no need for an explicit `heading` property. It will always be possible
 to get the heading of a node using the expression `node.parentSection.heading`.
-This expression can also be used if `node` itself represents a heading element (i.e. 
+This expression can also be used if `node` itself represents a heading element (i.e.
 `headingElement == headingElement.parentSection.heading == headingElement.heading`).
 
 **The bigger problem with this step is** this: Because of No (1), sectioning
@@ -166,29 +166,3 @@ issues mentioned in (1) and (4) is to make the algorithm comply with the
 --
 
 Outline-to-Section, a 1:1 or a 1:N relationship?
-
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>

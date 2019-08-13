@@ -20,22 +20,22 @@ Issue - HCEs vs. implied sections.
 ## About
 
 [4.9.1.](./outliner-steps.md) tells to use the first heading found within an SE
-as the current section's heading. - That is independend of which elements might
+as the current section's heading. - That is independent of which elements might
 have appeared before this first heading element.
 
 ## Example fragments
 
-**example**
+example
 
 ```html
 <body>
-<p>A</p>
-<h1>B</h1>
-<p>C</p>
+  <p> A </p>
+  <h1> B </h1>
+  <p> C </p>
 </body>
 ```
 
-will produce the following outline:
+will produce the following outline
 
 ```
 1. heading 'B'
@@ -43,5 +43,6 @@ will produce the following outline:
 
 More importantly, both paragraphs *A* and *C* will be associated with heading
 *B*. In case of *C*, that is certainly intended by the author. Automatically
-associating paragraph *A* with heading *B* on the other hand could turn out to
-be not intended. But that cannot be avoided.
+associating paragraph *A* with heading *B* on the other hand could turn out
+to *not* be intended. But that cannot be avoided - that is, under the official
+definitions.
