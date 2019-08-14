@@ -1,5 +1,5 @@
 
-These are notes on different aspects of HTML related to the outline algorithm.
+These are notes on different related aspects.
 
 * `html-specification`
 * [HTML's Elements, a tabular overview](https://w3c.github.io/elements-of-html/)

@@ -411,7 +411,8 @@ NOTE - I consider this to be the "wrong direction" because the name `parentSecti
 implies that the section object is a superordinate and the sectioning content
 element a subordinate entity. Obviously, that is not the case.
 
-From the [definition of sectioning content](https://w3c.github.io/html/dom.html#sectioning-content-2): Each sectioning content element potentially has a heading and an outline.
+From the [definition of sectioning content](https://w3c.github.io/html/dom.html#sectioning-content-2):
+Each sectioning content element potentially has a heading and an outline.
 
 **TODO** - The only reason I can think of, why the algorithm is supposed to establish
 that kind of connection, is to comply with the "the heading of a sectioning content

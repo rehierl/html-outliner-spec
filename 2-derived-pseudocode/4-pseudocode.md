@@ -3,27 +3,31 @@ These are the results when trying to write down the extracted steps
 using pseudocode as closely as possible (i.e. almost word-by-word).
 
 * `outliner-steps > pseudocode`
-* The algorithm's main entry point is the [createOutline()](#create-outline-func) function.
-* The most important part of this document is the [visit()](#visit-func) function
-  and the [listing of issues](#visit-issues) beneath it.
+* The algorithm's main entry point is the
+  [createOutline()](#create-outline-func) function.
+* The most important part of this document is the
+  [visit()](#visit-func) function and the
+  [listing of issues](#visit-issues) beneath it.
 
 <h2>cancelled</h2>
 
-* unfortunately, this transformation does not result in an easy-to-follow pseudocode.
-* the only way to clear things up is to try a hands-on approach ...
+* unfortunately, this transformation does not result
+  in an easy-to-follow pseudocode.
+* the only way to clear things up is to try a hands-on
+  approach ...
 
 <hr /><!-- ################################################################# -->
 <h2 id="globals-class">Globals Class</h2>
 
-'Globals' will be used to provide access to the shared variables mentioned in
-(1), (2) and (3).
+'Globals' will be used to provide access to the shared variables mentioned
+in (1), (2) and (3).
 
 <h3>variables</h3>
 
 * *currentOutlineOwner* : the current Node element whose outline is being
   created (1); also known as the current **outline's owner**.
-* *currentSection* : a reference to a section object, so that elements in the
-  DOM tree can be associated with it (2).
+* *currentSection* : a reference to a section object, so that elements in
+  the DOM tree can be associated with it (2).
 * *stack* : used to skip nodes and handle nesting (3).
 
 <h3>pseudocode</h3>
@@ -45,12 +49,13 @@ end
 
 * The topmost Node entry of the stack, also known as the top-of-the-stack
   entry, which will simply be referred to as **tos** entry.
-* *push(Node node)* : will add the given node to the stack as the stack's new tos
-  entry. For the sake of simplicity, assume that this function won't throw any error.
+* *push(Node node)* : will add the given node to the stack as the stack's new
+  tos entry. For the sake of simplicity, assume that this function won't throw
+  any error.
 * *Node pop()* : will, if the stack is not empty, remove and return the current
   tos entry. If the stack is empty, calling this function must throw an error.
-* *Node tos()* : will, if the stack is not empty, simply return the current tos
-  entry. If the stack is empty, calling this function must throw an error.
+* *Node tos()* : will, if the stack is not empty, simply return the current
+  tos entry. If the stack is empty, calling this function must throw an error.
 * *bool isEmpty()* : will return true, if the stack has no tos entry, and false
   otherwise. This function must not throw any error.
 
